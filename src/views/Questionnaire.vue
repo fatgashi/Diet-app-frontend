@@ -14,26 +14,27 @@
     </div>
     <div class="d-flex justify-content-center align-items-start" id="rfluid">
         <div class="d-flex flex-column justify-content-center w-100">
-            <h1 class="text-center">{{ currentQuestion.text }}</h1>
+            <h1 class="text-center mb-5">{{ currentQuestion.text }}</h1>
             <p class="text-center" v-if="currentQuestion.extraText">{{ currentQuestion.extraText }}</p>
-            <div v-for="(choice, index) in currentQuestion.choices" :key="index">
-                <div class="card mb-3" @click="selectChoice(choice)">
-                    <div class="card-body">
+            <div v-for="(choice, index) in currentQuestion.choices" @click="selectChoice(choice.answer)" :key="index">
+                <div class="card mb-3">
+                    <div class="card-body" :class="{ 'selected': isSelected(choice.answer) }">
                         <input 
                             type="radio" 
                             :id="'choice' + index" 
-                            :value="choice"
+                            :value="choice.answer"
                             v-model="selectedChoice"
                             style="display: none;"
                         />
                       
-                        <label class="ms-2" :for="'choice' + index" :class="{ 'selected': isSelected(choice) }">
-                            {{ choice }}
+                        <label v-if="choice.image" id="label-answers" class="d-flex justify-content-between align-items-center" :for="'choice' + index" @click="selectChoice(choice.answer)">
+                            {{ choice.answer }}
+                            <img :src="choice.image"/>
                         </label>
                     </div>
                 </div>
             </div>
-            <button @click="nextQuestion">Next Question</button>
+            <button @click="nextQuestion" class="next-button">Next Question</button>
         </div>
     </div>
   </div>
@@ -98,31 +99,61 @@ export default {
             }
         },
 
+        shouldAnswersBeClean() {
+            const questionareStartedTime = localStorage.getItem('lastShownTimestamp');
+            if (!questionareStartedTime) {
+                this.updateLastShownTimestamp();
+            }
+    
+            const currentTime = new Date().getTime();
+            const timeDiff = currentTime - parseInt(questionareStartedTime, 10);
+            const hoursElapsed = timeDiff / (1000 * 3600);
+    
+            return hoursElapsed >= 24;
+        },
+
+        updateLastShownTimestamp() {
+            localStorage.setItem('questionareStartedTime', new Date().getTime().toString());
+        },
+
         isSelected(choice) {
             // Check if the current choice is selected
             return this.selectedChoice === choice;
         },
     },
     mounted(){
+        if(this.shouldAnswersBeClean()){
+            this.$store.dispatch("clearAnswers");
+        }
+        this.updateLastShownTimestamp();
+        if (this.$store.state.answers.length > 0) {
+            this.currentQuestionIndex = this.$store.state.answers.length;
+        }
         this.questionsNumber = questions.length;
+        console.log(this.shouldAnswersBeClean());
     }
 }
 </script>
 
 <style scoped>
 .selected {
-  background-color: #cce5ff; /* Change the background color to indicate selection */
+  background-color: #A8DF8E; /* Change the background color to indicate selection */
+  color: white;
 }
 .main-container{
     background-color: #F3FDE8;
     
 }
 
+#label-answers{
+    cursor: pointer;
+}
+
 #rfluid {
   max-width: 1200px;
   display: grid;
   height: 91vh;
-  margin-top: 20vh;
+  margin-top: 15vh;
 
 }
 
@@ -148,5 +179,13 @@ export default {
 
 .card-body {
     cursor: pointer;
+}
+
+.next-button {
+    background-color: #FFB534;
+    border: none;
+    border-radius: 1%;
+    height: 6vh;
+    color: white;
 }
 </style>

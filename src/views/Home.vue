@@ -12,7 +12,15 @@
 
 <script>
 export default {
+  data(){
+    return {
 
+    }
+  },
+
+  mounted(){
+    this.$store.dispatch("clearAnswers");
+  }
 }
 </script>
 
