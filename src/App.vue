@@ -15,8 +15,5 @@ export default {
 </script>
 
 <style>
-.main-container{
-    background-color: #F2F1EB;
-}
 </style>
 

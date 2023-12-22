@@ -2,7 +2,7 @@ export default [
     { 
       id: 1, 
       text: 'Select your age group !',
-      choices: [{answer: '18-25', image: "../assets/logo.png"}, {answer: '26-35', image: "../assets/logo.png"}, {answer: '36-45', image: "../assets/logo.png"}, {answer: '46+', image: "../assets/logo.png"}],
+      choices: [{answer: '18-25', image: "couple18-25.jpg"}, {answer: '26-35', image: "couple26-35.webp"}, {answer: '36-45', image: "photo36-45.webp"}, {answer: '46+', image: "couple46+.jpg"}],
     },
     { 
       id: 2, 

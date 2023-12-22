@@ -28,9 +28,17 @@ export default {
 </script>
 
 <style>
+@media only screen and (max-height: 650px) {
+  body {
+    overflow: auto !important;
+  }
+}
 body {
   margin: 0;
   padding: 0;
   overflow: hidden;
 }
+/* .Main {
+    background-color: #F5F5F5;
+} */
 </style>
