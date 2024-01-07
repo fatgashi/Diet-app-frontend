@@ -16,7 +16,7 @@
                             :value="choice.answer"
                             style="display: none;"
                         />
-                      <img :src="getImagePath(choice.image)" class="card-img-top h-100" alt="...">
+                      <img :src="getImagePath(choice.image)" class="card-img-top h-100" id="img-age" alt="...">
                       <button class="btn age-button">{{ choice.answer }}</button>
                     </div>
                   </div>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import questions from '../data/questions.js';
+import questions from '../data/generalQuestions.js';
 export default {
   data(){
     return {
@@ -49,7 +49,7 @@ export default {
         answer: this.selectedChoice,
       });
 
-      this.$router.push('/questionnaire')
+      this.$router.push('/generalQuestions')
     },
     getImagePath(image) {
       return require(`../assets/${image}`);
@@ -69,6 +69,10 @@ export default {
   display: grid;
   height: 93vh;
 
+}
+
+#img-age {
+  cursor: pointer;
 }
 
 .age-button{

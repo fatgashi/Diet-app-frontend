@@ -1,61 +1,70 @@
 <template>
   <div class="main-container">
     <div class="d-flex justify-content-between align-items-center">
-        <div v-if="currentQuestionIndex < 1">
-            <router-link to="/home" class="ms-3" id="logo"><i class="bi bi-arrow-left fs-4"></i></router-link>
-        </div>
-        <div v-else>
+        <div>
             <button id="arrow-button" class="ms-3 border-0" @click="goBack"><i class="bi bi-arrow-left fs-4"></i></button>
         </div>
-        <p class="me-3">{{ currentQuestionIndex + 1 }} / {{ questionsNumber }}</p>
+        <p class="me-3">{{ currentQuestionIndex + 2 }} / {{ questionsNumber }}</p>
     </div>
     <div class="progress mx-4 mt-1" id="progress-bar1">
         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" :aria-valuenow="progressValue" aria-valuemin="0" aria-valuemax="100" :style="{width: progressStyle}"></div>
     </div>
-    <div class="d-flex justify-content-center align-items-start" id="rfluid">
-        <div class="d-flex flex-column justify-content-center w-100">
-            <h1 class="text-center mb-2">{{ currentQuestion.text }}</h1>
-            <p class="text-center" v-if="currentQuestion.extraText">{{ currentQuestion.extraText }}</p>
-            <div v-for="(choice, index) in currentQuestion.choices" @click="selectChoice(choice.answer)" :key="index">
-                <div class="card mb-3">
-                    <div class="card-body" :class="{ 'selected': isSelected(choice.answer) }">
-                        <input 
-                            type="radio" 
-                            :id="'choice' + index" 
-                            :value="choice.answer"
-                            v-model="selectedChoice"
-                            style="display: none;"
-                        />
-                      
-                        <label v-if="choice.image" id="label-answers" class="d-flex justify-content-between align-items-center" :for="'choice' + index" @click="selectChoice(choice.answer)">
-                            {{ choice.answer }}
-                            <img :src="choice.image"/>
-                        </label>
+    <div class="container" v-if="currentQuestion">
+        <div class="d-flex justify-content-center align-items-start" id="rfluid">
+            <div class="d-flex flex-column justify-content-center w-100">
+                <h1 class="text-center mb-2">{{ currentQuestion.text }}</h1>
+                <p class="text-center" v-if="currentQuestion.extraText">{{ currentQuestion.extraText }}</p>
+                <div v-for="(choice, index) in currentQuestion.choices" @click="selectChoice(choice.answer)" :key="index">
+                    <div class="card mb-3">
+                        <div class="card-body" :class="{ 'selected': isSelected(choice.answer) }">
+                            <input 
+                                type="radio" 
+                                :id="'choice' + index" 
+                                :value="choice.answer"
+                                v-model="selectedChoice"
+                                style="display: none;"
+                            />
+                          
+                            <label id="label-answers" class="d-flex justify-content-between align-items-center" :for="'choice' + index" @click="selectChoice(choice.answer)">
+                                <div>
+                                    {{ choice.answer }}
+                                </div>
+                                <div v-if="choice.emoji" style="font-size: 20px;">
+                                    {{ choice.emoji }}
+                                </div>
+                                <div v-else>
+                                    <img :src="choice.image" />
+                                </div>
+                            </label>
+                        </div>
                     </div>
                 </div>
+                <button @click="nextQuestion" class="next-button">Next Question</button>
             </div>
-            <button @click="nextQuestion" class="next-button">Next Question</button>
         </div>
+
     </div>
   </div>
 </template>
 
 <script>
-import questions from '../data/questions.js';
+import maleQuestions from '../data/maleQuestions';
+import femaleQuestions from '../data/femaleQuestions';
 export default {
     data(){
         return {
-            currentQuestionIndex: 1,
+            currentQuestionIndex: 0,
             selectedChoice: null,
             questionsNumber: 0,
+            genderQuestions: [],
         }
     },
     computed: {
         currentQuestion() {
-            return questions[this.currentQuestionIndex];
+            return this.genderQuestions[this.currentQuestionIndex];
         },
         progressValue() {
-            const totalQuestions = questions.length;
+            const totalQuestions = this.genderQuestions.length + 2;
             const answeredQuestions = this.$store.state.answers.length;
             const progress = (answeredQuestions / totalQuestions) * 100;
 
@@ -67,8 +76,8 @@ export default {
     },
     watch: {
         currentQuestionIndex(newIndex){
-            if(newIndex === 0){
-                this.$router.push('/home');
+            if(newIndex === -1){
+                this.$router.push('/generalQuestions');
             }
         }
     },
@@ -81,7 +90,7 @@ export default {
                     answer: this.selectedChoice,
                 });
                 
-                if (this.currentQuestionIndex < questions.length - 1) {
+                if (this.currentQuestionIndex < this.genderQuestions.length - 1) {
                 this.currentQuestionIndex++;
                 this.selectedChoice = null; // Reset selected choice for the next question
                 } else {
@@ -129,14 +138,18 @@ export default {
         },
     },
     mounted(){
+        if(this.$store.state.answers.length < 2){
+            this.$router.push('/home')
+        }
+        this.$store.state.answers[1].answer === 'Male' ? this.genderQuestions = maleQuestions : this.genderQuestions = femaleQuestions;
         if(this.shouldAnswersBeClean()){
             this.$store.dispatch("clearAnswers");
         }
         this.updateLastShownTimestamp();
         if (this.$store.state.answers.length > 0) {
-            this.currentQuestionIndex = this.$store.state.answers.length;
+            this.currentQuestionIndex = this.$store.state.answers.length - 2;
         }
-        this.questionsNumber = questions.length;
+        this.questionsNumber = this.genderQuestions.length + 2;
     }
 }
 </script>
@@ -155,7 +168,7 @@ export default {
   max-width: 1200px;
   display: grid;
   height: 91vh;
-  margin-top: 15vh;
+  margin-top: 10vh;
 
 }
 
