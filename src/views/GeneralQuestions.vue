@@ -28,7 +28,7 @@
                                   <div>
                                       {{ choice.answer }}
                                   </div>
-                                  <div v-if="choice.emoji" style="font-size: 20px;">
+                                  <div v-if="choice.emoji" style="font-size: 30px;">
                                       {{ choice.emoji }}
                                   </div>
                                   <div v-else>

@@ -14,28 +14,30 @@
             <div class="d-flex flex-column justify-content-center w-100">
                 <h1 class="text-center mb-2">{{ currentQuestion.text }}</h1>
                 <p class="text-center" v-if="currentQuestion.extraText">{{ currentQuestion.extraText }}</p>
-                <div v-for="(choice, index) in currentQuestion.choices" @click="selectChoice(choice.answer)" :key="index">
-                    <div class="card mb-3">
-                        <div class="card-body" :class="{ 'selected': isSelected(choice.answer) }">
-                            <input 
-                                type="radio" 
-                                :id="'choice' + index" 
-                                :value="choice.answer"
-                                v-model="selectedChoice"
-                                style="display: none;"
-                            />
-                          
-                            <label id="label-answers" class="d-flex justify-content-between align-items-center" :for="'choice' + index" @click="selectChoice(choice.answer)">
-                                <div>
-                                    {{ choice.answer }}
-                                </div>
-                                <div v-if="choice.emoji" style="font-size: 20px;">
-                                    {{ choice.emoji }}
-                                </div>
-                                <div v-else>
-                                    <img :src="choice.image" />
-                                </div>
-                            </label>
+                <div class="questions scrollbar scrollbar-primary mt-2">
+                    <div v-for="(choice, index) in currentQuestion.choices" @click="selectChoice(choice.answer)" :key="index">
+                        <div class="card mb-3">
+                            <div class="card-body" :class="{ 'selected': isSelected(choice.answer) }">
+                                <input 
+                                    :type="currentQuestion.checkbox ? 'checkbox' : 'radio'" 
+                                    :id="'choice' + index" 
+                                    :value="choice.answer"
+                                    v-model="selectedChoice"
+                                    style="display: none;"
+                                />
+                              
+                                <label id="label-answers" class="d-flex justify-content-between align-items-center" :for="'choice' + index" @click="selectChoice(choice.answer)">
+                                    <div>
+                                        {{ choice.answer }}
+                                    </div>
+                                    <div v-if="choice.emoji" style="font-size: 30px;">
+                                        {{ choice.emoji }}
+                                    </div>
+                                    <div v-else>
+                                        <img :src="choice.image" />
+                                    </div>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -54,7 +56,7 @@ export default {
     data(){
         return {
             currentQuestionIndex: 0,
-            selectedChoice: null,
+            selectedChoice: [],
             questionsNumber: 0,
             genderQuestions: [],
         }
@@ -92,7 +94,7 @@ export default {
                 
                 if (this.currentQuestionIndex < this.genderQuestions.length - 1) {
                 this.currentQuestionIndex++;
-                this.selectedChoice = null; // Reset selected choice for the next question
+                this.selectedChoice = []; // Reset selected choice for the next question
                 } else {
                 // Handle end of questionnaire
                 alert('End of questionnaire');
@@ -106,12 +108,15 @@ export default {
             this.currentQuestionIndex--;
         },
         selectChoice(choice) {
-            if (this.selectedChoice === choice) {
-                // If the same choice is clicked again, deselect it
-                this.selectedChoice = null;
-            } else {
-                // Otherwise, select the clicked choice
-                this.selectedChoice = choice;
+            const index = this.selectedChoice.indexOf(choice);
+
+            if (index === -1) {
+                // If the choice is not already selected, add it to the array
+                this.selectedChoice.push(choice);
+            } 
+            else {
+                // If the choice is already selected, remove it from the array
+                this.selectedChoice.splice(index, 1);
             }
         },
 
@@ -133,8 +138,8 @@ export default {
         },
 
         isSelected(choice) {
-            // Check if the current choice is selected
-            return this.selectedChoice === choice;
+            // Check if the current choice is selected in the array
+            return this.selectedChoice.includes(choice);
         },
     },
     mounted(){
@@ -160,6 +165,22 @@ export default {
   color: white;
 }
 
+.questions {
+    max-height: 50vh;
+    overflow: auto;
+}
+
+.scrollbar-primary::-webkit-scrollbar {
+  width: 8px;
+  background-color: #F5F5F5;
+}
+
+.scrollbar-primary::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #004080;
+}
+
 #label-answers{
     cursor: pointer;
 }
@@ -168,7 +189,7 @@ export default {
   max-width: 1200px;
   display: grid;
   height: 91vh;
-  margin-top: 10vh;
+  margin-top: 5vh;
 
 }
 
@@ -176,8 +197,8 @@ export default {
     background-color: #004080 !important;
 }
 
-#progess-bar1{
-    height: 2vh;
+.progress{
+    height: 1vh;
 }
 
 #arrow-button {
