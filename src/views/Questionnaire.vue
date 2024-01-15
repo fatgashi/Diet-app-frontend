@@ -17,7 +17,7 @@
                 <div class="questions scrollbar scrollbar-primary mt-2">
                     <div v-for="(choice, index) in currentQuestion.choices" @click="selectChoice(choice.answer)" :key="index">
                         <div class="card mb-3">
-                            <div class="card-body" :class="{ 'selected': isSelected(choice.answer) }">
+                            <div class="card-body pt-0 pb-0 ps-3 pe-3" :class="{ 'selected': isSelected(choice.answer) }">
                                 <input 
                                     :type="currentQuestion.checkbox ? 'checkbox' : 'radio'" 
                                     :id="'choice' + index" 
@@ -33,8 +33,8 @@
                                     <div v-if="choice.emoji" style="font-size: 30px;">
                                         {{ choice.emoji }}
                                     </div>
-                                    <div v-else>
-                                        <img :src="choice.image" />
+                                    <div v-else class="p-0 m-0">
+                                        <img :src="getImagePath(choice.image)" width="90" height="100" />
                                     </div>
                                 </label>
                             </div>
@@ -85,7 +85,7 @@ export default {
     },
     methods: {
         nextQuestion() {
-            if (this.selectedChoice !== null) {
+            if (this.selectedChoice.length > 0) {
                 // Save the user's choice if needed
                 this.$store.dispatch('saveAnswer', {
                     question: this.currentQuestion.text,
@@ -107,16 +107,28 @@ export default {
             this.$store.dispatch('goBack');
             this.currentQuestionIndex--;
         },
+        getImagePath(image) {
+            return require(`../assets/${image}`);
+        },  
         selectChoice(choice) {
-            const index = this.selectedChoice.indexOf(choice);
-
-            if (index === -1) {
-                // If the choice is not already selected, add it to the array
-                this.selectedChoice.push(choice);
-            } 
-            else {
-                // If the choice is already selected, remove it from the array
-                this.selectedChoice.splice(index, 1);
+            if(this.currentQuestion.checkbox){
+                const index = this.selectedChoice.indexOf(choice);
+    
+                if (index === -1) {
+                    // If the choice is not already selected, add it to the array
+                    this.selectedChoice.push(choice);
+                } 
+                else {
+                    // If the choice is already selected, remove it from the array
+                    this.selectedChoice.splice(index, 1);
+                }
+            } else {
+                if (this.selectedChoice[0] === choice) {
+                    // If the same choice is clicked again, deselect it
+                    this.selectedChoice = [];
+                } else {
+                    this.selectedChoice = [choice];
+                }
             }
         },
 

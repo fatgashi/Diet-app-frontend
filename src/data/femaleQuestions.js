@@ -2,7 +2,7 @@ export default [
     { 
       id: 3, 
       text: 'Choose your current body type', 
-      choices: [{answer: 'Average', image: "../assets/logo.png"}, {answer: 'Plump', image: "../assets/logo.png"}, {answer: 'Extra', image: "../assets/logo.png"},],
+      choices: [{answer: 'Average', image: "averageFemaleBodyType.png"}, {answer: 'Plump', image: "plumpFemaleBodyType.png"}, {answer: 'Extra', image: "extraFemaleBodyType.png"},],
     },
     { 
       id: 4, 
