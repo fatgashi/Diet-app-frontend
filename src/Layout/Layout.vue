@@ -33,6 +33,12 @@ export default {
     overflow: auto !important;
   }
 }
+
+@media only screen and (max-width: 600px) {
+  body {
+    overflow: auto !important;
+  }
+}
 body {
   margin: 0;
   padding: 0;

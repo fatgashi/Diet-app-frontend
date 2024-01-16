@@ -6,18 +6,21 @@ export default [
     },
     { 
       id: 4, 
-      text: 'Question 3', 
-      choices: [{answer: 'Average', image: "../assets/logo.png"}, {answer: 'Plump', image: "../assets/logo.png"}, {answer: 'Extra', image: "../assets/logo.png"},],
+      text: 'Choose the body type you want to have', 
+      choices: [{answer: 'Fit', image: "fitFemaleBodyType.png"}, {answer: 'Athletic', image: "athleticFemaleBodyType.png"}, {answer: 'Shapely', image: "shapelyFemaleBodyType.png"},],
     },
     { 
       id: 5, 
-      text: 'Question 4', 
-      choices: [{answer: 'Average', image: "../assets/logo.png"}, {answer: 'Plump', image: "../assets/logo.png"}, {answer: 'Extra', image: "../assets/logo.png"},],
+      text: 'What do you want to achieve?', 
+      extraText: 'You can select multiple goals',
+      checkbox: true,
+      choices: [{answer: 'Lose weight', emoji: "👔"}, {answer: 'Boost brain power', emoji: "🧠"}, {answer: 'Improve blood pressure', emoji: "❤️‍🩹"}, {answer: 'Increase life expectancy', emoji: "👵🏻"}, {answer: 'Reduce cholesterol level', emoji: "🩸"}, {answer: 'Sleep better', emoji: "🌙"}, {answer: 'Improve bone health', emoji: "💪"}, {answer: 'Reduce the risk of cancer', emoji: "🎗️"}],
     },
     { 
       id: 6, 
-      text: 'Question 5', 
-      choices: [{answer: 'Average', image: "../assets/logo.png"}, {answer: 'Plump', image: "../assets/logo.png"}, {answer: 'Extra', image: "../assets/logo.png"},],
+      text: 'Choose your target zones',
+      checkbox: true, 
+      choices: [{answer: 'Belly', image: "fatFemaleBelly.png"}, {answer: 'Butt', image: "fatFemaleButt.png"}, {answer: 'Breasts', image: "fatFemaleBreast.png"}, {answer: 'Legs', image: "fatFemaleLegs.png"},],
     },
     // Add more questions as needed
   ];

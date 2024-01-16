@@ -27,7 +27,7 @@
                                 />
                               
                                 <label id="label-answers" class="d-flex justify-content-between align-items-center" :for="'choice' + index" @click="selectChoice(choice.answer)">
-                                    <div>
+                                    <div class="fw-bold">
                                         {{ choice.answer }}
                                     </div>
                                     <div v-if="choice.emoji" style="font-size: 30px;">
@@ -123,12 +123,7 @@ export default {
                     this.selectedChoice.splice(index, 1);
                 }
             } else {
-                if (this.selectedChoice[0] === choice) {
-                    // If the same choice is clicked again, deselect it
-                    this.selectedChoice = [];
-                } else {
-                    this.selectedChoice = [choice];
-                }
+                this.selectedChoice = this.selectedChoice === choice ? null : choice;
             }
         },
 
@@ -150,9 +145,15 @@ export default {
         },
 
         isSelected(choice) {
-            // Check if the current choice is selected in the array
-            return this.selectedChoice.includes(choice);
-        },
+            if (Array.isArray(this.selectedChoice)) {
+                // If selectedChoice is an array, check if it includes the choice
+                return this.selectedChoice.includes(choice);
+            } else {
+                // If selectedChoice is not an array (e.g., for radio buttons), 
+                // check if it's equal to the choice
+                return this.selectedChoice === choice;
+            }
+        }
     },
     mounted(){
         if(this.$store.state.answers.length < 2){
@@ -178,7 +179,7 @@ export default {
 }
 
 .questions {
-    max-height: 50vh;
+    max-height: 55vh;
     overflow: auto;
 }
 
@@ -198,7 +199,7 @@ export default {
 }
 
 #rfluid {
-  max-width: 1200px;
+  max-width: 1000px;
   display: grid;
   height: 91vh;
   margin-top: 5vh;
