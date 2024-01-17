@@ -11,7 +11,7 @@
       <div class="container">
           <div class="d-flex justify-content-center align-items-start" id="rfluid">
               <div class="d-flex flex-column justify-content-center w-100">
-                  <h1 class="text-center mb-2">{{ currentQuestion.text }}</h1>
+                  <h1 class="text-center mb-2 fw-bolder">{{ currentQuestion.text }}</h1>
                   <p class="text-center" v-if="currentQuestion.extraText">{{ currentQuestion.extraText }}</p>
                   <div v-for="(choice, index) in currentQuestion.choices" @click="selectChoice(choice.answer)" :key="index">
                       <div class="card mb-3">
@@ -25,7 +25,7 @@
                               />
                             
                               <label id="label-answers" class="d-flex justify-content-between align-items-center" :for="'choice' + index" @click="selectChoice(choice.answer)">
-                                  <div>
+                                  <div class="fw-bold">
                                       {{ choice.answer }}
                                   </div>
                                   <div v-if="choice.emoji" style="font-size: 30px;">
@@ -38,7 +38,7 @@
                           </div>
                       </div>
                   </div>
-                  <button @click="nextQuestion" class="next-button">Next Question</button>
+                  <button @click="nextQuestion" class="next-button fw-bold">Continue</button>
               </div>
           </div>
   
@@ -118,7 +118,7 @@
   }
   
   #rfluid {
-    max-width: 1200px;
+    max-width: 1000px;
     display: grid;
     height: 91vh;
     margin-top: 10vh;

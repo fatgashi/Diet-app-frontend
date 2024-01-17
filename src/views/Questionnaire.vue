@@ -12,7 +12,7 @@
     <div class="container" v-if="currentQuestion">
         <div class="d-flex justify-content-center align-items-start" id="rfluid">
             <div class="d-flex flex-column justify-content-center w-100">
-                <h1 class="text-center mb-2">{{ currentQuestion.text }}</h1>
+                <h1 class="text-center mb-2 fw-bolder">{{ currentQuestion.text }}</h1>
                 <p class="text-center" v-if="currentQuestion.extraText">{{ currentQuestion.extraText }}</p>
                 <div class="questions scrollbar scrollbar-primary mt-2">
                     <div v-for="(choice, index) in currentQuestion.choices" @click="selectChoice(choice.answer)" :key="index">
@@ -30,7 +30,7 @@
                                     <div class="fw-bold">
                                         {{ choice.answer }}
                                     </div>
-                                    <div v-if="choice.emoji" style="font-size: 30px;">
+                                    <div v-if="choice.emoji" class="fs-2">
                                         {{ choice.emoji }}
                                     </div>
                                     <div v-else class="p-0 m-0">
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                 </div>
-                <button @click="nextQuestion" class="next-button">Next Question</button>
+                <button @click="nextQuestion" class="next-button fw-bold">Continue</button>
             </div>
         </div>
 
@@ -111,21 +111,46 @@ export default {
             return require(`../assets/${image}`);
         },  
         selectChoice(choice) {
-            if(this.currentQuestion.checkbox){
-                const index = this.selectedChoice.indexOf(choice);
-    
-                if (index === -1) {
-                    // If the choice is not already selected, add it to the array
-                    this.selectedChoice.push(choice);
-                } 
-                else {
-                    // If the choice is already selected, remove it from the array
-                    this.selectedChoice.splice(index, 1);
+            // Check if this question has the condition applied
+            if (this.currentQuestion.condition) {
+                // If the first choice is the one being selected/deselected
+                if (choice === this.currentQuestion.choices[0].answer) {
+                        if (this.selectedChoice.includes(choice)) {
+                        // If it's already selected, deselect it
+                        this.selectedChoice = this.selectedChoice.filter(c => c !== choice);
+                        } else {
+                        // If it's not selected, make it the only selected choice
+                        this.selectedChoice = [choice];
+                        }
+                } else {
+                    // If any other choice is selected, remove the first choice if it's selected
+                    this.selectedChoice = this.selectedChoice.filter(c => c !== this.currentQuestion.choices[0].answer);
+                    // Then toggle the selected choice
+                    const index = this.selectedChoice.indexOf(choice);
+                    if (index === -1) {
+                        this.selectedChoice.push(choice);
+                    } else {
+                        this.selectedChoice.splice(index, 1);
+                    }
                 }
             } else {
-                this.selectedChoice = this.selectedChoice === choice ? null : choice;
+            // Logic for non-conditional questions
+                if(this.currentQuestion.checkbox){
+                    const index = this.selectedChoice.indexOf(choice);
+
+                    if (index === -1) {
+                        // If the choice is not already selected, add it to the array
+                        this.selectedChoice.push(choice);
+                    } 
+                    else {
+                        // If the choice is already selected, remove it from the array
+                        this.selectedChoice.splice(index, 1);
+                    }
+                } else {
+                    this.selectedChoice = this.selectedChoice === choice ? null : choice;
+                }
             }
-        },
+  },
 
         shouldAnswersBeClean() {
             const questionareStartedTime = localStorage.getItem('lastShownTimestamp');
