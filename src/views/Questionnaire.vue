@@ -14,34 +14,72 @@
             <div class="d-flex flex-column justify-content-center w-100">
                 <h1 class="text-center mb-2 fw-bolder">{{ currentQuestion.text }}</h1>
                 <p class="text-center" v-if="currentQuestion.extraText">{{ currentQuestion.extraText }}</p>
-                <div class="questions scrollbar scrollbar-primary mt-2">
-                    <div v-for="(choice, index) in currentQuestion.choices" @click="selectChoice(choice.answer)" :key="index">
-                        <div class="card mb-3">
-                            <div class="card-body pt-0 pb-0 ps-3 pe-3" :class="{ 'selected': isSelected(choice.answer) }">
-                                <input 
-                                    :type="currentQuestion.checkbox ? 'checkbox' : 'radio'" 
-                                    :id="'choice' + index" 
-                                    :value="choice.answer"
-                                    v-model="selectedChoice"
-                                    style="display: none;"
-                                />
-                              
-                                <label id="label-answers" class="d-flex justify-content-between align-items-center" :for="'choice' + index" @click="selectChoice(choice.answer)">
-                                    <div class="fw-bold">
-                                        {{ choice.answer }}
-                                    </div>
-                                    <div v-if="choice.emoji" class="fs-2">
-                                        {{ choice.emoji }}
-                                    </div>
-                                    <div v-else class="p-0 m-0">
-                                        <img :src="getImagePath(choice.image)" width="90" height="100" />
-                                    </div>
-                                </label>
+                <div v-if="currentQuestion.question === 'height'" class="d-flex flex-column justify-content-center align-items-center">
+
+                    <div class="unit-toggle">
+                        <button @click="useMetric = false" :class="{ active: !useMetric }" class="border-0">in</button>
+                        <button @click="useMetric = true" :class="{ active: useMetric }" class="border-0">cm</button>
+                    </div>
+
+                    <div v-if="useMetric" class="mt-3">
+                        <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userHeightCm"><span class="fw-bold">cm</span>
+                        <p v-if="usersHeightCm < 40 || usersHeightCm > 250" class="helper-text text-danger fw-bold text-center">Enter a value from 40cm to 250cm</p>
+                        <div class="bmi-note mb-3">
+                            <div class="p-3">
+                                <span role="img" aria-label="Note">💡</span>
+                                Calculating your body mass index
+                                <p>BMI is widely used as a risk factor for the development of or the prevalence of several health issues.</p>
+                            </div>
+                        </div>
+                        <button :disabled="usersHeightCm < 40 || usersHeightCm > 250" @click="nextQuestionCm" class="next-button fw-bold">Continue</button>
+                    </div>
+    
+                    <!-- Inputs for imperial -->
+                    <div v-else class="mt-3">
+                        <input class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" type="number" v-model.number="userHeightFt" style="width: 45%;"><span class="fw-bold">ft</span>
+                        <input class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" type="number" v-model.number="userHeightIn" style="width: 10vh;"><span class="fw-bold">in</span>
+                        <p v-if="feetError" class="helper-text text-danger fw-bold text-center">Enter a value from 1ft to 8ft 2in</p>
+                        <div class="bmi-note mb-3">
+                            <div class="p-3">
+                                <span role="img" aria-label="Note">💡</span>
+                                Calculating your body mass index
+                                <p>BMI is widely used as a risk factor for the development of or the prevalence of several health issues.</p>
+                            </div>
+                        </div>
+                        <button :disabled="feetError" @click="nextQuestionFeet" class="next-button fw-bold">Continue</button>
+                    </div>
+
+                </div>
+                <div v-else>
+                    <div class="questions scrollbar scrollbar-primary mt-2">
+                        <div v-for="(choice, index) in currentQuestion.choices" @click="selectChoice(choice.answer)" :key="index">
+                            <div class="card mb-3">
+                                <div class="card-body pt-0 pb-0 ps-3 pe-3" :class="{ 'selected': isSelected(choice.answer) }">
+                                    <input 
+                                        :type="currentQuestion.checkbox ? 'checkbox' : 'radio'" 
+                                        :id="'choice' + index" 
+                                        :value="choice.answer"
+                                        v-model="selectedChoice"
+                                        style="display: none;"
+                                    />
+                                  
+                                    <label id="label-answers" class="d-flex justify-content-between align-items-center" :for="'choice' + index" @click="selectChoice(choice.answer)">
+                                        <div class="fw-bold">
+                                            {{ choice.answer }}
+                                        </div>
+                                        <div v-if="choice.emoji" class="fs-2">
+                                            {{ choice.emoji }}
+                                        </div>
+                                        <div v-else class="p-0 m-0">
+                                            <img :src="getImagePath(choice.image)" width="90" height="100" />
+                                        </div>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <button @click="nextQuestion" class="next-button fw-bold">Continue</button>
                 </div>
-                <button @click="nextQuestion" class="next-button fw-bold">Continue</button>
             </div>
         </div>
 
@@ -59,11 +97,32 @@ export default {
             selectedChoice: [],
             questionsNumber: 0,
             genderQuestions: [],
+            useMetric: true, // Toggle between metric and imperial
+            userHeightCm: null, // User's height in cm
+            userHeightFt: null, // User's height in feet
+            userHeightIn: null, // User's height in inches
         }
     },
     computed: {
         currentQuestion() {
             return this.genderQuestions[this.currentQuestionIndex];
+        },
+        usersHeightCm(){
+            return this.userHeightCm;
+        },
+        usersHeightFt(){
+            return this.userHeightFt
+        },
+        usersHeightIn(){
+            return this.userHeightIn
+        },
+        feetError(){
+            const total = this.usersHeightFt * 12 + this.usersHeightIn;
+
+            if(this.usersHeightIn == null || this.usersHeightIn.length == 0 || this.usersHeightIn > 11 || total < 12 || total > 98){
+                return true;
+            }
+            return false
         },
         progressValue() {
             const totalQuestions = this.genderQuestions.length + 2;
@@ -91,14 +150,8 @@ export default {
                     question: this.currentQuestion.text,
                     answer: this.selectedChoice,
                 });
-                
-                if (this.currentQuestionIndex < this.genderQuestions.length - 1) {
-                this.currentQuestionIndex++;
-                this.selectedChoice = []; // Reset selected choice for the next question
-                } else {
-                // Handle end of questionnaire
-                alert('End of questionnaire');
-                }
+                this.moveToNextQuestion();
+
             } else {
                 alert('Please select an answer before moving on.');
             }
@@ -150,7 +203,43 @@ export default {
                     this.selectedChoice = this.selectedChoice === choice ? null : choice;
                 }
             }
-  },
+        },
+        nextQuestionFeet() {
+            const answer = `${this.userHeightFt} ft ${this.userHeightIn} in`;
+            this.saveAnswer(answer);
+            this.moveToNextQuestion();
+        },
+        nextQuestionCm() {
+            // Format the answer and save it
+            const answer = `${this.userHeightCm} cm`;
+            this.saveAnswer(answer);
+            this.moveToNextQuestion();
+    
+        },
+
+        moveToNextQuestion() {
+            // Check if there are more questions
+            if (this.currentQuestionIndex < this.genderQuestions.length - 1) {
+                this.currentQuestionIndex++;
+                this.selectedChoice = []; // Reset selected choice for the next question
+            } else {
+                // Handle end of questionnaire
+                this.handleEndOfQuestionnaire();
+            }
+        },
+
+        saveAnswer(answer) {
+            // Save the user's choice or height input
+            this.$store.dispatch('saveAnswer', {
+            question: this.currentQuestion.text,
+            answer: answer,
+            });
+        },
+
+        handleEndOfQuestionnaire() {
+            alert('End of questionnaire');
+            // Here could redirect the user or perform other actions
+        },
 
         shouldAnswersBeClean() {
             const questionareStartedTime = localStorage.getItem('lastShownTimestamp');
@@ -201,6 +290,45 @@ export default {
 .selected {
   background-color: #004080 !important; /* Change the background color to indicate selection */
   color: white;
+}
+
+.input-no-spinners::-webkit-outer-spin-button,
+.input-no-spinners::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-no-spinners:focus {
+  outline: none;
+}
+
+.input-no-spinners:focus::placeholder {
+  color: transparent;
+}
+
+.input-no-spinners {
+    width: 55%;
+    font-size: 40px;
+}
+
+.helper-text {
+    font-size: 13px;
+}
+
+.bmi-note {
+    background-color: rgb(242, 239, 238);
+    border-radius: 15px;
+}
+
+.unit-toggle button.active {
+  /* styles for the active unit button */
+  background-color: #004080;
+  color: white;
+}
+
+.unit-toggle button {
+    width: 50px;
+    border-radius: 5px;
 }
 
 .questions {
@@ -259,8 +387,13 @@ export default {
 .next-button {
     background-color: #004080;
     border: none;
+    width: 100%;
     border-radius: 1%;
     height: 6vh;
     color: white;
+}
+
+.next-button:disabled {
+    opacity: 0.5;
 }
 </style>

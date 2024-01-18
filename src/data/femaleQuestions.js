@@ -110,12 +110,36 @@ export default [
       id: 23, 
       text: 'Are you taking any medication?',
       checkbox: true,
-      choices: [{answer: "Vitamins", emoji: "⚪"}, {answer: 'Hormones', emoji: "⚪"}, {answer: 'Antibiotics', emoji: "⚪"}, {answer: 'None of the above', emoji: "⚪"}],
+      condition: true,
+      choices: [{answer: 'None of them', emoji: "⚪"}, {answer: "Vitamins", emoji: "⚪"}, {answer: 'Hormones', emoji: "⚪"}, {answer: 'Antibiotics', emoji: "⚪"}],
     },
     { 
       id: 24, 
       text: 'Do you have any serious back problems?',
       choices: [{answer: "Yes", emoji: "⚠️"}, {answer: 'No', emoji: "✅"}],
+    },
+    { 
+      id: 25, 
+      text: 'Bad habits',
+      extraText: "We've all got some - what are yours?",
+      checkbox: true,
+      condition: true,
+      choices: [{answer: 'None of them', emoji: "❌"}, {answer: "Unable to rest enough", emoji: "🌙"}, {answer: 'I love chocolate and candy', emoji: "🍫"}, {answer: 'Soda is my best friend', emoji: "🥤"}, {answer: 'I consume a lot of salty food', emoji: "🧂"}, {answer: "I'm a midnight snacker", emoji: "🍟"}],
+    },
+    { 
+      id: 26, 
+      text: 'What do you know about Intermittent Fasting?',
+      choices: [{answer: "Only the name", emoji: "🙅‍♀️"}, {answer: 'A couple of things', emoji: "👌"}, {answer: "I'm experienced in fasting", emoji: "😎"}],
+    },
+    { 
+      id: 27, 
+      text: 'How excited are you to shed some extra weight?',
+      choices: [{answer: "I just want to see what the buzz about fasting is about", emoji: "👀"}, {answer: 'I want to try and lose some weight', emoji: "💪"}, {answer: "I'm serious about losing as much weight as possible", emoji: "🔥"}],
+    },
+    { 
+      id: 28, 
+      text: 'How tall are you?',
+      question: 'height'
     },
     // Add more questions as needed
   ];

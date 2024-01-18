@@ -103,6 +103,7 @@ export default [
       text: 'Do you suffer from any of the following conditions?',
       extraText: 'By providing us with this information, we will be able to give you the best fasting advice',
       checkbox: true,
+      condition: true,
       choices: [{answer: "No I don't", emoji: "⚪"}, {answer: 'Diabetes', emoji: "⚪"}, {answer: 'Heart disease', emoji: "⚪"}, {answer: 'High blood pressure', emoji: "⚪"}, {answer: 'High cholesterol', emoji: "⚪"}, {answer: 'Mental health disorders', emoji: "⚪"}, {answer: 'Chronic kidney disease (CKD)', emoji: "⚪"}, {answer: 'Cancer', emoji: "⚪"}, {answer: 'Gastrointestinal disorder', emoji: "⚪"}, {answer: 'Physical disability', emoji: "⚪"}, {answer: 'Other', emoji: "⚪"}],
     },
     { 
@@ -115,6 +116,24 @@ export default [
       id: 24, 
       text: 'Do you have any serious back problems?',
       choices: [{answer: "Yes", emoji: "⚠️"}, {answer: 'No', emoji: "✅"}],
+    },
+    { 
+      id: 25, 
+      text: 'Bad habits',
+      extraText: "We've all got some - what are yours?",
+      checkbox: true,
+      condition: true,
+      choices: [{answer: 'None of them', emoji: "❌"}, {answer: "Unable to rest enough", emoji: "🌙"}, {answer: 'I love chocolate and candy', emoji: "🍫"}, {answer: 'Soda is my best friend', emoji: "🥤"}, {answer: 'I consume a lot of salty food', emoji: "🧂"}, {answer: "I'm a midnight snacker", emoji: "🍟"}],
+    },
+    { 
+      id: 26, 
+      text: 'What do you know about Intermittent Fasting?',
+      choices: [{answer: "Only the name", emoji: "🙅‍♂️"}, {answer: 'A couple of things', emoji: "👌"}, {answer: "I'm experienced in fasting", emoji: "😎"}],
+    },
+    { 
+      id: 27, 
+      text: 'How excited are you to shed some extra weight?',
+      choices: [{answer: "I just want to see what the buzz about fasting is about", emoji: "👀"}, {answer: 'I want to try and lose some weight', emoji: "💪"}, {answer: "I'm serious about losing as much weight as possible", emoji: "🔥"}],
     },
     // Add more questions as needed
   ];
