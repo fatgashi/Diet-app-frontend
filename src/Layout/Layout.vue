@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class="Header">
+        <!-- <div class="Header">
             <Header/>
-        </div>
+        </div> -->
         <div class="Main">
         <Content/>
         </div>
@@ -15,12 +15,12 @@
 <script>
 import Content from './Content.vue'
 // import Footer from './Footer.vue'
-import Header from './Header.vue'
+// import Header from './Header.vue'
 
 export default {
     name: "LeyOut",
     components: {
-        Header,
+        // Header,
         Content,
         // Footer,
     }

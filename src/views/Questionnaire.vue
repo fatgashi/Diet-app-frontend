@@ -1,12 +1,16 @@
 <template>
   <div class="main-container">
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex justify-content-between align-items-center mt-3">
         <div>
             <button id="arrow-button" class="ms-3 border-0" @click="goBack"><i class="bi bi-arrow-left fs-4"></i></button>
         </div>
-        <p class="me-3">{{ currentQuestionIndex + 2 }} / {{ questionsNumber }}</p>
+        <div>
+            <img src="../assets/main-logo.png" width="50" height="40" />
+            <span class="name fw-bold text-muted">nutriplanwellness</span>
+        </div>
+            <span class="fw-bold text-muted me-3">{{ currentQuestionIndex + 2 }} / {{ questionsNumber }}</span>
     </div>
-    <div class="progress mx-4 mt-1" id="progress-bar1">
+    <div class="progress mx-4 mt-2" id="progress-bar1">
         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" :aria-valuenow="progressValue" aria-valuemin="0" aria-valuemax="100" :style="{width: progressStyle}"></div>
     </div>
     <div class="container" v-if="currentQuestion">
@@ -52,33 +56,62 @@
                 </div>
                 <div v-else>
                     <div class="questions scrollbar scrollbar-primary mt-2">
-                        <div v-for="(choice, index) in currentQuestion.choices" @click="selectChoice(choice.answer)" :key="index">
-                            <div class="card mb-3">
-                                <div class="card-body pt-0 pb-0 ps-3 pe-3" :class="{ 'selected': isSelected(choice.answer) }">
-                                    <input 
-                                        :type="currentQuestion.checkbox ? 'checkbox' : 'radio'" 
-                                        :id="'choice' + index" 
-                                        :value="choice.answer"
-                                        v-model="selectedChoice"
-                                        style="display: none;"
-                                    />
-                                  
-                                    <label id="label-answers" class="d-flex justify-content-between align-items-center" :for="'choice' + index" @click="selectChoice(choice.answer)">
-                                        <div class="fw-bold">
-                                            {{ choice.answer }}
-                                        </div>
-                                        <div v-if="choice.emoji" class="fs-2">
-                                            {{ choice.emoji }}
-                                        </div>
-                                        <div v-else class="p-0 m-0">
-                                            <img :src="getImagePath(choice.image)" width="90" height="100" />
-                                        </div>
-                                    </label>
+                        <div v-if="!currentQuestion.checkbox">
+                            <div v-for="(choice, index) in currentQuestion.choices" @click.self="selectChoice(choice.answer)" :key="index">
+                                <div class="card mb-3">
+                                    <div class="card-body pt-0 pb-0 ps-3 pe-3" :class="{ 'selected': isSelected(choice.answer) }">
+                                        <input 
+                                            type="radio"
+                                            :id="'choice' + index" 
+                                            :value="choice.answer"
+                                            v-model="selectedChoice"
+                                            style="display: none;"
+                                        />
+                                      
+                                        <label id="label-answers" class="d-flex justify-content-between align-items-center" :for="'choice' + index" @click="selectChoice(choice.answer)">
+                                            <div class="fw-bold">
+                                                {{ choice.answer }}
+                                            </div>
+                                            <div v-if="choice.emoji" class="fs-2">
+                                                {{ choice.emoji }}
+                                            </div>
+                                            <div v-else class="p-0 m-0">
+                                                <img :src="getImagePath(choice.image)" width="90" height="100" />
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <div v-for="(choice, index) in currentQuestion.choices" @click="selectChoice(choice.answer)" :key="index">
+                                <div class="card mb-3">
+                                    <div class="card-body pt-0 pb-0 ps-3 pe-3" :class="{ 'selected': isSelected(choice.answer) }">
+                                        <input 
+                                            type="checkbox"
+                                            :id="'choice' + index" 
+                                            :value="choice.answer"
+                                            v-model="selectedChoice"
+                                            style="display: none;"
+                                        />
+                                      
+                                        <label id="label-answers" class="d-flex justify-content-between align-items-center" :for="'choice' + index" @click="selectChoice(choice.answer)">
+                                            <div class="fw-bold">
+                                                {{ choice.answer }}
+                                            </div>
+                                            <div v-if="choice.emoji" class="fs-2">
+                                                {{ choice.emoji }}
+                                            </div>
+                                            <div v-else class="p-0 m-0">
+                                                <img :src="getImagePath(choice.image)" width="90" height="100" />
+                                            </div>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button @click="nextQuestion" class="next-button fw-bold">Continue</button>
+                    <button v-if="currentQuestion.checkbox" @click="nextQuestion" class="next-button fw-bold">Continue</button>
                 </div>
             </div>
         </div>
@@ -200,7 +233,8 @@ export default {
                         this.selectedChoice.splice(index, 1);
                     }
                 } else {
-                    this.selectedChoice = this.selectedChoice === choice ? null : choice;
+                    this.saveAnswer(choice);
+                    this.moveToNextQuestion();
                 }
             }
         },
@@ -262,12 +296,13 @@ export default {
             if (Array.isArray(this.selectedChoice)) {
                 // If selectedChoice is an array, check if it includes the choice
                 return this.selectedChoice.includes(choice);
-            } else {
-                // If selectedChoice is not an array (e.g., for radio buttons), 
-                // check if it's equal to the choice
-                return this.selectedChoice === choice;
             }
-        }
+            // } else {
+            //     // If selectedChoice is not an array (e.g., for radio buttons), 
+            //     // check if it's equal to the choice
+            //     return this.selectedChoice === choice;
+            // }
+        }   
     },
     mounted(){
         if(this.$store.state.answers.length < 2){

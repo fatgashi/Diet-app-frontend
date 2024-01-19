@@ -1,5 +1,6 @@
 <template>
     <div class="main-container">
+        <Header />
       <div class="d-flex justify-content-between align-items-center">
         <div v-if="currentQuestionIndex < 1">
             <router-link to="/home" class="ms-3" id="logo"><i class="bi bi-arrow-left fs-4"></i></router-link>
@@ -48,7 +49,11 @@
   
   <script>
   import questions from '../data/generalQuestions.js';
+  import Header from '../Layout/Header.vue';
   export default {
+    components: {
+        Header
+    },
       data(){
           return {
               currentQuestionIndex: 1,

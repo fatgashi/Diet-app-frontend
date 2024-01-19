@@ -1,7 +1,8 @@
 <template>
   <div>
-    <nav class="navbar">
-        <router-link to="/home" class="ms-3" id="logo">Diet</router-link>
+    <nav class="navbar d-flex justify-content-start align-items-center">
+        <img class="ms-3" src="../assets/main-logo.png" width="50" height="40" />
+        <router-link class="ms-1" to="/home" id="logo">nutriplanwellness</router-link>
     </nav>
   </div>
 </template>
