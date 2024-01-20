@@ -55,7 +55,7 @@ export default [
     { 
       id: 13, 
       text: 'What is your activity level?',
-      choices: [{answer: 'Little or no exercise/no physical labor', image: "littleExercise.png"}, {answer: 'Exercise 1-2 days per week/light physical labor', image: "lightExercise.png"}, {answer: 'Exercise 3-5 days per week/physical labor', image: "lightExercise.png"}, {answer: 'Exercise 6-7 days per week/hard physical labor', image: "hardExercise.png"}, {answer: 'Hard daily exercise & physical labor', image: "extremExercise.png"}],
+      choices: [{answer: 'Little or no exercise/no physical labor', emoji: "🙅‍♀️"}, {answer: 'Exercise 1-2 days per week/light physical labor', emoji: "🤏"}, {answer: 'Exercise 3-5 days per week/physical labor', emoji: "💪"}, {answer: 'Exercise 6-7 days per week/hard physical labor', emoji: "🔥"}],
     },
     { 
       id: 14, 
@@ -134,6 +134,17 @@ export default [
       id: 27, 
       text: 'How excited are you to shed some extra weight?',
       choices: [{answer: "I just want to see what the buzz about fasting is about", emoji: "👀"}, {answer: 'I want to try and lose some weight', emoji: "💪"}, {answer: "I'm serious about losing as much weight as possible", emoji: "🔥"}],
+    },
+    { 
+      id: 28, 
+      text: 'How tall are you?',
+      question: 'height'
+    },
+    { 
+      id: 29, 
+      text: 'What is your current weight?',
+      question: 'weight',
+      extension: true,
     },
     // Add more questions as needed
   ];

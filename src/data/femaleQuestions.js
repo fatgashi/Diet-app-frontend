@@ -55,7 +55,7 @@ export default [
     { 
       id: 13, 
       text: 'What is your activity level?',
-      choices: [{answer: 'Little or no exercise/no physical labor', image: "littleExercise.png"}, {answer: 'Exercise 1-2 days per week/light physical labor', image: "lightExercise.png"}, {answer: 'Exercise 3-5 days per week/physical labor', image: "lightExercise.png"}, {answer: 'Exercise 6-7 days per week/hard physical labor', image: "hardExercise.png"}, {answer: 'Hard daily exercise & physical labor', image: "extremExercise.png"}],
+      choices: [{answer: 'Little or no exercise/no physical labor', emoji: "🙅‍♀️"}, {answer: 'Exercise 1-2 days per week/light physical labor', emoji: "🤏"}, {answer: 'Exercise 3-5 days per week/physical labor', emoji: "💪"}, {answer: 'Exercise 6-7 days per week/hard physical labor', emoji: "🔥"}],
     },
     { 
       id: 14, 
@@ -140,6 +140,17 @@ export default [
       id: 28, 
       text: 'How tall are you?',
       question: 'height'
+    },
+    { 
+      id: 29, 
+      text: 'What is your current weight?',
+      question: 'weight',
+      extension: true,
+    },
+    { 
+      id: 30, 
+      text: 'What would you consider your perfect weight?',
+      question: 'weight'
     },
     // Add more questions as needed
   ];

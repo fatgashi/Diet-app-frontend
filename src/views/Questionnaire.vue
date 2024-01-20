@@ -27,7 +27,7 @@
 
                     <div v-if="useMetric" class="mt-3">
                         <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userHeightCm"><span class="fw-bold">cm</span>
-                        <p v-if="usersHeightCm < 40 || usersHeightCm > 250" class="helper-text text-danger fw-bold text-center">Enter a value from 40cm to 250cm</p>
+                        <p v-if="userHeightCm < 40 || userHeightCm > 250" class="helper-text text-danger fw-bold text-center">Enter a value from 40cm to 250cm</p>
                         <div class="bmi-note mb-3">
                             <div class="p-3">
                                 <span role="img" aria-label="Note">💡</span>
@@ -35,7 +35,7 @@
                                 <p>BMI is widely used as a risk factor for the development of or the prevalence of several health issues.</p>
                             </div>
                         </div>
-                        <button :disabled="usersHeightCm < 40 || usersHeightCm > 250" @click="nextQuestionCm" class="next-button fw-bold">Continue</button>
+                        <button :disabled="userHeightCm < 40 || userHeightCm > 250" @click="nextQuestionCm" class="next-button fw-bold">Continue</button>
                     </div>
     
                     <!-- Inputs for imperial -->
@@ -53,6 +53,36 @@
                         <button :disabled="feetError" @click="nextQuestionFeet" class="next-button fw-bold">Continue</button>
                     </div>
 
+                </div>
+                <div v-else-if="currentQuestion.question === 'weight' " class="d-flex flex-column justify-content-center align-items-center">
+                    <div class="unit-toggle">
+                        <button @click="toggleWeightUnit(false)" :class="{ active: !useKg }" class="border-0">lbs</button>
+                        <button @click="toggleWeightUnit(true)" :class="{ active: useKg }" class="border-0">kg</button>
+                    </div>
+
+                    <div v-if="useKg" class="mt-3">
+                        <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userWeightKg"><span class="fw-bold">kg</span>
+                        <p v-if="userWeightKg < 30 || userWeightKg > 250" class="helper-text text-danger fw-bold text-center">Enter a value from 30 to 250 kg</p>
+                        <div v-if="bmi && currentQuestion.extension" class="bmi-note mb-3">
+                            <div class="p-3">
+                                <span role="img" aria-label="Note">💡</span>
+                                Your BMI is {{ bmi.toFixed(2) }}, which is considered {{ bmiCategory }}.
+                            </div>
+                        </div>
+                        <button :disabled="userWeightKg < 30 || userWeightKg > 250" @click="nextQuestionKg" class="next-button fw-bold">Continue</button>
+                    </div>
+                    
+                    <div v-else>
+                        <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userWeightLbs"><span class="fw-bold">lbs</span>
+                        <p v-if="userWeightLbs < 66 || userWeightLbs > 552" class="helper-text text-danger fw-bold text-center">Enter a value from 66 to 552 lbs</p>
+                        <div class="bmi-note mb-3">
+                            <div v-if="bmi && currentQuestion.extension" class="p-3">
+                                <span role="img" aria-label="Note">💡</span>
+                                Your BMI is {{ bmi.toFixed(2) }}, which is considered {{ bmiCategory }}
+                            </div>
+                        </div>
+                        <button :disabled="userWeightLbs < 66 || userWeightLbs > 552" @click="nextQuestionLbs" class="next-button fw-bold">Continue</button>
+                    </div>
                 </div>
                 <div v-else>
                     <div class="questions scrollbar scrollbar-primary mt-2">
@@ -131,6 +161,9 @@ export default {
             questionsNumber: 0,
             genderQuestions: [],
             useMetric: true, // Toggle between metric and imperial
+            useKg: true,
+            userWeightKg: null,
+            userWeightLbs: null,
             userHeightCm: null, // User's height in cm
             userHeightFt: null, // User's height in feet
             userHeightIn: null, // User's height in inches
@@ -140,19 +173,71 @@ export default {
         currentQuestion() {
             return this.genderQuestions[this.currentQuestionIndex];
         },
-        usersHeightCm(){
-            return this.userHeightCm;
+        bmi() {
+            let heightInMeters;
+            let weightInKg;
+            let userHeightFeet;
+            let feet;
+            let inches;
+            let cm;
+            let answers = this.$store.state.answers;
+            let userHeight = answers[answers.length - 1].answer;
+            
+            if(this.userWeightKg >= 30 && this.userWeightKg <= 250 || this.userWeightLbs >= 66 && this.userWeightLbs <= 552){
+                if(userHeight.unit === "feet"){
+                    userHeightFeet = true;
+                    feet = userHeight.ft;
+                    inches = userHeight.in;
+                } else {
+                    userHeightFeet = false;
+                    cm = userHeight.cm;
+                }
+            }
+
+            // Assuming you have a way to determine if the height and weight are in feet/inches and pounds or in metric units
+            // For example, using flags like isHeightInFeet and isWeightInPounds or based on user's input
+
+            if (userHeightFeet) {
+                // Convert height from feet/inches to meters
+                heightInMeters = (feet * 0.3048) + (inches * 0.0254);
+            } else {
+                // Convert height from centimeters to meters
+                heightInMeters = cm / 100;
+            }
+
+            if (this.userWeightLbs != null) {
+                // Convert weight from pounds to kilograms
+                weightInKg = this.userWeightLbs * 0.453592;
+            } else {
+                // Weight is already in kilograms
+                weightInKg = this.userWeightKg;
+            }
+
+            if (heightInMeters > 0 && weightInKg > 0) {
+                // Calculate BMI
+                return weightInKg / (heightInMeters * heightInMeters);
+            }
+
+            // Return null or 0 if height or weight is not provided
+            return null;
         },
-        usersHeightFt(){
-            return this.userHeightFt
-        },
-        usersHeightIn(){
-            return this.userHeightIn
+        bmiCategory() {
+            if (this.bmi < 18.5) {
+                return 'Underweight. Focus on muscle toning and a balanced diet. Stay positive and try to keep your daily calorie consumption in the recommended range.';
+            } else if (this.bmi >= 18.5 && this.bmi <= 24.9) {
+                return 'Normal weight. Great job! Continue with your balanced diet and regular exercise to maintain your health.';
+            } else if (this.bmi >= 25 && this.bmi <= 29.9) {
+                return 'Overweight. Consider adopting a healthier diet and increasing your physical activity. Regular exercise and portion control can be beneficial.';
+            } else if (this.bmi >= 30) {
+                return 'Obesity. It is advisable to consult with healthcare professionals to develop a safe and effective weight-loss plan. Focus on a healthy diet and regular exercise.';
+            } else {
+                return 'BMI not available. Please ensure all measurements are entered correctly.';
+            }
         },
         feetError(){
-            const total = this.usersHeightFt * 12 + this.usersHeightIn;
+            const total = this.userHeightFt * 12 + this.userHeightIn;
 
-            if(this.usersHeightIn == null || this.usersHeightIn.length == 0 || this.usersHeightIn > 11 || total < 12 || total > 98){
+            if(this.userHeightIn == null || this.userHeightIn.length == 0 || this.userHeightIn > 11 || total < 12 || total > 98){
                 return true;
             }
             return false
@@ -187,6 +272,16 @@ export default {
 
             } else {
                 alert('Please select an answer before moving on.');
+            }
+        },
+        toggleWeightUnit(useKg) {
+            this.useKg = useKg;
+            if (useKg) {
+                // If using kilograms, reset the pounds weight
+                this.userWeightLbs = null;
+            } else {
+                // If using pounds, reset the kilograms weight
+                this.userWeightKg = null;
             }
         },
         goBack() {
@@ -239,18 +334,29 @@ export default {
             }
         },
         nextQuestionFeet() {
-            const answer = `${this.userHeightFt} ft ${this.userHeightIn} in`;
+            const answer = {answer: `${this.userHeightFt} ft ${this.userHeightIn} in`, unit: "feet", ft: this.userHeightFt, in: this.userHeightIn};
             this.saveAnswer(answer);
             this.moveToNextQuestion();
         },
         nextQuestionCm() {
             // Format the answer and save it
-            const answer = `${this.userHeightCm} cm`;
+            const answer = {answer: `${this.userHeightCm} cm`, unit: "cm", cm: this.userHeightCm};
             this.saveAnswer(answer);
             this.moveToNextQuestion();
     
         },
-
+        nextQuestionLbs(){
+            const answer = `${this.userWeightLbs} lbs`;
+            this.saveAnswer(answer);
+            this.userWeightLbs = null;
+            this.moveToNextQuestion();
+        },
+        nextQuestionKg(){
+            const answer = `${this.userWeightKg} kg`;
+            this.saveAnswer(answer);
+            this.userWeightKg = null;
+            this.moveToNextQuestion();
+        },
         moveToNextQuestion() {
             // Check if there are more questions
             if (this.currentQuestionIndex < this.genderQuestions.length - 1) {
@@ -353,6 +459,7 @@ export default {
 .bmi-note {
     background-color: rgb(242, 239, 238);
     border-radius: 15px;
+    max-width: 600px;
 }
 
 .unit-toggle button.active {

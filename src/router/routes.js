@@ -1,7 +1,10 @@
-import LayOut from "../Layout/Layout.vue"
+// import LayOut from "../Layout/Layout.vue"
+const LayOut = () => import('../Layout/Layout.vue')
 import Home from "../views/Home.vue"
-import Questionnaire from "../views/Questionnaire.vue"
-import GeneralQuestions from "../views/GeneralQuestions";
+// import Questionnaire from "../views/Questionnaire.vue"
+const Questionnaire = () => import('../views/Questionnaire.vue');
+// import GeneralQuestions from "../views/GeneralQuestions";
+const GeneralQuestions = () => import('../views/GeneralQuestions.vue')
 const routes = [
     {
         path: "/",
