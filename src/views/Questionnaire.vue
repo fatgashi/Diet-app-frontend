@@ -16,8 +16,8 @@
     <div class="container" v-if="currentQuestion">
         <div class="d-flex justify-content-center align-items-start" id="rfluid">
             <div class="d-flex flex-column justify-content-center w-100">
-                <h1 class="text-center mb-2 fw-bolder">{{ currentQuestion.text }}</h1>
-                <p class="text-center" v-if="currentQuestion.extraText">{{ currentQuestion.extraText }}</p>
+                <h1 class="text-center mb-2 fw-bolder">{{ currentQuestion.text[currentLang] }}</h1>
+                <p class="text-center" v-if="currentQuestion.extraText">{{ currentQuestion.extraText[currentLang] }}</p>
                 <div v-if="currentQuestion.question === 'height'" class="d-flex flex-column justify-content-center align-items-center">
 
                     <div class="unit-toggle">
@@ -100,7 +100,7 @@
                                       
                                         <label id="label-answers" class="d-flex justify-content-between align-items-center" :for="'choice' + index" @click="selectChoice(choice.answer)">
                                             <div class="fw-bold">
-                                                {{ choice.answer }}
+                                                {{ choice.answer[currentLang] }}
                                             </div>
                                             <div v-if="choice.emoji" class="fs-2">
                                                 {{ choice.emoji }}
@@ -127,7 +127,7 @@
                                       
                                         <label id="label-answers" class="d-flex justify-content-between align-items-center" :for="'choice' + index" @click="selectChoice(choice.answer)">
                                             <div class="fw-bold">
-                                                {{ choice.answer }}
+                                                {{ choice.answer[currentLang] }}
                                             </div>
                                             <div v-if="choice.emoji" class="fs-2">
                                                 {{ choice.emoji }}
@@ -141,7 +141,7 @@
                             </div>
                         </div>
                     </div>
-                    <button v-if="currentQuestion.checkbox" @click="nextQuestion" class="next-button fw-bold">Continue</button>
+                    <button v-if="currentQuestion.checkbox" @click="nextQuestion" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
                 </div>
             </div>
         </div>
@@ -172,6 +172,9 @@ export default {
     computed: {
         currentQuestion() {
             return this.genderQuestions[this.currentQuestionIndex];
+        },
+        currentLang(){
+            return this.$store.state.currentLang;
         },
         bmi() {
             let heightInMeters;
@@ -318,6 +321,7 @@ export default {
             // Logic for non-conditional questions
                 if(this.currentQuestion.checkbox){
                     const index = this.selectedChoice.indexOf(choice);
+                    console.log(index);
 
                     if (index === -1) {
                         // If the choice is not already selected, add it to the array

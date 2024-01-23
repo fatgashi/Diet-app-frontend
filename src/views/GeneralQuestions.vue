@@ -12,8 +12,8 @@
       <div class="container">
           <div class="d-flex justify-content-center align-items-start" id="rfluid">
               <div class="d-flex flex-column justify-content-center w-100">
-                  <h1 class="text-center mb-2 fw-bolder">{{ currentQuestion.text }}</h1>
-                  <p class="text-center" v-if="currentQuestion.extraText">{{ currentQuestion.extraText }}</p>
+                  <h1 class="text-center mb-2 fw-bolder">{{ currentQuestion.text[currentLang] }}</h1>
+                  <p class="text-center" v-if="currentQuestion.extraText">{{ currentQuestion.extraText[currentLang] }}</p>
                   <div v-for="(choice, index) in currentQuestion.choices" @click="selectChoice(choice.answer)" :key="index">
                       <div class="card mb-3">
                           <div class="card-body" :class="{ 'selected': isSelected(choice.answer) }">
@@ -27,7 +27,7 @@
                             
                               <label id="label-answers" class="d-flex justify-content-between align-items-center" :for="'choice' + index" @click="selectChoice(choice.answer)">
                                   <div class="fw-bold">
-                                      {{ choice.answer }}
+                                      {{ choice.answer[currentLang] }}
                                   </div>
                                   <div v-if="choice.emoji" style="font-size: 30px;">
                                       {{ choice.emoji }}
@@ -39,7 +39,7 @@
                           </div>
                       </div>
                   </div>
-                  <button @click="nextQuestion" class="next-button fw-bold">Continue</button>
+                  <button @click="nextQuestion" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
               </div>
           </div>
   
@@ -65,6 +65,9 @@
           currentQuestion() {
               return questions[this.currentQuestionIndex];
           },
+          currentLang(){
+            return this.$store.state.currentLang;
+          }
       },
       watch: {
           currentQuestionIndex(newIndex){

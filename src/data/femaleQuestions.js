@@ -1,20 +1,32 @@
 export default [
     { 
       id: 3, 
-      text: 'Choose your current body type', 
-      choices: [{answer: 'Average', image: "plumpFemaleBodyType.png"}, {answer: 'Plump', image: "averageFemaleBodyType.png"}, {answer: 'Extra', image: "extraFemaleBodyType.png"},],
+      text: {
+        en: 'Choose your current body type',
+        de: 'Wählen Sie Ihren aktuellen Körpertyp'  // German translation
+      },
+      choices: [{answer:{ en:'Average', de: 'Durchschnitt'}, image: "plumpFemaleBodyType.png"}, {answer: {en: 'Plump', de: 'Rundlich'}, image: "averageFemaleBodyType.png"}, {answer: {en: 'Extra', de: 'Extra'}, image: "extraFemaleBodyType.png"}],
     },
     { 
       id: 4, 
-      text: 'Choose the body type you want to have', 
-      choices: [{answer: 'Fit', image: "fitFemaleBodyType.png"}, {answer: 'Athletic', image: "athleticFemaleBodyType.png"}, {answer: 'Shapely', image: "shapelyFemaleBodyType.png"},],
+      text: {
+        en: 'Choose the body type you want to have', 
+        de: "Wählen Sie den Körpertyp, den Sie haben möchten"
+      }, 
+      choices: [{answer:{en: 'Fit', de: 'Fit'}, image: "fitFemaleBodyType.png"}, {answer:{en: 'Athletic', de: "Sportlich" }, image: "athleticFemaleBodyType.png"}, {answer: {en: 'Shapely', de: "Formschön"}, image: "shapelyFemaleBodyType.png"},],
     },
     { 
       id: 5, 
-      text: 'What do you want to achieve?', 
-      extraText: 'You can select multiple goals',
+      text: {
+        en: 'What do you want to achieve?',
+        de: "Was möchten Sie erreichen?",
+      }, 
+      extraText: {
+        en: 'You can select multiple goals',
+        de: "Sie können mehrere Ziele auswählen"
+      },
       checkbox: true,
-      choices: [{answer: 'Lose weight', emoji: "👗"}, {answer: 'Boost brain power', emoji: "🧠"}, {answer: 'Improve blood pressure', emoji: "🫀"}, {answer: 'Increase life expectancy', emoji: "👵🏻"}, {answer: 'Reduce cholesterol level', emoji: "🩸"}, {answer: 'Sleep better', emoji: "🌙"}, {answer: 'Improve bone health', emoji: "💪"}, {answer: 'Reduce the risk of cancer', emoji: "🎗️"}],
+      choices: [{answer: {en: 'Lose weight', de: "Abnehmen"}, emoji: "👗"}, {answer: {en: 'Boost brain power', de: "Steigern Sie die Gehirnleistung"}, emoji: "🧠"}, {answer: {en: 'Improve blood pressure', de: "Verbessern Sie den Blutdruck"}, emoji: "🫀"}, {answer: {en: 'Increase life expectancy', de: "Erhöhen Sie die Lebenserwartung"}, emoji: "👵🏻"}, {answer: {en: 'Reduce cholesterol level', de: "Cholesterinspiegel senken"}, emoji: "🩸"}, {answer: {en: 'Sleep better', de: "Besser schlafen"}, emoji: "🌙"}, {answer: {en: 'Improve bone health', de: "Verbessern Sie die Knochengesundheit"}, emoji: "💪"}, {answer: {en: 'Reduce the risk of cancer', de: "Reduzieren Sie das Krebsrisiko"}, emoji: "🎗️"}],
     },
     { 
       id: 6, 

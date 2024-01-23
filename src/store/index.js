@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     answers: [], // Store user answers here
+    currentLang: localStorage.getItem('currentLang') || 'en',
   },
   mutations: {
     addAnswer(state, answer) {
@@ -18,6 +19,10 @@ export default new Vuex.Store({
     clearAnswers(state) {
       state.answers = [];
     },
+    SET_LANGUAGE(state, newLang) {
+      state.currentLang = newLang;
+      localStorage.setItem('currentLang', newLang); // Save to localStorage
+    }
   },
   actions: {
     saveAnswer({ commit }, answer) {
@@ -29,6 +34,12 @@ export default new Vuex.Store({
     clearAnswers({ commit }) {
       commit('clearAnswers');
     },
+    setLanguage({ commit }, newLang) {
+      commit('SET_LANGUAGE', newLang);
+    },
+  },
+  getters: {
+    currentLang: state => state.currentLang
   },
   plugins: [
     createPersistedState({

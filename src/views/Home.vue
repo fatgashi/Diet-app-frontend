@@ -5,9 +5,9 @@
       <div class="d-flex justify-content-center align-items-start" id="rfluid">
           <div class="d-flex flex-column justify-content-center align-items-center">
             <div class="mb-4 text-center">
-              <h2>INTERMITTENT FASTING</h2>
-              <h4 class="text-muted">CHOOSE YOUR AGE GROUP</h4>
-              <h6>1-minute quiz</h6>
+              <h2>{{ $t('headers.header2') }}</h2>
+              <h4 class="text-muted">{{ $t('headers.header4') }}</h4>
+              <h6>{{ $t('headers.header6') }}</h6>
             </div>
               <div class="row row-cols-2 row-cols-md-4 d-flex justify-content-center">
                 <div class="row" v-for="(choice,index) in currentQuestion.choices" :key="index">
@@ -19,7 +19,7 @@
                           style="display: none;"
                       />
                     <img :src="getImagePath(choice.image)" class="card-img-top h-100" id="img-age" alt="...">
-                    <button class="btn age-button">{{ choice.answer }}</button>
+                    <button class="btn age-button">{{ choice.answer[currentLang] }}</button>
                   </div>
                 </div>
               </div>
@@ -46,6 +46,9 @@ export default {
     currentQuestion() {
       return questions[this.currentQuestionIndex];
     },
+    currentLang(){
+      return this.$store.state.currentLang;
+    }
   },
   methods: {
     selectChoice(choice) {
