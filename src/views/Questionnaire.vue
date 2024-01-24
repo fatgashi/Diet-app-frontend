@@ -27,30 +27,30 @@
 
                     <div v-if="useMetric" class="mt-3">
                         <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userHeightCm"><span class="fw-bold">cm</span>
-                        <p v-if="userHeightCm < 40 || userHeightCm > 250" class="helper-text text-danger fw-bold text-center">Enter a value from 40cm to 250cm</p>
+                        <p v-if="userHeightCm < 40 || userHeightCm > 250" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperText1') }}</p>
                         <div class="bmi-note mb-3">
                             <div class="p-3">
                                 <span role="img" aria-label="Note">💡</span>
-                                Calculating your body mass index
-                                <p>BMI is widely used as a risk factor for the development of or the prevalence of several health issues.</p>
+                                {{ $t('bmiNote.calculationNote') }}
+                                <p>{{ $t('bmiNote.calculationDescription') }}</p>
                             </div>
                         </div>
-                        <button :disabled="userHeightCm < 40 || userHeightCm > 250" @click="nextQuestionCm" class="next-button fw-bold">Continue</button>
+                        <button :disabled="userHeightCm < 40 || userHeightCm > 250" @click="nextQuestionCm" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
                     </div>
     
                     <!-- Inputs for imperial -->
                     <div v-else class="mt-3">
                         <input class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" type="number" v-model.number="userHeightFt" style="width: 45%;"><span class="fw-bold">ft</span>
                         <input class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" type="number" v-model.number="userHeightIn" style="width: 10vh;"><span class="fw-bold">in</span>
-                        <p v-if="feetError" class="helper-text text-danger fw-bold text-center">Enter a value from 1ft to 8ft 2in</p>
+                        <p v-if="feetError" class="helper-text text-danger fw-bold text-center">{{$t('helpers.helperText2')}}</p>
                         <div class="bmi-note mb-3">
                             <div class="p-3">
                                 <span role="img" aria-label="Note">💡</span>
-                                Calculating your body mass index
-                                <p>BMI is widely used as a risk factor for the development of or the prevalence of several health issues.</p>
+                                {{ $t('calculations.calc1') }}
+                                <p>{{ $t('calculations.calc2') }}</p>
                             </div>
                         </div>
-                        <button :disabled="feetError" @click="nextQuestionFeet" class="next-button fw-bold">Continue</button>
+                        <button :disabled="feetError" @click="nextQuestionFeet" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
                     </div>
 
                 </div>
@@ -62,26 +62,26 @@
 
                     <div v-if="useKg" class="mt-3">
                         <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userWeightKg"><span class="fw-bold">kg</span>
-                        <p v-if="userWeightKg < 30 || userWeightKg > 250" class="helper-text text-danger fw-bold text-center">Enter a value from 30 to 250 kg</p>
+                        <p v-if="userWeightKg < 30 || userWeightKg > 250" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperTextKg1') }}</p>
                         <div v-if="bmi && currentQuestion.extension" class="bmi-note mb-3">
                             <div class="p-3">
                                 <span role="img" aria-label="Note">💡</span>
-                                Your BMI is {{ bmi.toFixed(2) }}, which is considered {{ bmiCategory }}.
+                                {{ $t('bmiNote.bmifirst') }} {{ bmi.toFixed(2) }}, {{ $t('bmiNote.bmisecond') }} {{ bmiCategory[currentLang] }}.
                             </div>
                         </div>
-                        <button :disabled="userWeightKg < 30 || userWeightKg > 250" @click="nextQuestionKg" class="next-button fw-bold">Continue</button>
+                        <button :disabled="userWeightKg < 30 || userWeightKg > 250" @click="nextQuestionKg" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
                     </div>
                     
                     <div v-else>
                         <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userWeightLbs"><span class="fw-bold">lbs</span>
-                        <p v-if="userWeightLbs < 66 || userWeightLbs > 552" class="helper-text text-danger fw-bold text-center">Enter a value from 66 to 552 lbs</p>
+                        <p v-if="userWeightLbs < 66 || userWeightLbs > 552" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperTextKg2') }}</p>
                         <div class="bmi-note mb-3">
                             <div v-if="bmi && currentQuestion.extension" class="p-3">
                                 <span role="img" aria-label="Note">💡</span>
-                                Your BMI is {{ bmi.toFixed(2) }}, which is considered {{ bmiCategory }}
+                                Your BMI is {{ bmi.toFixed(2) }}, which is considered {{ bmiCategory[currentLang] }}
                             </div>
                         </div>
-                        <button :disabled="userWeightLbs < 66 || userWeightLbs > 552" @click="nextQuestionLbs" class="next-button fw-bold">Continue</button>
+                        <button :disabled="userWeightLbs < 66 || userWeightLbs > 552" @click="nextQuestionLbs" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
                     </div>
                 </div>
                 <div v-else>
@@ -226,15 +226,15 @@ export default {
         },
         bmiCategory() {
             if (this.bmi < 18.5) {
-                return 'Underweight. Focus on muscle toning and a balanced diet. Stay positive and try to keep your daily calorie consumption in the recommended range.';
+                return {en: 'Underweight. Focus on muscle toning and a balanced diet. Stay positive and try to keep your daily calorie consumption in the recommended range.', de: "Untergewicht. Konzentrieren Sie sich auf Muskelaufbau und eine ausgewogene Ernährung. Bleiben Sie positiv und versuchen Sie, Ihren täglichen Kalorienverbrauch im empfohlenen Bereich zu halten."};
             } else if (this.bmi >= 18.5 && this.bmi <= 24.9) {
-                return 'Normal weight. Great job! Continue with your balanced diet and regular exercise to maintain your health.';
+                return {en: 'Normal weight. Great job! Continue with your balanced diet and regular exercise to maintain your health.', de: "Normalgewicht. Gut gemacht! Achten Sie weiterhin auf eine ausgewogene Ernährung und regelmäßige Bewegung, um Ihre Gesundheit zu erhalten."};
             } else if (this.bmi >= 25 && this.bmi <= 29.9) {
-                return 'Overweight. Consider adopting a healthier diet and increasing your physical activity. Regular exercise and portion control can be beneficial.';
+                return {en: 'Overweight. Consider adopting a healthier diet and increasing your physical activity. Regular exercise and portion control can be beneficial.', de: "Übergewicht. Erwägen Sie eine gesündere Ernährung und mehr körperliche Aktivität. Regelmäßige Bewegung und Portionskontrolle können von Vorteil sein."};
             } else if (this.bmi >= 30) {
-                return 'Obesity. It is advisable to consult with healthcare professionals to develop a safe and effective weight-loss plan. Focus on a healthy diet and regular exercise.';
+                return {en: 'Obesity. It is advisable to consult with healthcare professionals to develop a safe and effective weight-loss plan. Focus on a healthy diet and regular exercise.', de: "Fettleibigkeit. Es ist ratsam, medizinisches Fachpersonal zu konsultieren, um einen sicheren und wirksamen Plan zur Gewichtsabnahme zu entwickeln. Konzentrieren Sie sich auf eine gesunde Ernährung und regelmäßige Bewegung."};
             } else {
-                return 'BMI not available. Please ensure all measurements are entered correctly.';
+                return {en: 'BMI not available. Please ensure all measurements are entered correctly.', de: "BMI nicht verfügbar. Bitte stellen Sie sicher, dass alle Maße korrekt eingegeben werden."};
             }
         },
         feetError(){
@@ -261,6 +261,9 @@ export default {
             if(newIndex === -1){
                 this.$router.push('/generalQuestions');
             }
+        },
+        currentLang(newValue){
+            return this.$store.state.currentLang == newValue
         }
     },
     methods: {
@@ -321,7 +324,6 @@ export default {
             // Logic for non-conditional questions
                 if(this.currentQuestion.checkbox){
                     const index = this.selectedChoice.indexOf(choice);
-                    console.log(index);
 
                     if (index === -1) {
                         // If the choice is not already selected, add it to the array
@@ -418,7 +420,7 @@ export default {
         if(this.$store.state.answers.length < 2){
             this.$router.push('/home')
         }
-        this.$store.state.answers[1].answer === 'Male' ? this.genderQuestions = maleQuestions : this.genderQuestions = femaleQuestions;
+        this.$store.state.answers[1].answer.en === 'Male' ? this.genderQuestions = maleQuestions : this.genderQuestions = femaleQuestions;
         if(this.shouldAnswersBeClean()){
             this.$store.dispatch("clearAnswers");
         }

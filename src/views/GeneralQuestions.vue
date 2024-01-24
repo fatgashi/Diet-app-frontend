@@ -1,22 +1,26 @@
 <template>
     <div class="main-container">
-        <Header />
-      <div class="d-flex justify-content-between align-items-center">
-        <div v-if="currentQuestionIndex < 1">
-            <router-link to="/home" class="ms-3" id="logo"><i class="bi bi-arrow-left fs-4"></i></router-link>
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <div>
+                <button id="arrow-button" class="ms-3 border-0" @click="goBack"><i class="bi bi-arrow-left fs-4"></i></button>
+            </div>
+            <div>
+                <img src="../assets/main-logo.png" width="50" height="40" />
+                <span class="name fw-bold text-muted">nutriplanwellness</span>
+            </div>
+            <span class="fw-bold text-muted me-3">{{ currentQuestionIndex }} / {{ 30 }}</span>
         </div>
-        <div v-else>
-            <button id="arrow-button" class="ms-3 border-0" @click="goBack"><i class="bi bi-arrow-left fs-4"></i></button>
+        <div class="progress mx-4 mt-2" id="progress-bar1">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" :aria-valuenow="progressValue" aria-valuemin="0" aria-valuemax="100" :style="{width: progressStyle}"></div>
         </div>
-      </div>
       <div class="container">
           <div class="d-flex justify-content-center align-items-start" id="rfluid">
               <div class="d-flex flex-column justify-content-center w-100">
                   <h1 class="text-center mb-2 fw-bolder">{{ currentQuestion.text[currentLang] }}</h1>
                   <p class="text-center" v-if="currentQuestion.extraText">{{ currentQuestion.extraText[currentLang] }}</p>
-                  <div v-for="(choice, index) in currentQuestion.choices" @click="selectChoice(choice.answer)" :key="index">
+                  <div v-for="(choice, index) in currentQuestion.choices" @click.self="selectChoice(choice.answer)" :key="index">
                       <div class="card mb-3">
-                          <div class="card-body" :class="{ 'selected': isSelected(choice.answer) }">
+                          <div class="card-body">
                               <input 
                                   type="radio" 
                                   :id="'choice' + index" 
@@ -39,7 +43,6 @@
                           </div>
                       </div>
                   </div>
-                  <button @click="nextQuestion" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
               </div>
           </div>
   
@@ -49,69 +52,80 @@
   
   <script>
   import questions from '../data/generalQuestions.js';
-  import Header from '../Layout/Header.vue';
-  export default {
-    components: {
-        Header
-    },
-      data(){
-          return {
-              currentQuestionIndex: 1,
-              selectedChoice: null,
-              questionsNumber: 0,
-          }
-      },
-      computed: {
-          currentQuestion() {
-              return questions[this.currentQuestionIndex];
-          },
-          currentLang(){
-            return this.$store.state.currentLang;
-          }
-      },
-      watch: {
-          currentQuestionIndex(newIndex){
-              if(newIndex === 0){
-                  this.$router.push('/home');
-              }
-          }
-      },
+export default {
+        data(){
+            return {
+                currentQuestionIndex: 1,
+                selectedChoice: null,
+                questionsNumber: 0,
+            }
+        },
+        computed: {
+            currentQuestion() {
+                return questions[this.currentQuestionIndex];
+            },
+            currentLang(){
+                return this.$store.state.currentLang;
+            },
+            progressValue() {
+                const totalQuestions = 33 + 1;
+                const answeredQuestions = this.$store.state.answers.length;
+                const progress = (answeredQuestions / totalQuestions) * 100;
+
+                return Math.round(progress); 
+            },
+            progressStyle() {
+                return `${this.progressValue}%`;
+            },
+        },
+        watch: {
+            currentQuestionIndex(newIndex){
+                if(newIndex === 0){
+                    this.$router.push('/home');
+                }
+            }
+        },
       methods: {
-          nextQuestion() {
-              if (this.selectedChoice !== null) {
-                  // Save the user's choice if needed
-                  this.$store.dispatch('saveAnswer', {
-                      question: this.currentQuestion.text,
-                      answer: this.selectedChoice,
-                  });
-                  
+            nextQuestion() {
+                if (this.selectedChoice !== null) {
+                    // Save the user's choice if needed
+                    this.saveAnswer(this.selectedChoice);
+                    
+                    this.$router.push('/questionnaire')
+                    
+                } else {
+                    alert('Please select an answer before moving on.');
+                }
+            },
+            goBack() {
+                this.$store.dispatch('goBack');
+                this.currentQuestionIndex--;
+            },
+            saveAnswer(answer) {
+                // Save the user's choice or height input
+                this.$store.dispatch('saveAnswer', {
+                question: this.currentQuestion.text,
+                answer: answer,
+                });
+            },
+            moveToNextQuestion() {
+                // Check if there are more questions
+                if (this.currentQuestionIndex < this.genderQuestions.length - 1) {
+                    this.currentQuestionIndex++;
+                    this.selectedChoice = []; // Reset selected choice for the next question
+                } else {
+                    // Handle end of questionnaire
+                    this.handleEndOfQuestionnaire();
+                }
+            },
+            selectChoice(choice) {
+                this.saveAnswer(choice);
                 this.$router.push('/questionnaire')
-                  
-              } else {
-                  alert('Please select an answer before moving on.');
-              }
-          },
-          goBack() {
-              this.$store.dispatch('goBack');
-              this.currentQuestionIndex--;
-          },
-          selectChoice(choice) {
-              if (this.selectedChoice === choice) {
-                  // If the same choice is clicked again, deselect it
-                  this.selectedChoice = null;
-              } else {
-                  // Otherwise, select the clicked choice
-                  this.selectedChoice = choice;
-              }
-          },
-          isSelected(choice) {
-              // Check if the current choice is selected
-              return this.selectedChoice === choice;
-          },
-      },
-      mounted(){
-          this.questionsNumber = questions.length;
-      }
+            },
+        },
+        mounted(){
+            this.questionsNumber = questions.length;
+        }
   }
   </script>
   
@@ -144,6 +158,14 @@
   #arrow-button {
       background-color: white;
   }
+
+    .progress-bar{
+        background-color: #004080 !important;
+        }
+
+    .progress{
+        height: 1vh;
+    }
   
   #logo {
       text-decoration: none;
