@@ -229,9 +229,9 @@ export default {
                 return {en: 'Underweight. Focus on muscle toning and a balanced diet. Stay positive and try to keep your daily calorie consumption in the recommended range.', de: "Untergewicht. Konzentrieren Sie sich auf Muskelaufbau und eine ausgewogene Ernährung. Bleiben Sie positiv und versuchen Sie, Ihren täglichen Kalorienverbrauch im empfohlenen Bereich zu halten."};
             } else if (this.bmi >= 18.5 && this.bmi <= 24.9) {
                 return {en: 'Normal weight. Great job! Continue with your balanced diet and regular exercise to maintain your health.', de: "Normalgewicht. Gut gemacht! Achten Sie weiterhin auf eine ausgewogene Ernährung und regelmäßige Bewegung, um Ihre Gesundheit zu erhalten."};
-            } else if (this.bmi >= 25 && this.bmi <= 29.9) {
+            } else if (this.bmi > 24.9 && this.bmi <= 29.9) {
                 return {en: 'Overweight. Consider adopting a healthier diet and increasing your physical activity. Regular exercise and portion control can be beneficial.', de: "Übergewicht. Erwägen Sie eine gesündere Ernährung und mehr körperliche Aktivität. Regelmäßige Bewegung und Portionskontrolle können von Vorteil sein."};
-            } else if (this.bmi >= 30) {
+            } else if (this.bmi > 29.9) {
                 return {en: 'Obesity. It is advisable to consult with healthcare professionals to develop a safe and effective weight-loss plan. Focus on a healthy diet and regular exercise.', de: "Fettleibigkeit. Es ist ratsam, medizinisches Fachpersonal zu konsultieren, um einen sicheren und wirksamen Plan zur Gewichtsabnahme zu entwickeln. Konzentrieren Sie sich auf eine gesunde Ernährung und regelmäßige Bewegung."};
             } else {
                 return {en: 'BMI not available. Please ensure all measurements are entered correctly.', de: "BMI nicht verfügbar. Bitte stellen Sie sicher, dass alle Maße korrekt eingegeben werden."};
