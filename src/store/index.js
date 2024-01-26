@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     answers: [], // Store user answers here
+    bmi: 0,
     currentLang: localStorage.getItem('currentLang') || 'en',
   },
   mutations: {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
     SET_LANGUAGE(state, newLang) {
       state.currentLang = newLang;
       localStorage.setItem('currentLang', newLang); // Save to localStorage
+    },
+    setBMI(state, bmiValue){
+      state.bmi = bmiValue
     }
   },
   actions: {
@@ -37,13 +41,16 @@ export default new Vuex.Store({
     setLanguage({ commit }, newLang) {
       commit('SET_LANGUAGE', newLang);
     },
+    setBMI({ commit }, newValue){
+      commit('setBMI', newValue)
+    }
   },
   getters: {
     currentLang: state => state.currentLang
   },
   plugins: [
     createPersistedState({
-      paths: ['answers'], // Specify which state properties to persist
+      paths: ['answers', 'bmi'], // Specify which state properties to persist
     }),
   ],
 });

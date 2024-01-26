@@ -5,6 +5,7 @@ import Home from "../views/Home.vue"
 const Questionnaire = () => import('../views/Questionnaire.vue');
 // import GeneralQuestions from "../views/GeneralQuestions";
 const GeneralQuestions = () => import('../views/GeneralQuestions.vue')
+const FeedBack = () => import('../views/FeedBackSummury.vue')
 const routes = [
     {
         path: "/",
@@ -25,7 +26,12 @@ const routes = [
                 path: "questionnaire",
                 name: "Questionnaire",
                 component: Questionnaire
-            }
+            },
+            {
+                path: "feedback-wellness",
+                name: "FeedBack",
+                component: FeedBack
+            },
         ],
     },
 ];

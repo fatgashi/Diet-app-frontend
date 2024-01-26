@@ -245,5 +245,13 @@ export default [
       },
       question: 'weight'
     },
+    { 
+      id: 31, 
+      text: {
+        en: 'What is your age?',
+        de: "Wie alt bist du?"
+      },
+      question: 'age'
+    },
     // Add more questions as needed
   ];

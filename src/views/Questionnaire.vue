@@ -78,10 +78,24 @@
                         <div class="bmi-note mb-3">
                             <div v-if="bmi && currentQuestion.extension" class="p-3">
                                 <span role="img" aria-label="Note">💡</span>
-                                Your BMI is {{ bmi.toFixed(2) }}, which is considered {{ bmiCategory[currentLang] }}
+                                {{ $t('bmiNote.bmifirst') }} {{ bmi.toFixed(2) }}, {{ $t('bmiNote.bmisecond') }} {{ bmiCategory[currentLang] }}.
                             </div>
                         </div>
                         <button :disabled="userWeightLbs < 66 || userWeightLbs > 552" @click="nextQuestionLbs" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
+                    </div>
+                </div>
+                <div v-else-if="currentQuestion.question === 'age'" class="d-flex flex-column justify-content-center align-items-center">
+                    <div>
+                        <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userAge">
+                        <p v-if="userAge < 16 || userWeightKg > 99" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperTextAge') }}</p>
+                        <div class="bmi-note mb-3">
+                            <div class="p-3">
+                                <span role="img" aria-label="Note">☝️</span>
+                                <span class="fw-bold">{{ $t('bmiNote.ageDescription') }} </span>
+                                <p>{{ $t('bmiNote.ageDescription1') }}</p>
+                            </div>
+                        </div>
+                        <button :disabled="userAge < 16 || userAge > 99" @click="nextQuestionAge" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
                     </div>
                 </div>
                 <div v-else>
@@ -162,11 +176,13 @@ export default {
             genderQuestions: [],
             useMetric: true, // Toggle between metric and imperial
             useKg: true,
+            bmiValue: 0,
             userWeightKg: null,
             userWeightLbs: null,
             userHeightCm: null, // User's height in cm
             userHeightFt: null, // User's height in feet
             userHeightIn: null, // User's height in inches
+            userAge: null,
         }
     },
     computed: {
@@ -264,6 +280,11 @@ export default {
         },
         currentLang(newValue){
             return this.$store.state.currentLang == newValue
+        },
+        bmi(newValue){
+            if(newValue){
+                this.bmiValue = newValue;
+            }
         }
     },
     methods: {
@@ -354,13 +375,21 @@ export default {
         nextQuestionLbs(){
             const answer = `${this.userWeightLbs} lbs`;
             this.saveAnswer(answer);
+            this.$store.dispatch('setBMI', this.bmiValue);
             this.userWeightLbs = null;
             this.moveToNextQuestion();
         },
         nextQuestionKg(){
             const answer = `${this.userWeightKg} kg`;
+            this.$store.dispatch('setBMI', this.bmiValue);
             this.saveAnswer(answer);
             this.userWeightKg = null;
+            this.moveToNextQuestion();
+        },
+        nextQuestionAge(){
+            const answer = `${this.userAge} years old!`;
+            this.saveAnswer(answer);
+            this.userAge = null;
             this.moveToNextQuestion();
         },
         moveToNextQuestion() {
@@ -383,8 +412,8 @@ export default {
         },
 
         handleEndOfQuestionnaire() {
-            alert('End of questionnaire');
             // Here could redirect the user or perform other actions
+            this.$router.push('/feedback-wellness')
         },
 
         shouldAnswersBeClean() {
