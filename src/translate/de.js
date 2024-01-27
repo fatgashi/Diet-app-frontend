@@ -20,6 +20,15 @@ export default {
     helperTextKg1: 'Geben Sie einen Wert zwischen 30 und 250 kg ein',
     helperTextKg2: 'Geben Sie einen Wert zwischen 66 und 552 lbs'
   },
-  
+  motivation: {
+    option1: 'Ich möchte nur sehen, worum es beim Fasten geht',
+    option2: 'Ich möchte versuchen, etwas Gewicht zu verlieren',
+    option3: "Mir ist es ernst damit, so viel Gewicht wie möglich zu verlieren",
+  },
+  activity: {
+    option1: 'Weniger als 20 Minuten',
+    option2: '20-60 Min',
+    option3: 'Mehr als 60 Min'
+  }
   // ... other German translations
 };

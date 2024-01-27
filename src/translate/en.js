@@ -23,5 +23,15 @@ export default {
       helperTextKg2: 'Enter a value from 66 to 552 lbs',
       helperTextAge: 'Enter a value from 16 to 99'
     },
+    motivation: {
+      option1: 'I just want to see what the buzz about fasting is about',
+      option2: 'I want to try and lose some weight',
+      option3: "I'm serious about losing as much weight as possible",
+    },
+    activity: {
+      option1: 'Less than 20 mins',
+      option2: '20-60 mins',
+      option3: 'More than 60 mins'
+    }
     
 }

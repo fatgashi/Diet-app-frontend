@@ -30,6 +30,44 @@
                         </div>
                     </div>
                 </div>
+                <div class="statistics">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-column">
+                            <div class="d-flex justify-content-start align-items-center">
+                                <div class="me-3">
+                                    <i class="bi bi-person-walking fs-4"></i>
+                                </div>
+                                <div class="d-flex justify-content-center flex-column">
+                                    <div class="text-muted mini-text">
+                                        Lifestyle
+                                    </div>
+                                    <div class="fw-bold">
+                                        {{ activity }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-start align-items-center mt-5">
+                                <div class="me-3">
+                                    <i class="bi bi-bar-chart-fill fs-4"></i>
+                                </div>
+                                <div class="d-flex justify-content-center flex-column">
+                                    <div class="text-muted mini-text">
+                                        Fasting motivation
+                                    </div>
+                                    <div class="fw-bold">
+                                        {{ motivation }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>   
+                            Photo
+                        </div>
+                    </div>
+                </div>
+                <div class="bmi-note">
+                    {{ bmiCategory[currentLang] }}
+                </div>
             </div>
         </div>
     </div>
@@ -40,32 +78,91 @@
 export default {
     data(){
         return {
-            bmiValue: this.$store.state.bmi
+            bmiValue: this.$store.state.bmi,
+            activity: '',
+            motivation: '',
         }
     },
     computed: {
         progressBarStyle() {
-        const bmi = parseFloat(this.bmiValue) || 0; // Fetch BMI
-        const maxBmi = 40; // Adjust as needed
-        const minBmi = 10; // Adjust as needed
-        const widthPercentage = ((bmi - minBmi) / (maxBmi - minBmi)) * 100;
-        
-        // Ensure the percentage is between 0 and 100
-        const sanitizedWidth = Math.min(Math.max(widthPercentage, 0), 100);
-        
-        return {
-            width: `${sanitizedWidth}%`,
-            left: `calc(${sanitizedWidth}% - 10px)` // Adjust the 10px if needed based on marker's width
-        };
-    }
-    }
+            const bmi = parseFloat(this.bmiValue) || 0; // Fetch BMI
+            const maxBmi = 40; // Adjust as needed
+            const minBmi = 10; // Adjust as needed
+            const widthPercentage = ((bmi - minBmi) / (maxBmi - minBmi)) * 100;
+            
+            // Ensure the percentage is between 0 and 100
+            const sanitizedWidth = Math.min(Math.max(widthPercentage, 0), 100);
+            
+            return {
+                width: `${sanitizedWidth}%`,
+                left: `calc(${sanitizedWidth}% - 10px)` // Adjust the 10px if needed based on marker's width
+            };
+        },
+        bmiCategory() {
+            if (this.bmiValue < 18.5) {
+                return {
+                    de: 'Untergewicht kann mit einem geschwächten Immunsystem, Fruchtbarkeitsproblemen und einem erhöhten Osteoporoserisiko verbunden sein, was zu einer höheren Wahrscheinlichkeit von Knochenbrüchen führt.',
+                    en: 'Being underweight can be associated with a weakened immune system, fertility issues, and an increased risk of osteoporosis, leading to a greater likelihood of bone fractures.'
+                };
+            } else if (this.bmiValue >= 18.5 && this.bmiValue <= 24.99) {
+                return {
+                    de: 'Dieser BMI-Bereich ist im Allgemeinen mit einem geringeren Risiko für gewichtsbedingte chronische Krankheiten verbunden. Für die allgemeine Gesundheit ist es jedoch wichtig, auf eine ausgewogene Ernährung und regelmäßige körperliche Aktivität zu achten.',
+                    en: 'This BMI range is generally associated with a lower risk of chronic diseases related to weight. However, it\'s important to maintain a balanced diet and regular physical activity for overall health.'
+                };
+            } else if (this.bmiValue >= 25 && this.bmiValue <= 29.99) {
+                return {
+                    de: 'Übergewicht kann das Risiko erhöhen, an Erkrankungen wie Typ-2-Diabetes, Bluthochdruck, Herzerkrankungen und bestimmten Krebsarten zu erkranken.',
+                    en: 'Being overweight can increase the risk of developing conditions such as type 2 diabetes, high blood pressure, heart disease, and certain types of cancer.'
+                };
+            } else if (this.bmiValue >= 30) {
+                return {
+                    de: 'Fettleibigkeit ist mit einem höheren Risiko schwerer Gesundheitsprobleme verbunden, darunter schwere Herz-Kreislauf-Erkrankungen, mehr Krebsarten, fortgeschrittener Typ-2-Diabetes und häufigere Komplikationen bei Vollnarkose und Operationen.',
+                    en: 'Obesity is linked to a higher risk of severe health issues, including significant cardiovascular diseases, more types of cancer, advanced type 2 diabetes, and increased complications with general anesthesia and surgery.'
+                };
+            } else {
+                return {
+                    de: 'Der BMI-Wert liegt nicht im Standardbereich.',
+                    en: 'BMI value is not in the standard range.'
+                };
+            }
+        },
+        currentLang(){
+            return this.$store.state.currentLang;
+        }
+    },
+    methods: {
+        motivationLevel() {
+            const answerIndex = this.$store.state.answers[26]?.answer?.[this.currentLang];
+            const motivationMapping = {
+                [this.$t('motivation.option1')]: 'Average',
+                [this.$t('motivation.option2')]: 'Average',
+                [this.$t('motivation.option3')]: 'Motivated'
+            };
+
+           this.motivation = motivationMapping[answerIndex] || 'Unknown';
+        },
+        activityLevel(){
+            const answerIndex = this.$store.state.answers[18]?.answer?.[this.currentLang];
+            const activityMapping = {
+                [this.$t('activity.option1')]: 'Active',
+                [this.$t('activity.option2')]: 'Active',
+                [this.$t('activity.option3')]: 'Energetic'
+            };
+            
+            this.activity = activityMapping[answerIndex] || 'Unknown'
+        },
+    },
+    mounted(){
+        this.motivationLevel();
+        this.activityLevel();
+    },
 }
 </script>
 
 <style scoped>
 
 #rfluid {
-  max-width: 800px;
+  max-width: 600px;
   display: grid;
   height: 91vh;
   margin-top: 5vh;
@@ -83,11 +180,23 @@ export default {
     opacity: 0;
 }
 
+.mini-text {
+    font-size: 12px;
+    font-weight: 400;
+}
+
 .container-card {
     padding: 10px;
     width: 100%;
     background-color: rgb(242, 239, 238);
     border-radius: 10px;
+}
+
+.bmi-note {
+    background-color: rgb(242, 239, 238);
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
 }
 .bmi-marker {
     position: absolute;
@@ -115,5 +224,10 @@ export default {
     border-style: solid;
     border-radius: 50%;
     border-color: #004080;
+}
+
+.statistics {
+    width: 100%;
+    padding: 20px;
 }
 </style>
