@@ -30,7 +30,9 @@ const routes = [
             {
                 path: "feedback-wellness",
                 name: "FeedBack",
-                component: FeedBack
+                component: FeedBack,
+                meta: {requireData: true}
+                
             },
         ],
     },

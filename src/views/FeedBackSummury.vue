@@ -8,7 +8,7 @@
         <div class="d-flex justify-content-center align-items-start" id="rfluid">
             <div class="d-flex flex-column justify-content-center align-items-center w-100">
                 <div>
-                    <h1 class="text-center mb-2 fw-bolder">Summery of your overall wellness</h1>
+                    <h3 class="text-center mb-2 fw-bolder">Summery of Your Overall Wellness</h3>
                 </div>
                 <div class="container-card mt-3">
                     <div class="d-flex justify-content-between align-items-center">
@@ -30,7 +30,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="statistics">
+                <div class="statistics shadow rounded mt-4">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex flex-column">
                             <div class="d-flex justify-content-start align-items-center">
@@ -61,13 +61,15 @@
                             </div>
                         </div>
                         <div>   
-                            Photo
+                            <img :src="getBmiPhoto()" width="90" height="150" alt="BMI Category Image">
                         </div>
                     </div>
                 </div>
-                <div class="bmi-note">
+                <div class="bmi-note mt-4">
+                    <h6 class="fw-bold">Based on your BMI: {{ bmiValue.toFixed(1) }}</h6>
                     {{ bmiCategory[currentLang] }}
                 </div>
+                <button @click="nextQuestion" class="next-button mt-2 fw-bold">{{ $t('buttons.continue') }}</button>
             </div>
         </div>
     </div>
@@ -81,13 +83,14 @@ export default {
             bmiValue: this.$store.state.bmi,
             activity: '',
             motivation: '',
+            forward: false,
         }
     },
     computed: {
         progressBarStyle() {
             const bmi = parseFloat(this.bmiValue) || 0; // Fetch BMI
             const maxBmi = 40; // Adjust as needed
-            const minBmi = 10; // Adjust as needed
+            const minBmi = 4; // Adjust as needed
             const widthPercentage = ((bmi - minBmi) / (maxBmi - minBmi)) * 100;
             
             // Ensure the percentage is between 0 and 100
@@ -130,6 +133,16 @@ export default {
             return this.$store.state.currentLang;
         }
     },
+    beforeRouteLeave(to, from, next) {
+        // Check if the navigation was a backward navigation
+        if (to.path === '/questionnaire' && !this.forward) {
+            if(this.$store.state.answers.length === 31){
+                this.$store.state.answers.pop();
+            }
+        }
+        // Call next to proceed with the navigation
+        next();
+    },
     methods: {
         motivationLevel() {
             const answerIndex = this.$store.state.answers[26]?.answer?.[this.currentLang];
@@ -140,6 +153,22 @@ export default {
             };
 
            this.motivation = motivationMapping[answerIndex] || 'Unknown';
+        },
+        getBmiPhoto() {
+            if (this.bmiValue < 18.5) {
+                return require('../assets/feedbackUnderWeightBodyTypeMan.png');
+            } else if (this.bmiValue >= 18.5 && this.bmiValue <= 24.99) {
+                return require('../assets/feedbackNormalBodyTypeMan.png');
+            } else if (this.bmiValue >= 25 && this.bmiValue <= 29.99) {
+                return require('../assets/feedbackOverWeightBodyTypeMan.png');
+            } else if (this.bmiValue >= 30) {
+                return require('../assets/feedbackObeseBodyTypeMan.png');
+            } else {
+                return ''; // Or path to a default image
+            }
+        },
+        nextQuestion(){
+            console.log('hello')
         },
         activityLevel(){
             const answerIndex = this.$store.state.answers[18]?.answer?.[this.currentLang];
@@ -155,17 +184,22 @@ export default {
     mounted(){
         this.motivationLevel();
         this.activityLevel();
+        this.getBmiPhoto();
     },
 }
 </script>
 
 <style scoped>
 
+body {
+    overflow: auto !important;
+}
+
 #rfluid {
   max-width: 600px;
   display: grid;
-  height: 91vh;
-  margin-top: 5vh;
+  height: 93vh;
+  margin-top: 2vh;
 }
 
 .progress {
@@ -185,6 +219,14 @@ export default {
     font-weight: 400;
 }
 
+.next-button {
+    background-color: #004080;
+    border: none;
+    width: 100%;
+    border-radius: 1%;
+    height: 6vh;
+    color: white;
+}
 .container-card {
     padding: 10px;
     width: 100%;

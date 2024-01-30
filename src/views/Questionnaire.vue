@@ -69,6 +69,10 @@
                                 {{ $t('bmiNote.bmifirst') }} {{ bmi.toFixed(2) }}, {{ $t('bmiNote.bmisecond') }} {{ bmiCategory[currentLang] }}.
                             </div>
                         </div>
+                        <div v-else-if="!currentQuestion.extension">
+                            <span role="img" aria-label="Note">💡</span>
+                            {{ lossWeight }}
+                        </div>
                         <button :disabled="userWeightKg < 30 || userWeightKg > 250" @click="nextQuestionKg" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
                     </div>
                     
@@ -79,6 +83,10 @@
                             <div v-if="bmi && currentQuestion.extension" class="p-3">
                                 <span role="img" aria-label="Note">💡</span>
                                 {{ $t('bmiNote.bmifirst') }} {{ bmi.toFixed(2) }}, {{ $t('bmiNote.bmisecond') }} {{ bmiCategory[currentLang] }}.
+                            </div>
+                            <div v-else-if="!currentQuestion.extension">
+                                <span role="img" aria-label="Note">💡</span>
+                                {{ lossWeight }}
                             </div>
                         </div>
                         <button :disabled="userWeightLbs < 66 || userWeightLbs > 552" @click="nextQuestionLbs" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
@@ -191,6 +199,18 @@ export default {
         },
         currentLang(){
             return this.$store.state.currentLang;
+        },
+        lossWeight(){
+            let answer = this.$store.state.answers[28].answer;
+            let weight = parseInt(answer);
+            let weightLoss;
+
+            if(weight && this.userWeightKg){
+                weightLoss = ((this.userWeightKg - weight) / weight) * 100
+                return weightLoss.toFixed(0)
+            }
+
+            return null
         },
         bmi() {
             let heightInMeters;
