@@ -63,15 +63,17 @@
                     <div v-if="useKg" class="mt-3">
                         <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userWeightKg"><span class="fw-bold">kg</span>
                         <p v-if="userWeightKg < 30 || userWeightKg > 250" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperTextKg1') }}</p>
-                        <div v-if="bmi && currentQuestion.extension" class="bmi-note mb-3">
-                            <div class="p-3">
-                                <span role="img" aria-label="Note">💡</span>
-                                {{ $t('bmiNote.bmifirst') }} {{ bmi.toFixed(2) }}, {{ $t('bmiNote.bmisecond') }} {{ bmiCategory[currentLang] }}.
+                        <div class="bmi-note mb-3">
+                            <div v-if="bmi && currentQuestion.extension" class="bmi-note mb-3">
+                                <div class="p-3">
+                                    <span role="img" aria-label="Note">💡</span>
+                                    {{ $t('bmiNote.bmifirst') }} {{ bmi.toFixed(2) }}, {{ $t('bmiNote.bmisecond') }} {{ bmiCategory[currentLang] }}.
+                                </div>
                             </div>
-                        </div>
-                        <div v-else-if="!currentQuestion.extension">
-                            <span role="img" aria-label="Note">💡</span>
-                            {{ lossWeight }}
+                            <div v-else-if="!currentQuestion.extension && lossWeight" class="p-3">
+                                <span class="fw-bold">{{ weightChangeFeedback.extraText[currentLang] }}</span>
+                                <p>{{ weightChangeFeedback.feedback[currentLang] }}</p>
+                            </div>
                         </div>
                         <button :disabled="userWeightKg < 30 || userWeightKg > 250" @click="nextQuestionKg" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
                     </div>
@@ -84,9 +86,9 @@
                                 <span role="img" aria-label="Note">💡</span>
                                 {{ $t('bmiNote.bmifirst') }} {{ bmi.toFixed(2) }}, {{ $t('bmiNote.bmisecond') }} {{ bmiCategory[currentLang] }}.
                             </div>
-                            <div v-else-if="!currentQuestion.extension">
-                                <span role="img" aria-label="Note">💡</span>
-                                {{ lossWeight }}
+                            <div v-else-if="!currentQuestion.extension && lossWeight" class="p-3">
+                                <span class="fw-bold">{{ weightChangeFeedback.extraText[currentLang] }}</span>
+                                <p>{{ weightChangeFeedback.feedback[currentLang] }}</p>
                             </div>
                         </div>
                         <button :disabled="userWeightLbs < 66 || userWeightLbs > 552" @click="nextQuestionLbs" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
@@ -200,17 +202,83 @@ export default {
         currentLang(){
             return this.$store.state.currentLang;
         },
-        lossWeight(){
-            let answer = this.$store.state.answers[28].answer;
-            let weight = parseInt(answer);
-            let weightLoss;
+        lossWeight() {
+            let answer = this.$store.state.answers[28]?.answer; // Use optional chaining
+            if (!answer) return null; // If answer is not defined, return null
 
-            if(weight && this.userWeightKg){
-                weightLoss = ((this.userWeightKg - weight) / weight) * 100
-                return weightLoss.toFixed(0)
+            let weight = parseInt(answer.answer);
+            if (isNaN(weight)) return null; // If weight is not a number, return null
+
+            let initialWeightInKg = answer.unit === 'lbs' ? weight * 0.453592 : weight; // Convert to kg if needed
+            let currentWeightInKg = this.userWeightKg ? this.userWeightKg : (this.userWeightLbs * 0.453592); // Convert to kg if needed
+
+            if (this.userWeightKg >= 30 && this.userWeightKg <= 250 || this.userWeightLbs >= 66 && this.userWeightLbs <= 552) {
+                let weightLoss = ((currentWeightInKg - initialWeightInKg) / initialWeightInKg) * 100;
+                return weightLoss.toFixed(0);
+            } else {
+                return null;
             }
+        },
+        weightChangeFeedback() {
+            const weightChange = this.lossWeight; // Assuming lossWeight returns a number
+            const absWeight = Math.abs(this.lossWeight);
 
-            return null
+            if (weightChange >= -4 && weightChange <= 0) {
+                return {
+                    feedback: {
+                        en: 'Maintaining a stable weight indicates a balanced lifestyle. Small fluctuations are normal and reflect everyday changes in water balance and other factors.',
+                        de: 'Ein stabiles Gewicht zu halten, deutet auf einen ausgeglichenen Lebensstil hin. Kleine Schwankungen sind normal und spiegeln alltägliche Veränderungen im Wasserhaushalt und andere Faktoren wider.'
+                    },
+                    extraText: {
+                        en: `EASY WIN: lose ${absWeight}% of your weight`,
+                        de: `EINFACHER GEWINN: Verlieren Sie ${absWeight}% Ihres Gewichts`
+                    }
+                };
+            } else if ((weightChange >= -9 && weightChange < -4)) {
+                return {
+                    feedback: {
+                        en: 'A moderate change in weight can be a sign of positive lifestyle adjustments. It’s important to ensure these changes are sustainable and healthy.',
+                        de: 'Eine moderate Gewichtsveränderung kann ein Zeichen für positive Anpassungen des Lebensstils sein. Es ist wichtig, sicherzustellen, dass diese Veränderungen nachhaltig und gesund sind.'
+                    },
+                    extraText: {
+                        en: `REALISTIC TARGET: lose ${absWeight}% of your weight`,
+                        de: `REALISTISCHES ZIEL: ${absWeight}% Ihres Gewichts verlieren`
+                    }
+                };
+            } else if ((weightChange >= -19 && weightChange < -9)) {
+                return {
+                    feedback: {
+                        en: 'Significant weight changes can have noticeable health impacts. For weight loss, this might mean improved cardiovascular health.',
+                        de: 'Starke Gewichtsveränderungen können spürbare Auswirkungen auf die Gesundheit haben. Bei der Gewichtsabnahme könnte dies eine Verbesserung der Herz-Kreislauf-Gesundheit bedeuten.'
+                    },
+                    extraText: {
+                        en: `HEALTH BENEFITS: lose ${absWeight}% of your weight`,
+                        de: `GESUNDHEITLICHE VORTEILE: Verlieren Sie ${absWeight}% Ihres Gewichts`
+                    }
+                };
+            } else if (weightChange < -19) {
+                return {
+                    feedback: {
+                        en: 'In a new study by Mayo Clinic, overweight people who lose more than 20% of their body weight are almost 2½ times more likely to have good metabolic health as those who lose 5-10%.',
+                        de: 'In einer neuen Studie der Mayo Clinic ist die Wahrscheinlichkeit einer guten Stoffwechselgesundheit bei übergewichtigen Menschen, die mehr als 20 % ihres Körpergewichts verlieren, fast 2½-mal höher als bei Menschen, die 5–10 % verlieren.'
+                    },
+                    extraText: {
+                        en: `CHALLENGING GOAL: lose ${absWeight}% of your weight`,
+                        de: `Anspruchsvolles Ziel: ${absWeight}% Ihres Gewichts verlieren`
+                    }
+                };
+            } else {
+                return {
+                    feedback: {
+                        en: 'Gaining weight in a healthy way can be beneficial for adding muscle mass and improving overall body strength. It can enhance physical appearance and contribute to better energy levels. ',
+                        de: 'Ein gesunder Gewichtszuwachs kann vorteilhaft sein, um Muskelmasse aufzubauen und die allgemeine Körperkraft zu verbessern. Es kann das äußere Erscheinungsbild verbessern und zu einem besseren Energielevel beitragen.'
+                    },
+                    extraText: {
+                        en: `Body Mass: gain ${absWeight}% of your weight`,
+                        de: `Körpermasse: Nehmen Sie ${absWeight} Ihres Gewichts zu`
+                    }
+                };
+            }
         },
         bmi() {
             let heightInMeters;
@@ -393,14 +461,14 @@ export default {
     
         },
         nextQuestionLbs(){
-            const answer = `${this.userWeightLbs} lbs`;
+            const answer = {answer: `${this.userWeightLbs} lbs`, unit: 'lbs'};
             this.saveAnswer(answer);
             this.$store.dispatch('setBMI', this.bmiValue);
             this.userWeightLbs = null;
             this.moveToNextQuestion();
         },
         nextQuestionKg(){
-            const answer = `${this.userWeightKg} kg`;
+            const answer = {answer: `${this.userWeightKg} kg`, unit: 'kg'};
             this.$store.dispatch('setBMI', this.bmiValue);
             this.saveAnswer(answer);
             this.userWeightKg = null;
