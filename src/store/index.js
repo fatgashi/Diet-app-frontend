@@ -22,7 +22,6 @@ export default new Vuex.Store({
     },
     SET_LANGUAGE(state, newLang) {
       state.currentLang = newLang;
-      localStorage.setItem('currentLang', newLang); // Save to localStorage
     },
     setBMI(state, bmiValue){
       state.bmi = bmiValue
@@ -50,7 +49,7 @@ export default new Vuex.Store({
   },
   plugins: [
     createPersistedState({
-      paths: ['answers', 'bmi'], // Specify which state properties to persist
+      paths: ['answers', 'bmi', 'currentLang'], // Specify which state properties to persist
     }),
   ],
 });

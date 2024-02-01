@@ -29,6 +29,19 @@ export default {
     option1: 'Weniger als 20 Minuten',
     option2: '20-60 Min',
     option3: 'Mehr als 60 Min'
-  }
+  },
+  summary: {
+    title: 'Zusammenfassung Ihres allgemeinen Wohlbefindens',
+    bodyMass: 'Body-Mass-Index (BMI)',
+    averageNormal: 'Normal - 21.5',
+    you: 'Du',
+    underWeight: 'Untergewicht',
+    normal: 'Normal',
+    overWeight: 'Übergewicht',
+    obese: 'Fettleibig',
+    lifestyle: 'Lebensstil',
+    fasting: 'Motivation zum Fasten',
+    bmiTitle: 'Basierend auf Ihrem BMI:'
+  },
   // ... other German translations
 };

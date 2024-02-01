@@ -32,6 +32,19 @@ export default {
       option1: 'Less than 20 mins',
       option2: '20-60 mins',
       option3: 'More than 60 mins'
-    }
+    },
+    summary: {
+      title: 'Summary of your overall wellness',
+      bodyMass: 'Body Mass Index (BMI)',
+      averageNormal: 'Normal - 21.5',
+      you: 'you',
+      underWeight: 'Underweight',
+      normal: 'Normal',
+      overWeight: 'Overweight',
+      obese: 'Obese',
+      lifestyle: 'Lifestyle',
+      fasting: 'Fasting motivation',
+      bmiTitle: 'Based on your BMI:'
+    },
     
 }

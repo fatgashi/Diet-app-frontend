@@ -8,25 +8,25 @@
         <div class="d-flex justify-content-center align-items-start" id="rfluid">
             <div class="d-flex flex-column justify-content-center align-items-center w-100">
                 <div>
-                    <h3 class="text-center mb-2 fw-bolder">Summery of Your Overall Wellness</h3>
+                    <h3 class="text-center mb-2 fw-bolder">{{ $t('summary.title') }}</h3>
                 </div>
                 <div class="container-card mt-3">
                     <div class="d-flex justify-content-between align-items-center">
-                        <span class="fw-bold">Body Mass Index (BMI)</span>
-                        <span>Normal - 21.5</span>
+                        <span class="fw-bold">{{ $t('summary.bodyMass') }}</span>
+                        <span>{{ $t('summary.averageNormal')  }}</span>
                     </div>
                     <div>
                         <div class="progress mt-5">
                             <div class="bmi-marker" :style="{ left: progressBarStyle.left }">
-                                You - {{ bmiValue.toFixed(1) }}
+                                {{ $t('summary.you') }} - {{ bmiValue.toFixed(1) }}
                             </div>
                             <div class="progress-bar" role="progressbar" :style="{ width: progressBarStyle.width }" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <div class="d-flex justify-content-around mt-2">
-                            <span class="fw-bold">Underweight</span>
-                            <span class="fw-bold">Normal</span>
-                            <span class="fw-bold">Overweight</span>
-                            <span class="fw-bold">Obese</span>
+                            <span class="fw-bold">{{ $t('summary.underWeight') }}</span>
+                            <span class="fw-bold">{{ $t('summary.normal') }}</span>
+                            <span class="fw-bold">{{ $t('summary.overWeight') }}</span>
+                            <span class="fw-bold">{{ $t('summary.obese') }}</span>
                         </div>
                     </div>
                 </div>
@@ -39,10 +39,10 @@
                                 </div>
                                 <div class="d-flex justify-content-center flex-column">
                                     <div class="text-muted mini-text">
-                                        Lifestyle
+                                        {{ $t('summary.lifestyle') }}
                                     </div>
                                     <div class="fw-bold">
-                                        {{ activity }}
+                                        {{ activityLevel[currentLang] }}
                                     </div>
                                 </div>
                             </div>
@@ -52,10 +52,10 @@
                                 </div>
                                 <div class="d-flex justify-content-center flex-column">
                                     <div class="text-muted mini-text">
-                                        Fasting motivation
+                                        {{ $t('summary.fasting') }}
                                     </div>
                                     <div class="fw-bold">
-                                        {{ motivation }}
+                                        {{ motivationLevel[currentLang] }}
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="bmi-note mt-4">
-                    <h6 class="fw-bold">Based on your BMI: {{ bmiValue.toFixed(1) }}</h6>
+                    <h6 class="fw-bold">{{ $t('summary.bmiTitle') }} {{ bmiValue.toFixed(1) }}</h6>
                     {{ bmiCategory[currentLang] }}
                 </div>
                 <button @click="nextQuestion" class="next-button mt-2 fw-bold">{{ $t('buttons.continue') }}</button>
@@ -131,7 +131,28 @@ export default {
         },
         currentLang(){
             return this.$store.state.currentLang;
-        }
+        },
+        motivationLevel() {
+            const answerIndex = this.$store.state.answers[26]?.answer?.[this.currentLang];
+            const motivationMapping = {
+                [this.$t('motivation.option1')]: {en: 'Average', de: 'Durchschnitt'},
+                [this.$t('motivation.option2')]: {en: 'Average', de: 'Durchschnitt'},
+                [this.$t('motivation.option3')]: {en: 'Motivated', de: 'Motiviert'}
+            };
+
+           return motivationMapping[answerIndex] || 'Unknown';
+        },
+        activityLevel(){
+            const answerIndex = this.$store.state.answers[18]?.answer?.[this.currentLang];
+
+            const activityMapping = {
+                [this.$t('activity.option1')]: {en: 'Active', de: 'Aktiv'},
+                [this.$t('activity.option2')]: {en: 'Active', de: 'Aktiv'},
+                [this.$t('activity.option3')]: {en: 'Energetic', de: 'Energisch'}
+            };
+
+            return activityMapping[answerIndex] || 'Unknown'
+        },
     },
     beforeRouteLeave(to, from, next) {
         // Check if the navigation was a backward navigation
@@ -143,17 +164,7 @@ export default {
         // Call next to proceed with the navigation
         next();
     },
-    methods: {
-        motivationLevel() {
-            const answerIndex = this.$store.state.answers[26]?.answer?.[this.currentLang];
-            const motivationMapping = {
-                [this.$t('motivation.option1')]: 'Average',
-                [this.$t('motivation.option2')]: 'Average',
-                [this.$t('motivation.option3')]: 'Motivated'
-            };
-
-           this.motivation = motivationMapping[answerIndex] || 'Unknown';
-        },
+    methods: {  
         getBmiPhoto() {
             if (this.bmiValue < 18.5) {
                 return require('../assets/feedbackUnderWeightBodyTypeMan.png');
@@ -170,30 +181,19 @@ export default {
         nextQuestion(){
             console.log('hello')
         },
-        activityLevel(){
-            const answerIndex = this.$store.state.answers[18]?.answer?.[this.currentLang];
-            const activityMapping = {
-                [this.$t('activity.option1')]: 'Active',
-                [this.$t('activity.option2')]: 'Active',
-                [this.$t('activity.option3')]: 'Energetic'
-            };
-            
-            this.activity = activityMapping[answerIndex] || 'Unknown'
-        },
+    },
+    beforeDestroy() {
+        document.body.style.overflow = 'hidden'; // or set it back to the default value
     },
     mounted(){
-        this.motivationLevel();
-        this.activityLevel();
         this.getBmiPhoto();
+        this.$i18n.locale = this.currentLang;
+        document.body.style.overflow = 'auto';
     },
 }
 </script>
 
 <style scoped>
-
-body {
-    overflow: auto !important;
-}
 
 #rfluid {
   max-width: 600px;
