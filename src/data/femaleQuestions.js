@@ -243,7 +243,23 @@ export default [
         en: 'What would you consider your perfect weight?',
         de: "Was würden Sie als Ihr Idealgewicht bezeichnen?"
       },
-      question: 'weight'
+      question: 'preferedWeight'
+    },
+    { 
+      id: 31, 
+      text: {
+        en: 'What is your age?',
+        de: "Wie alt bist du?"
+      },
+      question: 'age'
+    },
+    { 
+      id: 32, 
+      text: {
+        en: 'Your personal 4-week intermittent fasting plan is ready',
+        de: "Fertig ist Dein persönlicher 4-wöchiger Intervallfasten-Plan"
+      },
+      question: 'email'
     },
     // Add more questions as needed
   ];

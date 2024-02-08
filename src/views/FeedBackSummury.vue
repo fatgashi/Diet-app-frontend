@@ -133,17 +133,17 @@ export default {
             return this.$store.state.currentLang;
         },
         motivationLevel() {
-            const answerIndex = this.$store.state.answers[26]?.answer?.[this.currentLang];
+            const answerIndex = this.$store.state.answers[24]?.answer?.[this.currentLang];
             const motivationMapping = {
                 [this.$t('motivation.option1')]: {en: 'Average', de: 'Durchschnitt'},
                 [this.$t('motivation.option2')]: {en: 'Average', de: 'Durchschnitt'},
-                [this.$t('motivation.option3')]: {en: 'Motivated', de: 'Motiviert'}
+                [this.$t('motivation.option3')]: {en: 'High', de: 'Hoch'}
             };
 
            return motivationMapping[answerIndex] || 'Unknown';
         },
         activityLevel(){
-            const answerIndex = this.$store.state.answers[18]?.answer?.[this.currentLang];
+            const answerIndex = this.$store.state.answers[16]?.answer?.[this.currentLang];
 
             const activityMapping = {
                 [this.$t('activity.option1')]: {en: 'Active', de: 'Aktiv'},
@@ -157,7 +157,7 @@ export default {
     beforeRouteLeave(to, from, next) {
         // Check if the navigation was a backward navigation
         if (to.path === '/questionnaire' && !this.forward) {
-            if(this.$store.state.answers.length === 31){
+            if(this.$store.state.answers.length === 29){
                 this.$store.state.answers.pop();
             }
         }
@@ -179,7 +179,8 @@ export default {
             }
         },
         nextQuestion(){
-            console.log('hello')
+            this.forward = true
+            this.$router.push('/questionnaire')
         },
     },
     beforeDestroy() {

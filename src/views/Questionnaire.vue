@@ -64,15 +64,11 @@
                         <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userWeightKg"><span class="fw-bold">kg</span>
                         <p v-if="userWeightKg < 30 || userWeightKg > 250" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperTextKg1') }}</p>
                         <div class="bmi-note mb-3">
-                            <div v-if="bmi && currentQuestion.extension" class="bmi-note mb-3">
+                            <div v-if="bmi" class="bmi-note mb-3">
                                 <div class="p-3">
                                     <span role="img" aria-label="Note">💡</span>
                                     {{ $t('bmiNote.bmifirst') }} {{ bmi.toFixed(2) }}, {{ $t('bmiNote.bmisecond') }} {{ bmiCategory[currentLang] }}.
                                 </div>
-                            </div>
-                            <div v-else-if="!currentQuestion.extension && lossWeight" class="p-3">
-                                <span class="fw-bold">{{ weightChangeFeedback.extraText[currentLang] }}</span>
-                                <p>{{ weightChangeFeedback.feedback[currentLang] }}</p>
                             </div>
                         </div>
                         <button :disabled="userWeightKg < 30 || userWeightKg > 250" @click="nextQuestionKg" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
@@ -82,16 +78,57 @@
                         <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userWeightLbs"><span class="fw-bold">lbs</span>
                         <p v-if="userWeightLbs < 66 || userWeightLbs > 552" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperTextKg2') }}</p>
                         <div class="bmi-note mb-3">
-                            <div v-if="bmi && currentQuestion.extension" class="p-3">
+                            <div v-if="bmi" class="p-3">
                                 <span role="img" aria-label="Note">💡</span>
                                 {{ $t('bmiNote.bmifirst') }} {{ bmi.toFixed(2) }}, {{ $t('bmiNote.bmisecond') }} {{ bmiCategory[currentLang] }}.
                             </div>
-                            <div v-else-if="!currentQuestion.extension && lossWeight" class="p-3">
+                        </div>
+                        <button :disabled="userWeightLbs < 66 || userWeightLbs > 552" @click="nextQuestionLbs" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
+                    </div>
+                </div>
+                <div v-else-if="currentQuestion.question === 'preferedWeight' " class="d-flex flex-column justify-content-center align-items-center">
+                    <div class="unit-toggle">
+                        <button @click="toggleWeightUnit(false)" :class="{ active: !useKg }" class="border-0">lbs</button>
+                        <button @click="toggleWeightUnit(true)" :class="{ active: useKg }" class="border-0">kg</button>
+                    </div>
+
+                    <div v-if="useKg" class="mt-3">
+                        <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userWeightPreferedKg"><span class="fw-bold">kg</span>
+                        <p v-if="userWeightPreferedKg < 30 || userWeightPreferedKg > 250" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperTextKg1') }}</p>
+                        <div class="bmi-note mb-3">
+                            <div v-if="lossWeight" class="p-3">
                                 <span class="fw-bold">{{ weightChangeFeedback.extraText[currentLang] }}</span>
                                 <p>{{ weightChangeFeedback.feedback[currentLang] }}</p>
                             </div>
                         </div>
-                        <button :disabled="userWeightLbs < 66 || userWeightLbs > 552" @click="nextQuestionLbs" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
+                        <button :disabled="userWeightPreferedKg < 30 || userWeightPreferedKg > 250" @click="nextQuestionPreferedKg" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
+                    </div>
+                    
+                    <div v-else>
+                        <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userWeightPreferedLbs"><span class="fw-bold">lbs</span>
+                        <p v-if="userWeightPreferedLbs < 66 || userWeightPreferedLbs > 552" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperTextKg2') }}</p>
+                        <div class="bmi-note mb-3">
+                            <div v-if="lossWeight" class="p-3">
+                                <span class="fw-bold">{{ weightChangeFeedback.extraText[currentLang] }}</span>
+                                <p>{{ weightChangeFeedback.feedback[currentLang] }}</p>
+                            </div>
+                        </div>
+                        <button :disabled="userWeightPreferedLbs < 66 || userWeightPreferedLbs > 552" @click="nextQuestionPreferedLbs" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
+                    </div>
+                </div>
+                <div v-else-if="currentQuestion.question === 'email' " class="d-flex flex-column justify-content-center align-items-center">
+                    <div class="form-group mt-3">
+                        <i class="bi bi-envelope-fill icon-env"></i>
+                        <input
+                        type="email"
+                        v-model="email"
+                        @blur="validateEmail"
+                        :class="{ 'is-invalid': emailError }"
+                        placeholder="Your email"
+                    />
+                        <div v-if="emailError" class="invalid-feedback">
+                            A valid email is required
+                        </div>
                     </div>
                 </div>
                 <div v-else-if="currentQuestion.question === 'age'" class="d-flex flex-column justify-content-center align-items-center">
@@ -187,8 +224,12 @@ export default {
             useMetric: true, // Toggle between metric and imperial
             useKg: true,
             bmiValue: 0,
+            email: '',
+            emailError: false,
             userWeightKg: null,
+            userWeightPreferedKg: null,
             userWeightLbs: null,
+            userWeightPreferedLbs: null,
             userHeightCm: null, // User's height in cm
             userHeightFt: null, // User's height in feet
             userHeightIn: null, // User's height in inches
@@ -203,16 +244,16 @@ export default {
             return this.$store.state.currentLang;
         },
         lossWeight() {
-            let answer = this.$store.state.answers[28]?.answer; // Use optional chaining
+            let answer = this.$store.state.answers[26]?.answer; // Use optional chaining
             if (!answer) return null; // If answer is not defined, return null
 
             let weight = parseInt(answer.answer);
             if (isNaN(weight)) return null; // If weight is not a number, return null
 
             let initialWeightInKg = answer.unit === 'lbs' ? weight * 0.453592 : weight; // Convert to kg if needed
-            let currentWeightInKg = this.userWeightKg ? this.userWeightKg : (this.userWeightLbs * 0.453592); // Convert to kg if needed
+            let currentWeightInKg = this.userWeightPreferedKg ? this.userWeightPreferedKg : (this.userWeightPreferedLbs * 0.453592); // Convert to kg if needed
 
-            if (this.userWeightKg >= 30 && this.userWeightKg <= 250 || this.userWeightLbs >= 66 && this.userWeightLbs <= 552) {
+            if (this.userWeightPreferedKg >= 30 && this.userWeightPreferedKg <= 250 || this.userWeightPreferedLbs >= 66 && this.userWeightPreferedLbs <= 552) {
                 let weightLoss = ((currentWeightInKg - initialWeightInKg) / initialWeightInKg) * 100;
                 return weightLoss.toFixed(0);
             } else {
@@ -288,7 +329,7 @@ export default {
             let inches;
             let cm;
             let answers = this.$store.state.answers;
-            let userHeight = answers[answers.length - 1].answer;
+            let userHeight = answers[25]?.answer;
             
             if(this.userWeightKg >= 30 && this.userWeightKg <= 250 || this.userWeightLbs >= 66 && this.userWeightLbs <= 552){
                 if(userHeight.unit === "feet"){
@@ -373,7 +414,7 @@ export default {
             if(newValue){
                 this.bmiValue = newValue;
             }
-        }
+        },
     },
     methods: {
         nextQuestion() {
@@ -388,6 +429,11 @@ export default {
             } else {
                 alert('Please select an answer before moving on.');
             }
+        },
+        validateEmail() {
+            // eslint-disable-next-line
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            this.emailError = !re.test(this.email);
         },
         toggleWeightUnit(useKg) {
             this.useKg = useKg;
@@ -474,6 +520,18 @@ export default {
             this.userWeightKg = null;
             this.moveToNextQuestion();
         },
+        nextQuestionPreferedLbs(){
+            const answer = `${this.userWeightPreferedLbs} lbs`;
+            this.saveAnswer(answer);
+            this.userWeightPreferedLbs = null;
+            this.moveToNextQuestion();
+        },
+        nextQuestionPreferedKg(){
+            const answer = `${this.userWeightPreferedKg} kg`;
+            this.saveAnswer(answer);
+            this.userWeightKg = null;
+            this.moveToNextQuestion();
+        },
         nextQuestionAge(){
             const answer = `${this.userAge} years old!`;
             this.saveAnswer(answer);
@@ -485,6 +543,11 @@ export default {
             if (this.currentQuestionIndex < this.genderQuestions.length - 1) {
                 this.currentQuestionIndex++;
                 this.selectedChoice = []; // Reset selected choice for the next question
+                console.log(this.currentQuestionIndex);
+                
+                if(this.currentQuestionIndex == 29){
+                    this.$router.push('/feedback-wellness')
+                }
             } else {
                 // Handle end of questionnaire
                 this.handleEndOfQuestionnaire();
@@ -501,7 +564,7 @@ export default {
 
         handleEndOfQuestionnaire() {
             // Here could redirect the user or perform other actions
-            this.$router.push('/feedback-wellness')
+            
         },
 
         shouldAnswersBeClean() {
@@ -543,7 +606,7 @@ export default {
         }
         this.updateLastShownTimestamp();
         if (this.$store.state.answers.length > 0) {
-            this.currentQuestionIndex = this.$store.state.answers.length - 2;
+            this.currentQuestionIndex = this.$store.state.answers.length;
         }
         this.questionsNumber = this.genderQuestions.length + 2;
     }
@@ -562,6 +625,45 @@ export default {
   margin: 0;
 }
 
+.form-group {
+  position: relative;
+  margin-bottom: 1rem;
+  width: 55%;
+}
+
+input[type="email"] {
+  width: 100%;
+  padding: 0.5rem 2.2rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
+
+input[type="email"].is-invalid {
+  border-color: #e3342f;
+  background-image: url('../assets/error.png');
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 20px 20px;
+}
+
+.invalid-feedback {
+  display: none;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 80%;
+  color: #e3342f;
+}
+
+.icon-env {
+    position: absolute;
+    margin-top: 0.19rem;
+    margin-left: 5px;
+    font-size: 24px;
+}
+
+input[type="email"].is-invalid + .invalid-feedback {
+  display: block;
+}
 .input-no-spinners:focus {
   outline: none;
 }
