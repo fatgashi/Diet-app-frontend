@@ -11,6 +11,10 @@ export default {
       ageDescription: 'We ask your age to create your fasting plan',
       ageDescription1: 'Older people tend to have more body fat than younger people with the same BMI.'
     },
+    email: {
+      emailFirst: 'We ask your email to create your account',
+      emailSecond: 'Protecting your privacy is a very serious matter for us. Your email is being used to create an account for you so that your data can be saved in it.'
+    },
     headers: {
       header2: "INTERMITTENT FASTING",
       header4: "CHOOSE YOUR AGE GROUP",

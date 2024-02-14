@@ -9,6 +9,10 @@ export default {
     bmifirst: 'Ihr BMI ist ',
     bmisecond: 'welches ist berücksichtigt ',
   },
+  email: {
+    emailFirst: 'Wir bitten um Ihre E-Mail-Adresse, um Ihr Konto zu erstellen',
+    emailSecond: 'Der Schutz Ihrer Privatsphäre ist uns ein sehr ernstes Anliegen. Ihre E-Mail-Adresse wird verwendet, um für Sie ein Konto zu erstellen, in dem Ihre Daten gespeichert werden können.'
+  },
   headers: {
       header2: "INTERMITTIERENDE FASTEN",
       header4: "WÄHLEN SIE IHRE ALTERSGRUPPE",

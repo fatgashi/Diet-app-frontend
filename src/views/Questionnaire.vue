@@ -31,7 +31,7 @@
                         <div class="bmi-note mb-3">
                             <div class="p-3">
                                 <span role="img" aria-label="Note">💡</span>
-                                {{ $t('bmiNote.calculationNote') }}
+                                <span class="fw-bold">{{ $t('bmiNote.calculationNote') }}</span>
                                 <p>{{ $t('bmiNote.calculationDescription') }}</p>
                             </div>
                         </div>
@@ -117,24 +117,37 @@
                     </div>
                 </div>
                 <div v-else-if="currentQuestion.question === 'email' " class="d-flex flex-column justify-content-center align-items-center">
-                    <div class="form-group mt-3">
-                        <i class="bi bi-envelope-fill icon-env"></i>
-                        <input
-                        type="email"
-                        v-model="email"
-                        @blur="validateEmail"
-                        :class="{ 'is-invalid': emailError }"
-                        placeholder="Your email"
-                    />
-                        <div v-if="emailError" class="invalid-feedback">
-                            A valid email is required
+                    <div class="influid">
+                        <div class="form-group mt-3 mb-3">
+                            <i class="bi bi-envelope icon-env"></i>
+                            <input
+                                type="email"
+                                v-model="email"
+                                @blur="validateEmail"
+                                :class="{'is-invalid': emailError, 'is-valid': !emailError && email.length > 0}"
+                                placeholder="Your email"
+                            />
+                            <div v-if="emailError" class="invalid-feedback">
+                                A valid email is required
+                            </div>
+                            <div v-if="!emailError && email.length > 0" class="valid-feedback">
+                                Perfect!
+                            </div>
                         </div>
+                        <div class="email-note mb-3">
+                            <div class="p-2">
+                                <span role="img" class="fs-5" aria-label="Note">☝️</span>
+                                <span class="fw-bold">{{ $t('email.emailFirst') }}</span>
+                                <p>{{ $t('email.emailSecond') }}</p>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div v-else-if="currentQuestion.question === 'age'" class="d-flex flex-column justify-content-center align-items-center">
                     <div>
                         <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userAge">
-                        <p v-if="userAge < 16 || userWeightKg > 99" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperTextAge') }}</p>
+                        <p v-if="userAge < 16 || userAge > 99" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperTextAge') }}</p>
                         <div class="bmi-note mb-3">
                             <div class="p-3">
                                 <span role="img" aria-label="Note">☝️</span>
@@ -402,6 +415,9 @@ export default {
         },
     },
     watch: {
+        email(newEmail) {
+            this.validateEmail(newEmail);
+        },
         currentQuestionIndex(newIndex){
             if(newIndex === -1){
                 this.$router.push('/generalQuestions');
@@ -625,10 +641,12 @@ export default {
   margin: 0;
 }
 
+.influid {
+    max-width: 600px;
+}
+
 .form-group {
   position: relative;
-  margin-bottom: 1rem;
-  width: 55%;
 }
 
 input[type="email"] {
@@ -643,7 +661,7 @@ input[type="email"].is-invalid {
   background-image: url('../assets/error.png');
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
-  background-size: 20px 20px;
+  background-size: 25px 25px;
 }
 
 .invalid-feedback {
@@ -662,6 +680,28 @@ input[type="email"].is-invalid {
 }
 
 input[type="email"].is-invalid + .invalid-feedback {
+  display: block;
+}
+
+input[type="email"].is-valid {
+  border-color: #28a745; /* Green border for valid input */
+  background-image: url('../assets/ok.webp');
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 25px 25px;
+
+}
+
+.valid-feedback {
+  display: none;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 80%;
+  color: #28a745; /* Green text for valid feedback */
+}
+
+/* Show the valid feedback message when input is valid */
+input[type="email"].is-valid + .valid-feedback {
   display: block;
 }
 .input-no-spinners:focus {
@@ -685,6 +725,12 @@ input[type="email"].is-invalid + .invalid-feedback {
     background-color: rgb(242, 239, 238);
     border-radius: 15px;
     max-width: 600px;
+}
+
+.email-note {
+    background-color: rgb(242, 239, 238);
+    border-radius: 15px;
+    width: 100%;
 }
 
 .unit-toggle button.active {
