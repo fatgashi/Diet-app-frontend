@@ -16,7 +16,6 @@ const messages = {
 Vue.config.productionTip = false
 
 const i18n = new VueI18n({
-  locale: 'en', // set the default locale to English
   fallbackLocale: 'en', // set fallback locale
   messages, // set locale messages
 });
@@ -25,5 +24,9 @@ new Vue({
   i18n,
   router,
   store,
+  beforeCreate() {
+    // Directly set i18n locale to the value from Vuex state
+    this.$i18n.locale = this.$store.state.currentLang;
+  },
   render: h => h(App),
 }).$mount('#app')

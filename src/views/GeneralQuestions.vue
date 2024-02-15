@@ -50,90 +50,94 @@
     </div>
   </template>
   
-  <script>
-  import questions from '../data/generalQuestions.js';
+<script>
+    import questions from '../data/generalQuestions.js';
 export default {
-        data(){
-            return {
-                currentQuestionIndex: 1,
-                selectedChoice: null,
-                questionsNumber: 0,
-            }
-        },
-        computed: {
-            currentQuestion() {
-                return questions[this.currentQuestionIndex];
-            },
-            currentLang(){
-                return this.$store.state.currentLang;
-            },
-            progressValue() {
-                const totalQuestions = 33 + 1;
-                const answeredQuestions = this.$store.state.answers.length;
-                const progress = (answeredQuestions / totalQuestions) * 100;
-
-                return Math.round(progress); 
-            },
-            progressStyle() {
-                return `${this.progressValue}%`;
-            },
-        },
-        watch: {
-            currentQuestionIndex(newIndex){
-                if(newIndex === 0){
-                    this.$router.push('/home');
-                }
-            }
-        },
-      methods: {
-            nextQuestion() {
-                if (this.selectedChoice !== null) {
-                    // Save the user's choice if needed
-                    this.saveAnswer(this.selectedChoice);
-                    
-                    this.$router.push('/questionnaire')
-                    
-                } else {
-                    alert('Please select an answer before moving on.');
-                }
-            },
-            goBack() {
-                this.$store.dispatch('goBack');
-                this.currentQuestionIndex--;
-            },
-            saveAnswer(answer) {
-                // Save the user's choice or height input
-                this.$store.dispatch('saveAnswer', {
-                question: this.currentQuestion.text,
-                answer: answer,
-                });
-            },
-            moveToNextQuestion() {
-                // Check if there are more questions
-                if (this.currentQuestionIndex < this.genderQuestions.length - 1) {
-                    this.currentQuestionIndex++;
-                    this.selectedChoice = []; // Reset selected choice for the next question
-                } else {
-                    // Handle end of questionnaire
-                    this.handleEndOfQuestionnaire();
-                }
-            },
-            selectChoice(choice) {
-                this.saveAnswer(choice);
-                this.$router.push('/questionnaire')
-            },
-        },
-        mounted(){
-            this.questionsNumber = questions.length;
+    data(){
+        return {
+            currentQuestionIndex: 1,
+            selectedChoice: null,
+            questionsNumber: 0,
         }
-  }
-  </script>
+    },
+    computed: {
+        currentQuestion() {
+            return questions[this.currentQuestionIndex];
+        },
+        currentLang(){
+            return this.$store.state.currentLang;
+        },
+        progressValue() {
+            const totalQuestions = 33 + 1;
+            const answeredQuestions = this.$store.state.answers.length;
+            const progress = (answeredQuestions / totalQuestions) * 100;
+
+            return Math.round(progress); 
+        },
+        progressStyle() {
+            return `${this.progressValue}%`;
+        },
+    },
+    watch: {
+        currentQuestionIndex(newIndex){
+            if(newIndex === 0){
+                this.$router.push('/home');
+            }
+        }
+    },
+    methods: {
+        nextQuestion() {
+            if (this.selectedChoice !== null) {
+                // Save the user's choice if needed
+                this.saveAnswer(this.selectedChoice);
+                
+                this.$router.push('/questionnaire')
+                
+            } else {
+                alert('Please select an answer before moving on.');
+            }
+        },
+        goBack() {
+            this.$store.dispatch('goBack');
+            this.currentQuestionIndex--;
+        },
+        saveAnswer(answer) {
+            // Save the user's choice or height input
+            this.$store.dispatch('saveAnswer', {
+            question: this.currentQuestion.text,
+            answer: answer,
+            });
+        },
+        moveToNextQuestion() {
+            // Check if there are more questions
+            if (this.currentQuestionIndex < this.genderQuestions.length - 1) {
+                this.currentQuestionIndex++;
+                this.selectedChoice = []; // Reset selected choice for the next question
+            } else {
+                // Handle end of questionnaire
+                this.handleEndOfQuestionnaire();
+            }
+        },
+        selectChoice(choice) {
+            this.saveAnswer(choice);
+            this.$router.push('/questionnaire')
+        },
+    },
+
+    mounted(){
+        this.questionsNumber = questions.length;
+    }
+}
+
+</script>
   
-  <style scoped>
-  .selected {
-    background-color: #004080 !important; /* Change the background color to indicate selection */
-    color: white;
+<style scoped>
+
+@media only screen and (max-width: 301px) {
+  .name {
+    display: none;
   }
+}
   
   #label-answers{
       cursor: pointer;
@@ -147,44 +151,37 @@ export default {
   
   }
   
-  .progress-bar{
-      background-color: #004080 !important;
-  }
-  
-  #progess-bar1{
-      height: 2vh;
-  }
-  
-  #arrow-button {
-      background-color: white;
-  }
+.progress-bar{
+    background-color: #004080 !important;
+}
 
-    .progress-bar{
-        background-color: #004080 !important;
-        }
+#progess-bar1{
+    height: 2vh;
+}
 
-    .progress{
-        height: 1vh;
+#arrow-button {
+    background-color: white;
+}
+
+.progress-bar{
+    background-color: #004080 !important;
     }
+
+.progress{
+    height: 1vh;
+}
   
-  #logo {
-      text-decoration: none;
-      cursor: pointer;
-      font-size: 20px;
-      font-weight: bold;
-      color: black;
-  }
+#logo {
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+}
   
-  .card-body {
-      cursor: pointer;
-      background-color: rgb(242, 239, 238);
-  }
-  
-  .next-button {
-      background-color: #004080;
-      border: none;
-      border-radius: 1%;
-      height: 6vh;
-      color: white;
-  }
-  </style>
+.card-body {
+    cursor: pointer;
+    background-color: rgb(242, 239, 238);
+}
+
+</style>

@@ -8,10 +8,16 @@ export default {
     calculationDescription: 'Der BMI wird häufig als Risikofaktor für die Entwicklung oder das Vorhandensein verschiedener Gesundheitsprobleme verwendet.',
     bmifirst: 'Ihr BMI ist ',
     bmisecond: 'welches ist berücksichtigt ',
+    ageDescription: 'Für die Erstellung Ihres Fastenplans fragen wir Ihr Alter ab',
+    ageDescription1: 'Ältere Menschen haben tendenziell mehr Körperfett als jüngere Menschen mit demselben BMI.'
   },
   email: {
     emailFirst: 'Wir bitten um Ihre E-Mail-Adresse, um Ihr Konto zu erstellen',
-    emailSecond: 'Der Schutz Ihrer Privatsphäre ist uns ein sehr ernstes Anliegen. Ihre E-Mail-Adresse wird verwendet, um für Sie ein Konto zu erstellen, in dem Ihre Daten gespeichert werden können.'
+    emailSecond: 'Der Schutz Ihrer Privatsphäre ist uns ein sehr ernstes Anliegen. Ihre E-Mail-Adresse wird verwendet, um für Sie ein Konto zu erstellen, in dem Ihre Daten gespeichert werden können.',
+    emailThird: 'Wir respektieren deine Privatsphäre. Ihre E-Mail kann das Werbeerlebnis relevanter machen.',
+    emailFourth: 'Datenschutzrichtlinie.',
+    validEmail: 'Eine gültige E-Mail-Adresse ist erforderlich',
+    perfect: 'Perfekt'
   },
   headers: {
       header2: "INTERMITTIERENDE FASTEN",
@@ -22,7 +28,8 @@ export default {
     helperText1: 'Geben Sie einen Wert zwischen 40 cm und 250 cm ein',
     helperText2: 'Geben Sie einen Wert zwischen 1ft und 8ft 2in',
     helperTextKg1: 'Geben Sie einen Wert zwischen 30 und 250 kg ein',
-    helperTextKg2: 'Geben Sie einen Wert zwischen 66 und 552 lbs'
+    helperTextKg2: 'Geben Sie einen Wert zwischen 66 und 552 lbs',
+    helperTextAge: 'Geben Sie einen Wert zwischen 16 und 99 ein'
   },
   motivation: {
     option1: 'Ich möchte nur sehen, worum es beim Fasten geht',

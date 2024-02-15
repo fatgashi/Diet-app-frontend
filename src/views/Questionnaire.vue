@@ -128,20 +128,32 @@
                                 placeholder="Your email"
                             />
                             <div v-if="emailError" class="invalid-feedback">
-                                A valid email is required
+                                {{ $t('email.validEmail') }}
                             </div>
                             <div v-if="!emailError && email.length > 0" class="valid-feedback">
-                                Perfect!
+                                {{ $t('email.perfect') }}
                             </div>
                         </div>
                         <div class="email-note mb-3">
-                            <div class="p-2">
-                                <span role="img" class="fs-5" aria-label="Note">☝️</span>
-                                <span class="fw-bold">{{ $t('email.emailFirst') }}</span>
-                                <p>{{ $t('email.emailSecond') }}</p>
+                            <div class="p-2 d-flex justify-content-around">
+                                <div>
+                                    <span role="img" class="fs-5" aria-label="Note">☝️</span>
+                                </div>
+                                <div>
+                                    <span class="fw-bold">{{ $t('email.emailFirst') }}</span>
+                                    <p>{{ $t('email.emailSecond') }}</p>
+                                </div>
                             </div>
                         </div>
-
+                        <div class="d-flex justify-content-around align-items-center w-100">
+                            <div>
+                                <img src="../assets/lockImage.png" class="me-1" width="40" height="30" alt="lock">
+                            </div>
+                            <div>
+                                <span class="fw-bold text-muted secure-text">{{ $t('email.emailThird') }} <router-link to="/privacy-policy">{{ $t('email.emailFourth') }}</router-link></span>
+                            </div>
+                        </div>
+                        <button :disabled="emailError || email.length === 0" @click="nextQuestionAge" class="next-button fw-bold mt-3">{{ $t('buttons.continue') }}</button>
                     </div>
                 </div>
                 <div v-else-if="currentQuestion.question === 'age'" class="d-flex flex-column justify-content-center align-items-center">
@@ -559,7 +571,6 @@ export default {
             if (this.currentQuestionIndex < this.genderQuestions.length - 1) {
                 this.currentQuestionIndex++;
                 this.selectedChoice = []; // Reset selected choice for the next question
-                console.log(this.currentQuestionIndex);
                 
                 if(this.currentQuestionIndex == 29){
                     this.$router.push('/feedback-wellness')
@@ -630,6 +641,12 @@ export default {
 </script>
 
 <style scoped>
+
+@media only screen and (max-width: 301px) {
+  .name {
+    display: none;
+  }
+}
 .selected {
   background-color: #004080 !important; /* Change the background color to indicate selection */
   color: white;
@@ -731,6 +748,10 @@ input[type="email"].is-valid + .valid-feedback {
     background-color: rgb(242, 239, 238);
     border-radius: 15px;
     width: 100%;
+}
+
+.secure-text {
+    font-size: 14px;
 }
 
 .unit-toggle button.active {
