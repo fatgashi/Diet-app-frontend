@@ -2,7 +2,7 @@
   <div class="main-container">
     <nav class="navbar d-flex justify-content-start align-items-center">
           <img class="ms-3" src="../assets/main-logo.png" width="50" height="40" />
-          <router-link class="ms-1" to="/home" id="logo">nutriplanwellness</router-link>
+          <router-link class="ms-1" to="" id="logo">nutriplanwellness</router-link>
     </nav>
     <div class="container">
         <div class="d-flex justify-content-center align-items-start" id="rfluid">

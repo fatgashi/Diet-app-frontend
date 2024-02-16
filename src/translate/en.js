@@ -17,7 +17,8 @@ export default {
       emailThird: 'We respect your privacy. Your email can make the advertising experience more relevant.',
       emailFourth: 'Privacy Policy.',
       validEmail: 'A valid email is required',
-      perfect: 'Perfect'
+      perfect: 'Perfect',
+      placeholder: 'Your Email',
     },
     headers: {
       header2: "INTERMITTENT FASTING",

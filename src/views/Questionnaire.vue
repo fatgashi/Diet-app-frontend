@@ -19,40 +19,43 @@
                 <h1 class="text-center mb-2 fw-bolder">{{ currentQuestion.text[currentLang] }}</h1>
                 <p class="text-center" v-if="currentQuestion.extraText">{{ currentQuestion.extraText[currentLang] }}</p>
                 <div v-if="currentQuestion.question === 'height'" class="d-flex flex-column justify-content-center align-items-center">
-
-                    <div class="unit-toggle">
-                        <button @click="useMetric = false" :class="{ active: !useMetric }" class="border-0">in</button>
-                        <button @click="useMetric = true" :class="{ active: useMetric }" class="border-0">cm</button>
-                    </div>
-
-                    <div v-if="useMetric" class="mt-3">
-                        <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userHeightCm"><span class="fw-bold">cm</span>
-                        <p v-if="userHeightCm < 40 || userHeightCm > 250" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperText1') }}</p>
-                        <div class="bmi-note mb-3">
-                            <div class="p-3">
-                                <span role="img" aria-label="Note">💡</span>
-                                <span class="fw-bold">{{ $t('bmiNote.calculationNote') }}</span>
-                                <p>{{ $t('bmiNote.calculationDescription') }}</p>
-                            </div>
+                    <div class="influid">
+                        <div class="unit-toggle text-center">
+                            <button @click="useMetric = false" :class="{ active: !useMetric }" class="border-0">in</button>
+                            <button @click="useMetric = true" :class="{ active: useMetric }" class="border-0">cm</button>
                         </div>
-                        <button :disabled="userHeightCm < 40 || userHeightCm > 250" @click="nextQuestionCm" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
-                    </div>
     
-                    <!-- Inputs for imperial -->
-                    <div v-else class="mt-3">
-                        <input class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" type="number" v-model.number="userHeightFt" style="width: 45%;"><span class="fw-bold">ft</span>
-                        <input class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" type="number" v-model.number="userHeightIn" style="width: 10vh;"><span class="fw-bold">in</span>
-                        <p v-if="feetError" class="helper-text text-danger fw-bold text-center">{{$t('helpers.helperText2')}}</p>
-                        <div class="bmi-note mb-3">
-                            <div class="p-3">
-                                <span role="img" aria-label="Note">💡</span>
-                                {{ $t('calculations.calc1') }}
-                                <p>{{ $t('calculations.calc2') }}</p>
+                        <div v-if="useMetric" class="mt-3">
+                            <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userHeightCm"><span class="fw-bold">cm</span>
+                            <p v-if="userHeightCm < 40 || userHeightCm > 250" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperText1') }}</p>
+                            <div class="bmi-note mb-3">
+                                <div class="p-2 d-flex justify-content-around">
+                                    <span role="img" aria-label="Note">💡</span>
+                                    <div>
+                                        <span class="fw-bold">{{ $t('bmiNote.calculationNote') }}</span>
+                                        <p>{{ $t('bmiNote.calculationDescription') }}</p>
+                                    </div>
+                                </div>
                             </div>
+                            <button :disabled="userHeightCm < 40 || userHeightCm > 250" @click="nextQuestionCm" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
                         </div>
-                        <button :disabled="feetError" @click="nextQuestionFeet" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
+        
+                        <div v-else class="mt-3">
+                            <input class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" type="number" v-model.number="userHeightFt" style="width: 45%;"><span class="fw-bold">ft</span>
+                            <input class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" type="number" v-model.number="userHeightIn" style="width: 10vh;"><span class="fw-bold">in</span>
+                            <p v-if="feetError" class="helper-text text-danger fw-bold text-center">{{$t('helpers.helperText2')}}</p>
+                            <div class="bmi-note mb-3">
+                                <div class="p-2 d-flex justify-content-around">
+                                    <span role="img" aria-label="Note">💡</span>
+                                    <div>
+                                        <span class="fw-bold">{{ $t('bmiNote.calculationNote') }}</span>
+                                        <p>{{ $t('bmiNote.calculationDescription') }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <button :disabled="feetError" @click="nextQuestionFeet" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
+                        </div>
                     </div>
-
                 </div>
                 <div v-else-if="currentQuestion.question === 'weight' " class="d-flex flex-column justify-content-center align-items-center">
                     <div class="unit-toggle">
@@ -65,22 +68,26 @@
                         <p v-if="userWeightKg < 30 || userWeightKg > 250" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperTextKg1') }}</p>
                         <div class="bmi-note mb-3">
                             <div v-if="bmi" class="bmi-note mb-3">
-                                <div class="p-3">
+                                <div class="p-2 d-flex justify-content-around">
                                     <span role="img" aria-label="Note">💡</span>
-                                    {{ $t('bmiNote.bmifirst') }} {{ bmi.toFixed(2) }}, {{ $t('bmiNote.bmisecond') }} {{ bmiCategory[currentLang] }}.
+                                    <div>
+                                        {{ $t('bmiNote.bmifirst') }} {{ bmi.toFixed(2) }}, {{ $t('bmiNote.bmisecond') }} {{ bmiCategory[currentLang] }}.
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <button :disabled="userWeightKg < 30 || userWeightKg > 250" @click="nextQuestionKg" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
                     </div>
                     
-                    <div v-else>
+                    <div v-else class="mt-3">
                         <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userWeightLbs"><span class="fw-bold">lbs</span>
                         <p v-if="userWeightLbs < 66 || userWeightLbs > 552" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperTextKg2') }}</p>
                         <div class="bmi-note mb-3">
-                            <div v-if="bmi" class="p-3">
+                            <div v-if="bmi" class="p-2 d-flex justify-content-around">
                                 <span role="img" aria-label="Note">💡</span>
-                                {{ $t('bmiNote.bmifirst') }} {{ bmi.toFixed(2) }}, {{ $t('bmiNote.bmisecond') }} {{ bmiCategory[currentLang] }}.
+                                <div>
+                                    {{ $t('bmiNote.bmifirst') }} {{ bmi.toFixed(2) }}, {{ $t('bmiNote.bmisecond') }} {{ bmiCategory[currentLang] }}.
+                                </div>
                             </div>
                         </div>
                         <button :disabled="userWeightLbs < 66 || userWeightLbs > 552" @click="nextQuestionLbs" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
@@ -88,8 +95,8 @@
                 </div>
                 <div v-else-if="currentQuestion.question === 'preferedWeight' " class="d-flex flex-column justify-content-center align-items-center">
                     <div class="unit-toggle">
-                        <button @click="toggleWeightUnit(false)" :class="{ active: !useKg }" class="border-0">lbs</button>
-                        <button @click="toggleWeightUnit(true)" :class="{ active: useKg }" class="border-0">kg</button>
+                        <button @click="toggleWeightUnitPrefered(false)" :class="{ active: !useKg }" class="border-0">lbs</button>
+                        <button @click="toggleWeightUnitPrefered(true)" :class="{ active: useKg }" class="border-0">kg</button>
                     </div>
 
                     <div v-if="useKg" class="mt-3">
@@ -104,7 +111,7 @@
                         <button :disabled="userWeightPreferedKg < 30 || userWeightPreferedKg > 250" @click="nextQuestionPreferedKg" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
                     </div>
                     
-                    <div v-else>
+                    <div v-else class="mt-3">
                         <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userWeightPreferedLbs"><span class="fw-bold">lbs</span>
                         <p v-if="userWeightPreferedLbs < 66 || userWeightPreferedLbs > 552" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperTextKg2') }}</p>
                         <div class="bmi-note mb-3">
@@ -125,7 +132,7 @@
                                 v-model="email"
                                 @blur="validateEmail"
                                 :class="{'is-invalid': emailError, 'is-valid': !emailError && email.length > 0}"
-                                placeholder="Your email"
+                                :placeholder="$t('email.placeholder')"
                             />
                             <div v-if="emailError" class="invalid-feedback">
                                 {{ $t('email.validEmail') }}
@@ -161,10 +168,12 @@
                         <input type="number" class="input-no-spinners border-0 text-end fw-bolder" placeholder="0" v-model.number="userAge">
                         <p v-if="userAge < 16 || userAge > 99" class="helper-text text-danger fw-bold text-center">{{ $t('helpers.helperTextAge') }}</p>
                         <div class="bmi-note mb-3">
-                            <div class="p-3">
-                                <span role="img" aria-label="Note">☝️</span>
-                                <span class="fw-bold">{{ $t('bmiNote.ageDescription') }} </span>
-                                <p>{{ $t('bmiNote.ageDescription1') }}</p>
+                            <div class="p-2 d-flex justify-content-around">
+                                <span role="img" class="fs-5" aria-label="Note">☝️</span>
+                                <div>
+                                    <span class="fw-bold">{{ $t('bmiNote.ageDescription') }} </span>
+                                    <p>{{ $t('bmiNote.ageDescription1') }}</p>
+                                </div>
                             </div>
                         </div>
                         <button :disabled="userAge < 16 || userAge > 99" @click="nextQuestionAge" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
@@ -471,6 +480,16 @@ export default {
             } else {
                 // If using pounds, reset the kilograms weight
                 this.userWeightKg = null;
+            }
+        },
+        toggleWeightUnitPrefered(useKg) {
+            this.useKg = useKg;
+            if (useKg) {
+                // If using kilograms, reset the pounds weight
+                this.userWeightPreferedLbs = null;
+            } else {
+                // If using pounds, reset the kilograms weight
+                this.userWeightPreferedKg = null;
             }
         },
         goBack() {

@@ -17,7 +17,8 @@ export default {
     emailThird: 'Wir respektieren deine Privatsphäre. Ihre E-Mail kann das Werbeerlebnis relevanter machen.',
     emailFourth: 'Datenschutzrichtlinie.',
     validEmail: 'Eine gültige E-Mail-Adresse ist erforderlich',
-    perfect: 'Perfekt'
+    perfect: 'Perfekt',
+    placeholder: 'Deine E-Mail',
   },
   headers: {
       header2: "INTERMITTIERENDE FASTEN",
