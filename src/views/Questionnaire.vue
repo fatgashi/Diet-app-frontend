@@ -278,7 +278,7 @@ export default {
             return this.$store.state.currentLang;
         },
         lossWeight() {
-            let answer = this.$store.state.answers[26]?.answer; // Use optional chaining
+            let answer = this.$store.state.answers[28]?.answer; // Use optional chaining
             if (!answer) return null; // If answer is not defined, return null
 
             let weight = parseInt(answer.answer);
@@ -363,7 +363,7 @@ export default {
             let inches;
             let cm;
             let answers = this.$store.state.answers;
-            let userHeight = answers[25]?.answer;
+            let userHeight = answers[27]?.answer;
             
             if(this.userWeightKg >= 30 && this.userWeightKg <= 250 || this.userWeightLbs >= 66 && this.userWeightLbs <= 552){
                 if(userHeight.unit === "feet"){
@@ -652,7 +652,7 @@ export default {
         }
         this.updateLastShownTimestamp();
         if (this.$store.state.answers.length > 0) {
-            this.currentQuestionIndex = this.$store.state.answers.length;
+            this.currentQuestionIndex = this.$store.state.answers.length - 2;
         }
         this.questionsNumber = this.genderQuestions.length + 2;
     }

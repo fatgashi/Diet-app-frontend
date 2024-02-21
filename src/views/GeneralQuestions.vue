@@ -8,7 +8,7 @@
                 <img src="../assets/main-logo.png" width="50" height="40" />
                 <span class="name fw-bold text-muted">nutriplanwellness</span>
             </div>
-            <span class="fw-bold text-muted me-3">{{ currentQuestionIndex }} / {{ 30 }}</span>
+            <span class="fw-bold text-muted me-3">{{ currentQuestionIndex }} / {{ 32 }}</span>
         </div>
         <div class="progress mx-4 mt-2" id="progress-bar1">
             <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" :aria-valuenow="progressValue" aria-valuemin="0" aria-valuemax="100" :style="{width: progressStyle}"></div>
@@ -35,9 +35,6 @@
                                   </div>
                                   <div v-if="choice.emoji" style="font-size: 30px;">
                                       {{ choice.emoji }}
-                                  </div>
-                                  <div v-else>
-                                      <img :src="choice.image" />
                                   </div>
                               </label>
                           </div>
@@ -86,21 +83,16 @@ export default {
         }
     },
     methods: {
-        nextQuestion() {
-            if (this.selectedChoice !== null) {
-                // Save the user's choice if needed
-                this.saveAnswer(this.selectedChoice);
-                
-                this.$router.push('/questionnaire')
-                
-            } else {
-                alert('Please select an answer before moving on.');
-            }
-        },
         goBack() {
             this.$store.dispatch('goBack');
             this.currentQuestionIndex--;
         },
+        selectChoice(choice) {
+            console.log(choice);
+            this.saveAnswer(choice);
+            this.$router.push('/questionnaire')
+        },
+
         saveAnswer(answer) {
             // Save the user's choice or height input
             this.$store.dispatch('saveAnswer', {
@@ -108,20 +100,7 @@ export default {
             answer: answer,
             });
         },
-        moveToNextQuestion() {
-            // Check if there are more questions
-            if (this.currentQuestionIndex < this.genderQuestions.length - 1) {
-                this.currentQuestionIndex++;
-                this.selectedChoice = []; // Reset selected choice for the next question
-            } else {
-                // Handle end of questionnaire
-                this.handleEndOfQuestionnaire();
-            }
-        },
-        selectChoice(choice) {
-            this.saveAnswer(choice);
-            this.$router.push('/questionnaire')
-        },
+        
     },
 
     mounted(){
