@@ -236,7 +236,7 @@
                             </div>
                         </div>
                     </div>
-                    <button v-if="currentQuestion.checkbox" @click="nextQuestion" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
+                    <button v-if="currentQuestion.checkbox" :disabled="selectedChoice.length === 0" @click="nextQuestion" class="next-button fw-bold">{{ $t('buttons.continue') }}</button>
                 </div>
             </div>
         </div>
@@ -278,7 +278,7 @@ export default {
             return this.$store.state.currentLang;
         },
         lossWeight() {
-            let answer = this.$store.state.answers[28]?.answer; // Use optional chaining
+            let answer = this.$store.state.answers[29]?.answer; // Use optional chaining
             if (!answer) return null; // If answer is not defined, return null
 
             let weight = parseInt(answer.answer);
@@ -363,7 +363,7 @@ export default {
             let inches;
             let cm;
             let answers = this.$store.state.answers;
-            let userHeight = answers[27]?.answer;
+            let userHeight = answers[28]?.answer;
             
             if(this.userWeightKg >= 30 && this.userWeightKg <= 250 || this.userWeightLbs >= 66 && this.userWeightLbs <= 552){
                 if(userHeight.unit === "feet"){
@@ -494,6 +494,7 @@ export default {
         },
         goBack() {
             this.$store.dispatch('goBack');
+            this.selectedChoice = [];
             this.currentQuestionIndex--;
         },
         getImagePath(image) {
@@ -504,6 +505,7 @@ export default {
             if (this.currentQuestion.condition) {
                 // If the first choice is the one being selected/deselected
                 if (choice === this.currentQuestion.choices[0].answer) {
+                    console.log("Hello")
                         if (this.selectedChoice.includes(choice)) {
                         // If it's already selected, deselect it
                         this.selectedChoice = this.selectedChoice.filter(c => c !== choice);
@@ -591,8 +593,9 @@ export default {
                 this.currentQuestionIndex++;
                 this.selectedChoice = []; // Reset selected choice for the next question
                 
-                if(this.currentQuestionIndex == 29){
+                if(this.currentQuestionIndex == 30){
                     this.$router.push('/feedback-wellness')
+                    this.$axios.post('/predictions', this.$store.state.answers);
                 }
             } else {
                 // Handle end of questionnaire

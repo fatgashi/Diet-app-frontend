@@ -133,7 +133,7 @@ export default {
             return this.$store.state.currentLang;
         },
         motivationLevel() {
-            const answerIndex = this.$store.state.answers[26]?.answer?.[this.currentLang];
+            const answerIndex = this.$store.state.answers[27]?.answer?.[this.currentLang];
             const motivationMapping = {
                 [this.$t('motivation.option1')]: {en: 'Average', de: 'Durchschnitt'},
                 [this.$t('motivation.option2')]: {en: 'Average', de: 'Durchschnitt'},
@@ -157,8 +157,8 @@ export default {
     beforeRouteLeave(to, from, next) {
         // Check if the navigation was a backward navigation
         if (to.path === '/questionnaire' && !this.forward) {
-            if(this.$store.state.answers.length === 31){
-                this.$store.state.answers.pop();
+            if(this.$store.state.answers.length === 32){
+                this.$store.dispatch("goBack");
             }
         }
         // Call next to proceed with the navigation

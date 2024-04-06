@@ -5,6 +5,8 @@ import store from './store'
 import VueI18n from 'vue-i18n';
 import en from './translate/en';
 import de from './translate/de';
+import instance from './methods/axios.js';
+
 
 Vue.use(VueI18n);
 
@@ -13,6 +15,7 @@ const messages = {
   de // German translate
 };
 
+Vue.prototype.$axios = instance;
 Vue.config.productionTip = false
 
 const i18n = new VueI18n({

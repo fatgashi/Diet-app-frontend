@@ -65,7 +65,7 @@ export default {
             return this.$store.state.currentLang;
         },
         progressValue() {
-            const totalQuestions = 33 + 1;
+            const totalQuestions = 34 + 1;
             const answeredQuestions = this.$store.state.answers.length;
             const progress = (answeredQuestions / totalQuestions) * 100;
 
