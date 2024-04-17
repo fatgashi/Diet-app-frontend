@@ -593,13 +593,10 @@ export default {
                 this.currentQuestionIndex++;
                 this.selectedChoice = []; // Reset selected choice for the next question
                 
-                if(this.currentQuestionIndex == 30){
+                if(this.currentQuestionIndex === 30){
                     this.$router.push('/feedback-wellness')
                     this.$axios.post('/predictions', this.$store.state.answers);
                 }
-            } else {
-                // Handle end of questionnaire
-                this.handleEndOfQuestionnaire();
             }
         },
 

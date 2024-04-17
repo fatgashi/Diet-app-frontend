@@ -157,7 +157,7 @@ export default {
     beforeRouteLeave(to, from, next) {
         // Check if the navigation was a backward navigation
         if (to.path === '/questionnaire' && !this.forward) {
-            if(this.$store.state.answers.length === 32){
+            if(this.$store.state.answers.length === 31){
                 this.$store.dispatch("goBack");
             }
         }
@@ -180,7 +180,7 @@ export default {
         },
         nextQuestion(){
             this.forward = true
-            this.$router.push('/questionnaire')
+            this.$router.push('/progress')
         },
     },
     beforeDestroy() {

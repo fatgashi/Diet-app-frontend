@@ -6,6 +6,8 @@ const Questionnaire = () => import('../views/Questionnaire.vue');
 // import GeneralQuestions from "../views/GeneralQuestions";
 const GeneralQuestions = () => import('../views/GeneralQuestions.vue')
 const FeedBack = () => import('../views/FeedBackSummury.vue')
+const CircleProgress = () => import ('../views/CircleProgress.vue')
+
 const routes = [
     {
         path: "/",
@@ -33,6 +35,11 @@ const routes = [
                 component: FeedBack,
                 meta: {requireData: true}
                 
+            },
+            {
+                path: "progress",
+                name: "Circle Progress",
+                component: CircleProgress
             },
         ],
     },
