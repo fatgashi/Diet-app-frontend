@@ -7,6 +7,7 @@ const Questionnaire = () => import('../views/Questionnaire.vue');
 const GeneralQuestions = () => import('../views/GeneralQuestions.vue')
 const FeedBack = () => import('../views/FeedBackSummury.vue')
 const CircleProgress = () => import ('../views/CircleProgress.vue')
+const DietPage = () => import('../views/DietPage.vue');
 
 const routes = [
     {
@@ -41,6 +42,11 @@ const routes = [
                 name: "Circle Progress",
                 component: CircleProgress
             },
+            {
+                path: 'diet-type',
+                name: 'DietPage',
+                component: DietPage
+            }
         ],
     },
 ];
