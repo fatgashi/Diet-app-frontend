@@ -88,7 +88,6 @@ export default {
             this.currentQuestionIndex--;
         },
         selectChoice(choice) {
-            console.log(choice);
             this.saveAnswer(choice);
             this.$router.push('/questionnaire')
         },

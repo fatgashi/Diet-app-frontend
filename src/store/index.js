@@ -9,6 +9,7 @@ export default new Vuex.Store({
     answers: [], // Store user answers here
     bmi: 0,
     currentLang: localStorage.getItem('currentLang') || 'en',
+    dietType: "",
   },
   mutations: {
     addAnswer(state, answer) {
@@ -25,6 +26,12 @@ export default new Vuex.Store({
     },
     setBMI(state, bmiValue){
       state.bmi = bmiValue
+    },
+    addDietType(state, dietTypeValue){
+      state.dietType = dietTypeValue
+    },
+    clearPrediction(state){
+      state.dietType = ""
     }
   },
   actions: {
@@ -42,6 +49,12 @@ export default new Vuex.Store({
     },
     setBMI({ commit }, newValue){
       commit('setBMI', newValue)
+    },
+    setDietType({ commit }, newValue){
+      commit('addDietType', newValue)
+    },
+    clearPrediction({commit}){
+      commit('clearPrediction');
     }
   },
   getters: {
@@ -49,7 +62,7 @@ export default new Vuex.Store({
   },
   plugins: [
     createPersistedState({
-      paths: ['answers', 'bmi', 'currentLang'], // Specify which state properties to persist
+      paths: ['answers', 'bmi', 'currentLang', 'dietType'], // Specify which state properties to persist
     }),
   ],
 });

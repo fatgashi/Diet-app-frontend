@@ -67,6 +67,7 @@ export default {
   },
   mounted(){
     this.$store.dispatch("clearAnswers");
+    this.$store.dispatch("clearPrediction")
   }
 }
 </script>

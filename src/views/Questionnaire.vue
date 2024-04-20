@@ -505,7 +505,6 @@ export default {
             if (this.currentQuestion.condition) {
                 // If the first choice is the one being selected/deselected
                 if (choice === this.currentQuestion.choices[0].answer) {
-                    console.log("Hello")
                         if (this.selectedChoice.includes(choice)) {
                         // If it's already selected, deselect it
                         this.selectedChoice = this.selectedChoice.filter(c => c !== choice);
@@ -595,7 +594,9 @@ export default {
                 
                 if(this.currentQuestionIndex === 30){
                     this.$router.push('/feedback-wellness')
-                    this.$axios.post('/predictions', this.$store.state.answers);
+                    this.$axios.post('/predictions', this.$store.state.answers).then(res => {
+                        this.$store.dispatch('setDietType', res.data);
+                    });
                 }
             }
         },

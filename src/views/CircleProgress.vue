@@ -39,7 +39,7 @@ export default {
   watch: {
     progress(newValue){
       if(newValue === 100){
-        this.$router.push("")
+        this.$router.push("/diet-type")
       }
     }
   },
