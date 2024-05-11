@@ -113,6 +113,15 @@ export default {
     await this.$axios.get(`/mealPlan/${this.dietType._id}`).then(res => {
       this.mealPlan = res.data[0]
     })
+
+    // const dataStored = this.$store.state.answers;
+    // const mapedData = new Map();
+
+    // dataStored.forEach(value => {
+    //   mapedData.set(value.question.en,value.answer)
+    // })
+
+    // console.log(mapedData);
   },
 }
 </script>

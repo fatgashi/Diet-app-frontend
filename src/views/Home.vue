@@ -87,12 +87,12 @@ export default {
 }
 
 .age-button{
-  background-color: #004080;
-  color: white;
+  background-color: #004080 !important;
+  color: white !important;
 }
 
 .card {
-  border: none;
+  border: none !important;
 }
 
 </style>

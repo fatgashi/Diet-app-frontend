@@ -8,6 +8,10 @@ const GeneralQuestions = () => import('../views/GeneralQuestions.vue')
 const FeedBack = () => import('../views/FeedBackSummury.vue')
 const CircleProgress = () => import ('../views/CircleProgress.vue')
 const DietPage = () => import('../views/DietPage.vue');
+import DashboardLanding from '../Dashboard/DashboardLanding';
+import DashboardLayout from '../Dashboard/DashboardLayout';
+
+
 
 const routes = [
     {
@@ -47,6 +51,19 @@ const routes = [
                 name: 'DietPage',
                 component: DietPage
             }
+        ],
+    },
+    {
+        path: "/",
+        name: "Client-Dashboard",
+        component: DashboardLayout,
+        meta: { isClient: true },
+        children: [
+            {
+            path: "/client-dashboard",
+            name: "DashboardLanding",
+            component: DashboardLanding
+            },
         ],
     },
 ];

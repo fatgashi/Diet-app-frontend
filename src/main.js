@@ -6,6 +6,12 @@ import VueI18n from 'vue-i18n';
 import en from './translate/en';
 import de from './translate/de';
 import instance from './methods/axios.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+import { getToken } from './config/localStorage.js';
+import { getTokenExpiration, logout } from './config/userLogic.js';
 
 
 Vue.use(VueI18n);
@@ -15,6 +21,23 @@ const messages = {
   de // German translate
 };
 
+Vue.prototype.$setupSessionTimeout = function(){
+    const token = getToken();
+    if (token) {
+        const expiresAt = getTokenExpiration(token);
+        const timeout = expiresAt - Date.now();
+
+        if (timeout > 0) {
+            setTimeout(() => {
+                logout();
+            }, timeout);
+        } else {
+            logout();
+        }
+    }
+};
+
+Vue.use(Toast);
 Vue.prototype.$axios = instance;
 Vue.config.productionTip = false
 
@@ -30,6 +53,9 @@ new Vue({
   beforeCreate() {
     // Directly set i18n locale to the value from Vuex state
     this.$i18n.locale = this.$store.state.currentLang;
+  },
+  created(){
+    this.$setupSessionTimeout();
   },
   render: h => h(App),
 }).$mount('#app')
