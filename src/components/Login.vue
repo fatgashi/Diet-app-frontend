@@ -36,7 +36,7 @@
 import Register from './Register.vue'
 import { Modal } from 'bootstrap';
 
-// import { getCurrentUser } from '@/config/userLogic';
+import { getCurrentUser } from '@/config/userLogic';
 export default {
   name: "LoginModal",
   components: { 
@@ -66,10 +66,10 @@ export default {
         this.$store.dispatch('updateLogged', true);
         this.$emit('login');
         this.$setupSessionTimeout();
-        // const user = await getCurrentUser();
-        // if(user){
-        //   user.role === 'admin' ? this.$router.replace({path: '/dashboard'}) : this.$router.replace({path: '/dashboard'});
-        // }
+        const user = await getCurrentUser();
+        if(user){
+          user.role === 'admin' ? this.$router.replace({path: '/admin-dashboard'}) : this.$router.replace({path: '/client-dashboard'});
+        }
         this.$toast.success("You logged in successfully! ");
 
         this.modal.hide();

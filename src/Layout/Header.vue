@@ -39,8 +39,8 @@
                   <span class="visually-hidden">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" id="menu-fix">
-                  <li><router-link class="dropdown-item" v-if="user.role === 'admin'" id="dashboardlink" to="/dashboard">Dashboard</router-link></li>
-                  <li><router-link class="dropdown-item" id="dashboardlink" to="/profile">Profile</router-link></li>
+                  <li v-if="user.role === 'admin'"><router-link class="dropdown-item" id="dashboardlink" to="/admin-dashboard">Dashboard</router-link></li>
+                  <li v-else><router-link class="dropdown-item" id="dashboardlink" to="/client-dashboard">Dashboard</router-link></li>
                 </ul>
               </div>
               

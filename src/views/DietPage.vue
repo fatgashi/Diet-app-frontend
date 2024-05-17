@@ -5,9 +5,18 @@
           <router-link class="ms-1 name" to="" id="logo">nutriplanwellness</router-link>
     </nav>
     <div class="image-div mt-2">
-      <div class="d-flex flex-column justify-content-center align-items-center h-100 text-white">
-        <h1 class="text-center img-text">The Diet Type Chosen For You:</h1>
-        <h1 class="text-center img-text">{{ dietType.type }}</h1>
+      <div class="d-flex flex-column justify-content-center align-items-center h-100">
+        <h1 class="text-center img-text text-white">The Diet Type Chosen For You:</h1>
+        <h1 class="text-center img-text text-white">{{ dietType.type }}</h1>
+        <h6 class="text-white img-text">Save your personalized diet plan and track your progress.</h6>
+        <button
+          class="btn btn-dark img-text d-flex justify-content-center"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModalToggle3"
+        >
+        Register Now
+        </button>
+        <Register :answers="answers" :dietType="dietType.type" />
       </div>
     </div>
     <div class="container">
@@ -92,13 +101,23 @@
 </template>
 
 <script>
+import Register from '../components/RegisterFromPrediction.vue';
 export default {
+  components: {
+    Register
+  },
   data(){
     return {
       photo: "",
       dietType: [],
       prediction: "",
       mealPlan: [],
+      answers: [],
+    }
+  },
+  methods: {
+    openRegistrationModal(){
+
     }
   },
   async mounted(){
@@ -114,14 +133,20 @@ export default {
       this.mealPlan = res.data[0]
     })
 
-    // const dataStored = this.$store.state.answers;
-    // const mapedData = new Map();
-
-    // dataStored.forEach(value => {
-    //   mapedData.set(value.question.en,value.answer)
-    // })
-
-    // console.log(mapedData);
+    const dataStored = this.$store.state.answers;
+    const mapedData = new Map();
+    dataStored.forEach(value => {
+      if(Array.isArray(value.answer)){
+        value.answer.reduce((obj, item, index) => {
+          obj[index] = item.en;
+          mapedData.set(value.question.en, obj);
+          return obj;
+        }, {});
+      } else {
+        mapedData.set(value.question.en,value.answer.en)
+      }
+    })
+    this.answers = mapedData;
   },
 }
 </script>

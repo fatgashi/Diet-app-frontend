@@ -164,8 +164,7 @@
 
 <script>
 import DashboardContent from "./DashboardContent.vue";
-import {  getCurrentUser } from '@/config/userLogic';
-import { removeToken } from '@/config/localStorage';
+import {  getCurrentUser, logout } from '../config/userLogic';
 
 export default {
   components: {
@@ -183,15 +182,7 @@ export default {
       this.opened = !this.opened;
     },
     async signOut() {
-        try {
-          await this.$axios.post(`/users/logout`);
-          this.$router.replace({path: '/home'});
-          removeToken();
-          this.loggedIn = false;
-          
-        } catch (err) {
-          this.error = err.mesagge;
-        }
+        logout();
       },
     async getUser(){
       this.user = await getCurrentUser();
