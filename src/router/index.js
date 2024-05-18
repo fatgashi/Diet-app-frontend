@@ -19,6 +19,7 @@ router.beforeEach(async (to, from, next) => {
     const requiresData = to.matched.some(record => record.meta.requireData);
     const requireAuthentication = to.matched.some(record => record.meta.isClient);
     const requireAuthorization = to.matched.some(record => record.meta.isAdmin);
+    const requireAuth = to.matched.some(record => record.meta.isAuth);
     const isAuthenticated = isTokenAvaible();
 
     if(requireAuthentication){
@@ -33,6 +34,20 @@ router.beforeEach(async (to, from, next) => {
             next('/home')
         }
     }
+    else if(requireAuth){
+        if(isAuthenticated){
+            const authorized = await isAdmin();
+            if(!authorized){
+                next('/client-dashboard')
+            } else {
+                next('/admin-dashboard');
+            }
+        }
+        else {
+            next();
+        }
+    }
+
     else if(requireAuthorization){
         if(isAuthenticated){
             const authorized = await isAdmin();

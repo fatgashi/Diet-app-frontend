@@ -16,7 +16,7 @@
         >
         Register Now
         </button>
-        <Register :answers="answers" :dietType="dietType.type" />
+        <Register :dietType="dietType.type" />
       </div>
     </div>
     <div class="container">
@@ -116,9 +116,6 @@ export default {
     }
   },
   methods: {
-    openRegistrationModal(){
-
-    }
   },
   async mounted(){
     this.prediction = this.$store.state.dietType;
@@ -132,21 +129,6 @@ export default {
     await this.$axios.get(`/mealPlan/${this.dietType._id}`).then(res => {
       this.mealPlan = res.data[0]
     })
-
-    const dataStored = this.$store.state.answers;
-    const mapedData = new Map();
-    dataStored.forEach(value => {
-      if(Array.isArray(value.answer)){
-        value.answer.reduce((obj, item, index) => {
-          obj[index] = item.en;
-          mapedData.set(value.question.en, obj);
-          return obj;
-        }, {});
-      } else {
-        mapedData.set(value.question.en,value.answer.en)
-      }
-    })
-    this.answers = mapedData;
   },
 }
 </script>

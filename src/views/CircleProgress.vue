@@ -17,12 +17,12 @@
           <div>
             <h5>Creating your fasting plan</h5>
           </div>
-          <div class="mt-5 fw-bolder">
+          <!-- <div class="mt-5 fw-bolder">
             <h1 style="color: #004080;">8+ million users</h1>
           </div>
           <div>
             <h5>have chosen our app</h5>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

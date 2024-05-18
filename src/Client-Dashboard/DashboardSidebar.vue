@@ -3,12 +3,12 @@
     <!-- Sidebar -->
     <div class="sidebar-bg bg-dark" id="sidebar-wrapper">
       <div class="sidebar-heading text-start text-white fw-bold pb-0 p-4">
-        <router-link to="/home" class="navbar-brand"><span class="fs-2 d-none d-sm-inline" id="logospan">Dental Library</span>
+        <router-link to="/home" class="navbar-brand"><span class="fs-4 d-none d-sm-inline" id="logospan">nutriplanwellness</span>
         </router-link>
         <hr />
       </div>
       <div class="list-group list-group-flush my-3 text-white">
-        <router-link to="/dashboard" class="
+        <router-link to="/client-dashboard" class="
             list-group-item list-group-item-action
             bg-transparent
             fw-bold
@@ -25,7 +25,7 @@
 
           <span>Dashboard</span>
         </router-link>
-        <router-link to="/dashboard/messages" class="
+        <router-link to="/client-dashboard/diet" class="
             list-group-item list-group-item-action
             bg-transparent
             fw-bold
@@ -38,9 +38,9 @@
               d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z" />
           </svg>
 
-          <span>Messages</span>
+          <span>Diet</span>
         </router-link>
-        <router-link to="/dashboard/products" class="
+        <router-link to="/client-dashboard/questionnaire" class="
             list-group-item list-group-item-action
             bg-transparent
             fw-bold
@@ -52,7 +52,7 @@
             <path
               d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
           </svg>
-          <span>Products</span>
+          <span>Questionnaire</span>
         </router-link>
         <!-- <router-link to="/customers" class="
             list-group-item list-group-item-action

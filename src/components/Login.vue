@@ -71,7 +71,7 @@ export default {
           user.role === 'admin' ? this.$router.replace({path: '/admin-dashboard'}) : this.$router.replace({path: '/client-dashboard'});
         }
         this.$toast.success("You logged in successfully! ");
-
+        
         this.modal.hide();
       } catch(err) {
         this.error = err.message;

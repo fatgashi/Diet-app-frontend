@@ -8,8 +8,8 @@ const GeneralQuestions = () => import('../views/GeneralQuestions.vue')
 const FeedBack = () => import('../views/FeedBackSummury.vue')
 const CircleProgress = () => import ('../views/CircleProgress.vue')
 const DietPage = () => import('../views/DietPage.vue');
-import DashboardLanding from '../Dashboard/DashboardLanding';
-import DashboardLayout from '../Dashboard/DashboardLayout';
+import DashboardLanding from '../Client-Dashboard/DashboardLanding';
+import DashboardLayout from '../Client-Dashboard/DashboardLayout';
 
 
 
@@ -22,17 +22,19 @@ const routes = [
             {
                 path: "home",
                 name: "Home",
-                component: Home
+                component: Home,
             },
             {
                 path: "generalQuestions",
                 name: "GeneralQuestions",
-                component: GeneralQuestions
+                component: GeneralQuestions,
+                meta: { isAuth: true },
             },
             {
                 path: "questionnaire",
                 name: "Questionnaire",
-                component: Questionnaire
+                component: Questionnaire,
+                meta: { isAuth: true },
             },
             {
                 path: "feedback-wellness",
@@ -44,12 +46,15 @@ const routes = [
             {
                 path: "progress",
                 name: "Circle Progress",
-                component: CircleProgress
+                component: CircleProgress,
+                meta: {requireData: true}
             },
             {
                 path: 'diet-type',
                 name: 'DietPage',
-                component: DietPage
+                component: DietPage,
+                meta: {requireData: true}
+
             }
         ],
     },

@@ -59,7 +59,7 @@ export default {
     methods: {
       async register(){
         try {
-          await this.$axios.post(`/user/register`, {
+          const response = await this.$axios.post(`/user/register`, {
             name: this.name,
             surname: this.surname,
             email: this.email,
@@ -68,7 +68,13 @@ export default {
           }).then(res => {
 
             this.$toast.success(res.data.message);
+            return res.data;
           })
+          this.$store.dispatch('updateToken', response.token);
+          this.$store.dispatch('updateLogged', true);
+          this.$emit('login');
+          this.$setupSessionTimeout();
+          this.$router.replace({path: '/client-dashboard'});
 
           this.modal.hide();
 

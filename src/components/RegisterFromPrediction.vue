@@ -37,67 +37,70 @@
     </div>
 </template>
     
-    <script>
-      import { Modal } from 'bootstrap';
-    
-    export default {
-      name: "RegisterPredictionModal",
-      props: ["answers", "dietType"],
-        data(){
-          return {
-            name: "",
-            surname: "",
-            username: "",
-            email: "",
-            password: "",
-            modal: null,
-            answersArray: []
-          }
-        },
-    
-        methods: {
-          async register(){
-            
-            try {
-              await this.$axios.post(`/user/register`, {
-                name: this.name,
-                surname: this.surname,
-                email: this.email,
-                password: this.password,
-                username: this.username,
-                answers: this.$store.state.answers,
-                dietType: this.dietType
-              }).then(res => {
-    
-                this.$toast.success(res.data);
-              })
-    
-              this.modal.hide();
-    
-              this.name = "";
-              this.surname = "";
-              this.username = "";
-              this.email = "";
-              this.password = "";
-                
-            } catch (err){
-              const keys = Object.keys(err.response.data);
-              
-              var firstError = keys[0];
-              this.$toast.error(err.response.data[firstError]);
-              
-            }
-    
-            }
-        },
-    
-        mounted(){
-          // eslint-disable-next-line
-          this.modal = new Modal(this.$refs.myModal);
+<script>
+  import { Modal } from 'bootstrap';
 
-        }
+export default {
+  name: "RegisterPredictionModal",
+  props: ["dietType"],
+    data(){
+      return {
+        name: "",
+        surname: "",
+        username: "",
+        email: "",
+        password: "",
+        modal: null,
+        answersArray: []
+      }
+    },
+
+methods: {
+  async register(){
+    try {
+      let response = await this.$axios.post(`/user/register`, {
+        name: this.name,
+        surname: this.surname,
+        email: this.email,
+        password: this.password,
+        username: this.username,
+        answers: this.$store.state.answers,
+        dietType: this.dietType
+      }).then(res => {
+        this.$toast.success(res.data.message);
+        return res.data;
+      })
+      console.log(response);
+      this.$store.dispatch('updateToken', response.token);
+      this.$store.dispatch('updateLogged', true);
+      this.$emit('login');
+      this.$setupSessionTimeout();
+      this.$router.replace({path: '/client-dashboard'});
+
+      this.modal.hide();
+
+      this.name = "";
+      this.surname = "";
+      this.username = "";
+      this.email = "";
+      this.password = "";
+        
+    } catch (err){
+      const keys = Object.keys(err.response.data);
+      
+      var firstError = keys[0];
+      this.$toast.error(err.response.data[firstError]);
+      
     }
-    </script>
+
+    }
+},
+
+    mounted(){
+      this.modal = new Modal(this.$refs.myModal);
+    }
+}
+</script>
     
     <style>
     .modal-dialog{
