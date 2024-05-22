@@ -10,7 +10,7 @@ const CircleProgress = () => import ('../views/CircleProgress.vue')
 const DietPage = () => import('../views/DietPage.vue');
 import DashboardLanding from '../Client-Dashboard/DashboardLanding';
 import DashboardLayout from '../Client-Dashboard/DashboardLayout';
-
+import DashboardQuestionnaire from '../Client-Dashboard/DashboardQuestionnaire'
 
 
 const routes = [
@@ -68,6 +68,11 @@ const routes = [
             path: "/client-dashboard",
             name: "DashboardLanding",
             component: DashboardLanding
+            },
+            {
+            path: "/client-dashboard/questionnaire",
+            name: "DashboardQuestionnaire",
+            component: DashboardQuestionnaire
             },
         ],
     },

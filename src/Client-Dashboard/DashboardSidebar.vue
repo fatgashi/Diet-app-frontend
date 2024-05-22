@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid m-0 p-0 d-flex menu-opener  " :class="{ toggled: opened }" id="wrapper">
     <!-- Sidebar -->
-    <div class="sidebar-bg bg-dark" id="sidebar-wrapper">
+    <div class="sidebar-bg" id="sidebar-wrapper">
       <div class="sidebar-heading text-start text-white fw-bold pb-0 p-4">
         <router-link to="/home" class="navbar-brand"><span class="fs-4 d-none d-sm-inline" id="logospan">nutriplanwellness</span>
         </router-link>
@@ -47,11 +47,7 @@
             d-flex
             align-items-center
           ">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-seam me-2"
-            viewBox="0 0 16 16">
-            <path
-              d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
-          </svg>
+          <i class="bi bi-question-circle-fill me-2"></i>
           <span>Questionnaire</span>
         </router-link>
         <!-- <router-link to="/customers" class="
@@ -122,25 +118,22 @@
 
     <!-- Page Content -->
     <div id="page-content-wrapper" class="bg-light">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light py-4 px-4">
-        <div class="d-flex align-items-center">
-          <button class="btn outline-0 border-0" @click="toggleSidebar()">
-            <i class="fas fa-align-left fs-4 me-3"></i>
-          </button>
-          <h2 class="fs-4 fw-light m-0">Dashboard</h2>
-        </div>
+      <div class="bg-light">
+        <div class="d-flex justify-content-between align-items-center mx-3">
+          <div class="d-flex justify-content-center align-items-center">
+            <button class="btn outline-0 border-0" @click="toggleSidebar()">
+              <i class="fas fa-align-left fs-4 me-3"></i>
+            </button>
+            <h2 class="fs-4 fw-light m-0 fw-bold" style="color: #004080;">Dashboard</h2>
+          </div>
+        
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div>
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item dropdown dropstart">
               <a class="nav-link dropdown-toggle second-text m-2" href="#" id="navbarDropdown" role="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fas fa-user me-2"></i><span class="fw-bolder text-warning">{{ user.name }}</span>
+                <i class="fas fa-user me-2"></i><span class="fw-bolder" style="color: #004080;">{{ user.name }}</span>
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><router-link to="/home" class="dropdown-item">Home</router-link></li>
@@ -150,7 +143,8 @@
             </li>
           </ul>
         </div>
-      </nav>
+        </div>
+      </div>
 
       <div class="container-fluid px-4 bg-light">
         <div class="row g-3 my-2 bg-white">
@@ -195,11 +189,13 @@ export default {
 </script>
 
 <style scoped>
+
 #wrapper {
   overflow-x: hidden;
 }
 
 #sidebar-wrapper {
+  background-color: #004080;
   min-height: 100vh;
   margin-left: -15rem;
   -webkit-transition: margin 0.25s ease-out;

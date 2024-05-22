@@ -10,6 +10,15 @@ export default {
     DashboardSidebar,
     // DashboardContent,
   },
+  mounted() {
+    setTimeout(() => {
+      document.body.style.overflow = 'auto';
+
+    }, 1000);
+  },
+  beforeDestroy(){
+    document.body.style.overflow = 'hidden';
+  }
 };
 </script>
 

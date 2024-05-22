@@ -23,6 +23,9 @@ export default {
         // Header,
         Content,
         // Footer,
+    },
+    mounted(){
+      window.scrollTo(0, 0);
     }
 }
 </script>
@@ -34,7 +37,7 @@ export default {
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 800px) {
   body {
     overflow: auto !important;
   }
