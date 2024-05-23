@@ -29,6 +29,7 @@
                     <input type="password" class="form-control  " id="inputRegisterPassword" placeholder="Password" v-model="password"  required />
                     <label for="inputRegisterPassword">Password</label>
                 </div>
+              <div id="emailHelp" class="form-text mb-3">We'll never share your data with anyone else!</div>
                 <button type="submit" style="background-color: #004080" class="btn text-white">Register</button>
             </form>
           </div>

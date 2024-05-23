@@ -1,9 +1,23 @@
 <template>
-  <div v-if="userData">
+  <div v-if="userData" class="mt-4">
     <div class="d-flex justify-content-between align-items-center">
-        <h2 style="color: #004080;">Your Answers</h2>
-        <div>
-            {{ dateFormat.toDateString() }}
+        <h3 class="fw-bolder">Your Answers:</h3>
+        <div class="d-flex flex-column justify-content-center align-items-center" id="date-info">
+            <h6 class="text-center">You took the questionnaire on:</h6>
+            <p class="text-center">{{ dateFormat.toDateString() }}</p>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <Tooltip class="me-2">
+                <template #reference>
+                    <i class="bi bi-info-circle"></i>
+                </template>
+                <template #tooltip>
+                    Can be completed once a month!
+                </template>
+            </Tooltip>
+            <div>
+                <router-link to="/client-dashboard/recomplete-questionnaire" class="btn btn-success">Recomplete Questionnaire</router-link>
+            </div>
         </div>
     </div>
     <div class="row-fluid gx-5">
@@ -11,7 +25,7 @@
         <div v-for="(data, index) in userData.answers" :key="data._id" class="row m-0 mt-lg-2 mt-md-0 mb-4 d-flex justify-content-center align-items-start">
             <div class="card shadow" id="card-s" >
             <div class="card-body">
-                <h5 class="mt-3">{{ index + 1 }}. {{ data.question.en }}</h5>
+                <h5 class="mt-3 fw-bold">{{ index + 1 }}. {{ data.question.en }}</h5>
                 <p v-if="data.answer.en">1. {{ data.answer.en }}.</p>
                 <p v-else-if="typeof data.answer !== `object`">{{ data.answer }}</p>
                 <ol v-else-if="data.answer.length > 0" class="list-group list-group-numbered">
@@ -30,7 +44,11 @@
 
 <script>
 import configuration from '../config/config';
+import Tooltip from '../components/Tooltip.vue';
 export default {
+    components: {
+        Tooltip
+    },
     data(){
         return {
             userData: null,
@@ -49,7 +67,15 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+@media only screen and (max-width: 500px) {
+  #date-info {
+    display: none !important;
+  }
+}
+
+
 #card-s {
     color: #333; /* Dark grey text for readability */
     border-left: 5px solid #4CAF50; /* Green border on the left for a pop of color */

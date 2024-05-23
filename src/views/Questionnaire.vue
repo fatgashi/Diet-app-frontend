@@ -592,12 +592,8 @@ export default {
                 this.currentQuestionIndex++;
                 this.selectedChoice = []; // Reset selected choice for the next question
                 
-                if(this.currentQuestionIndex === 30){
-                    this.$router.push('/feedback-wellness')
-                    this.$axios.post('/predictions', this.$store.state.answers).then(res => {
-                        this.$store.dispatch('setDietType', res.data);
-                    });
-                }
+            } else {
+                this.handleEndOfQuestionnaire();
             }
         },
 
@@ -611,7 +607,10 @@ export default {
 
         handleEndOfQuestionnaire() {
             // Here could redirect the user or perform other actions
-            
+            this.$axios.post('/predictions', this.$store.state.answers).then(res => {
+                this.$store.dispatch('setDietType', res.data);
+            });
+            this.$router.push('/feedback-wellness');
         },
 
         shouldAnswersBeClean() {

@@ -267,13 +267,13 @@ export default [
       },
       question: 'age'
     },
-    { 
-      id: 33, 
-      text: {
-        en: 'Your personal 4-week intermittent fasting plan is ready',
-        de: "Fertig ist Dein persönlicher 4-wöchiger Intervallfasten-Plan"
-      },
-      question: 'email'
-    },
+    // { 
+    //   id: 33, 
+    //   text: {
+    //     en: 'Your personal 4-week intermittent fasting plan is ready',
+    //     de: "Fertig ist Dein persönlicher 4-wöchiger Intervallfasten-Plan"
+    //   },
+    //   question: 'email'
+    // },
     
   ];

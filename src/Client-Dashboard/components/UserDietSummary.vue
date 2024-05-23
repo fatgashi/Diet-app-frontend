@@ -6,7 +6,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex flex-column justify-content-center">
-                            <h6>Your Height:</h6>
+                            <h6 class="fw-bold">Your Height:</h6>
                             <h5 class="card-text">{{ userData.answers[28].answer.answer }}</h5>
                         </div>
                         <div class="d-flex justify-content-center">
@@ -21,7 +21,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex flex-column justify-content-center">
-                            <h6>Your Weight:</h6>
+                            <h6 class="fw-bold">Your Weight:</h6>
                             <h5 class="card-text">{{ userData.answers[29].answer.answer }}</h5>
                         </div>
                         <div class="d-flex justify-content-center">
@@ -36,7 +36,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex flex-column justify-content-center">
-                            <h6>Your Goal:</h6>
+                            <h6 class="fw-bold">Your Goal:</h6>
                             <h5 class="card-text">{{ userData.answers[30].answer }}</h5>
                         </div>
                         <div class="d-flex justify-content-center">
@@ -51,7 +51,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex flex-column justify-content-center">
-                            <h6>Your BMI:</h6>
+                            <h6 class="fw-bold">Your BMI:</h6>
                             <h5 class="card-text">{{ calculateBMI.toFixed(2) }}</h5>
                         </div>
                         <div class="d-flex justify-content-center">
@@ -66,7 +66,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex flex-column justify-content-center">
-                            <h6>Your Diet:</h6>
+                            <h6 class="fw-bold">Your Diet:</h6>
                             <h5 class="card-text">{{ userData.dietType }}</h5>
                         </div>
                         <div class="d-flex justify-content-center">
@@ -78,15 +78,15 @@
         </div>
     </div>
     <div class="mt-5">
-        <h2 style="color: #004080;">Meal Plan For Today</h2>
-        <h4>{{ todayDate }}</h4>
+        <h2 class="fw-bolder" style="color: #004080;">Meal Plan For Today</h2>
+        <h4 class="fw-bold">{{ todayDate }}</h4>
         <div class="row-fluid gx-5">
           <div class="row row-cols-1 row-cols-md-3 mt-3 mb-3 me-2 ms-2 d-flex justify-content-start">
-            <div v-for="meals in mealPlan" :key="meals._id" class="row m-0 mt-lg-2 mt-md-0 mb-4 d-flex justify-content-center align-items-start">
+            <div v-for="(meals, index) in mealPlan" :key="meals._id" class="row m-0 mt-lg-2 mt-md-0 mb-4 d-flex justify-content-center align-items-start">
               <div class="card shadow" id="card-s" >
                 <div class="card-body">
 
-                    <h5 class="mt-3">{{ meals.name }}</h5>
+                    <h5 class="mt-3 fw-bold">{{ index + 1}}. {{ meals.name }}</h5>
                     <h6>Description: </h6>
                     <p>{{ meals.description }}.</p>
                     <h6>Preparation: </h6>
