@@ -605,9 +605,9 @@ export default {
             });
         },
 
-        handleEndOfQuestionnaire() {
+        async handleEndOfQuestionnaire() {
             // Here could redirect the user or perform other actions
-            this.$axios.post('/predictions', this.$store.state.answers).then(res => {
+            await this.$axios.post('/predictions', this.$store.state.answers).then(res => {
                 this.$store.dispatch('setDietType', res.data);
             });
             this.$router.push('/feedback-wellness');

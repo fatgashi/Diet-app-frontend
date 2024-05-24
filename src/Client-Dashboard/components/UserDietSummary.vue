@@ -77,6 +77,9 @@
             </div>
         </div>
     </div>
+    <div class="mt-4" id="chart">
+        <apexchart type="line" height="450" :options="chartOptions" :series="series"></apexchart>
+    </div>
     <div class="mt-5">
         <h2 class="fw-bolder" style="color: #004080;">Meal Plan For Today</h2>
         <h4 class="fw-bold">{{ todayDate }}</h4>
@@ -112,6 +115,60 @@ export default {
         return {
             userData: null,
             mealPlan: null,
+            userDataAssessment: null,
+            weightThisMonth: 0,
+            weightLastMonth: 0,
+            goalThisMonth: 0,
+            goalLastMonth: 0,
+            bmiThisMonth: 0,
+            bmiLastMonth: 0,
+            dateLastMonth: "",
+            dateThisMonth: "",
+            chartOptions: {
+                chart: {
+                    height: 350,
+                    width: 600,
+                    type: 'line',
+                },
+                plotOptions: {
+                    line: {
+                        isSlopeChart: true,
+                    },
+                },
+                tooltip: {
+                    followCursor: true,
+                    intersect: false,
+                    shared: true,
+                },
+                dataLabels: {
+                    background: {
+                        enabled: true,
+                    },
+                    formatter(val, opts) {
+                        const seriesName = opts.w.config.series[opts.seriesIndex].name
+                        return val !== null ? seriesName : ''
+                    },
+                },
+                yaxis: {
+                    show: true,
+                    labels: {
+                        show: true,
+                    },
+                },
+                xaxis: {
+                    position: 'bottom',
+                },
+                legend: {
+                    show: true,
+                    position: 'top',
+                    horizontalAlign: 'left',
+                },
+                stroke: {
+                    width: [5, 5, 3],
+                    dashArray: [0, 0, 5],
+                    curve: 'smooth',
+                }
+            },
         }
     },
     computed: {
@@ -125,6 +182,68 @@ export default {
             const today = new Date().getDay();
             const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             return daysOfWeek[today];
+        },
+
+        series() {
+        return [
+            {
+            name: 'Weight',
+            data: [
+                {
+                    x: this.dateLastMonth,
+                    y: this.weightLastMonth,
+                },
+                {
+                    x: this.dateThisMonth,
+                    y: this.weightThisMonth,
+                },
+            ],
+            },
+            {
+            name: 'BMI',
+            data: [
+                {
+                    x: this.dateLastMonth,
+                    y: this.bmiLastMonth,
+                },
+                {
+                    x: this.dateThisMonth,
+                    y: this.bmiThisMonth,
+                },
+            ],
+            },
+            {
+            name: 'Your Goal',
+            data: [
+                {
+                    x: this.dateLastMonth,
+                    y: this.goalLastMonth,
+                },
+                {
+                    x: this.dateThisMonth,
+                    y: this.goalThisMonth,
+                },
+            ],
+            },
+        ]
+        },
+    },
+    methods: {
+        calculateBMIForMonths(position){
+            const height_in_meters = this.userDataAssessment[position].answers[28].answer.cm / 100;
+            const kg = parseInt(this.userDataAssessment[position].answers[29].answer.answer, 10)
+            return kg / (height_in_meters * height_in_meters);
+        },
+
+        dietAssessment(){
+            this.weightThisMonth = parseInt(this.userDataAssessment[0].answers[29].answer.answer, 10);
+            this.weightLastMonth = parseInt(this.userDataAssessment[1].answers[29].answer.answer, 10);
+            this.goalThisMonth = parseInt(this.userDataAssessment[0].answers[30].answer, 10);
+            this.goalLastMonth = parseInt(this.userDataAssessment[1].answers[30].answer, 10);
+            this.bmiThisMonth = this.calculateBMIForMonths(0).toFixed(2);
+            this.bmiLastMonth = this.calculateBMIForMonths(1).toFixed(2);
+            this.dateThisMonth = new Date(this.userDataAssessment[0].date).toDateString();
+            this.dateLastMonth = new Date(this.userDataAssessment[1].date).toDateString();
         }
     },
     async created(){
@@ -132,11 +251,16 @@ export default {
             return res.data[0]
         });
 
+        this.userDataAssessment = await this.$axios.get('/diet-assessment/getTwoLastAssessment', configuration()).then(res => {
+            return res.data;
+        });
+
+        this.dietAssessment();
+
+
         this.mealPlan = await this.$axios.get('/mealPlan/getMealPlanByUser', configuration()).then(res => {
             return res.data
         })
-
-        
         
     }
 }

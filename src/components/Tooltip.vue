@@ -81,6 +81,7 @@
     padding: 5px;
     border-radius: 3px;
     white-space: nowrap;
+    border-radius: 10px;
     z-index: 10;
   }
   </style>

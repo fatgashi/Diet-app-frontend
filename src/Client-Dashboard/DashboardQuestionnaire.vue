@@ -16,11 +16,15 @@
                 </template>
             </Tooltip>
             <div>
-                <router-link to="/client-dashboard/recomplete-questionnaire" class="btn btn-success">Recomplete Questionnaire</router-link>
+                <button to="/client-dashboard/recomplete-questionnaire" :disabled="dateFormatBoolean()" @click="navigate" class="btn btn-success">Recomplete Questionnaire</button>
             </div>
         </div>
     </div>
     <div class="row-fluid gx-5">
+        <div class="d-flex flex-column justify-content-center align-items-center d-sm-none d-block mt-3">
+            <h6 class="text-center">You took the questionnaire on:</h6>
+            <p class="text-center">{{ dateFormat.toDateString() }}</p>
+        </div>
         <div class="row row-cols-2 row-cols-md-4 mt-3 mb-3 me-2 ms-2 d-flex justify-content-start">
         <div v-for="(data, index) in userData.answers" :key="data._id" class="row m-0 mt-lg-2 mt-md-0 mb-4 d-flex justify-content-center align-items-start">
             <div class="card shadow" id="card-s" >
@@ -55,6 +59,22 @@ export default {
             dateFormat: null,
         }
     },
+    methods: {
+        dateFormatBoolean(){
+            const lastDietDate = new Date(this.userData.date);
+    
+            const oneMonthAgo = new Date();
+            oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+            
+            return lastDietDate >= oneMonthAgo;
+        },
+        navigate() {
+            if (!this.dateFormatBoolean()) {
+                this.$router.push('/client-dashboard/recomplete-questionnaire');
+            }
+        }
+    },
+
     async created(){
         this.userData = await this.$axios.get('/diet-assessment', configuration()).then(res => {
             return res.data[0]
@@ -62,6 +82,7 @@ export default {
 
         this.dateFormat = new Date(this.userData.date);
 
+        this.dateFormatBoolean();
 
     }
 }
@@ -69,7 +90,7 @@ export default {
 
 <style scoped>
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 576px) {
   #date-info {
     display: none !important;
   }

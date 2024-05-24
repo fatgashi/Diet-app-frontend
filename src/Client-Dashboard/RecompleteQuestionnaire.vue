@@ -4,10 +4,6 @@
           <div>
               <button id="arrow-button" class="ms-3 border-0" @click="goBack"><i class="bi bi-arrow-left fs-4"></i></button>
           </div>
-          <div>
-              <img src="../assets/main-logo.png" width="50" height="40" />
-              <span class="name fw-bold text-muted">nutriplanwellness</span>
-          </div>
               <span class="fw-bold text-muted me-3">{{ currentQuestionIndex }} / {{ questionsNumber }}</span>
       </div>
       <div class="progress mx-4 mt-2" id="progress-bar1">
@@ -246,8 +242,8 @@
   </template>
   
   <script>
-  import maleQuestions from '../data/maleQuestions';
-  import femaleQuestions from '../data/femaleQuestions';
+  import maleQuestions from '../data/RecompleteMaleQuestions';
+  import femaleQuestions from '../data/RecompleteFemaleQuestions';
 import configuration from '../config/config';
   export default {
       data(){
@@ -280,7 +276,7 @@ import configuration from '../config/config';
               return this.$store.state.currentLang;
           },
           lossWeight() {
-              let answer = this.$store.state.answers[27]?.answer; // Use optional chaining
+              let answer = this.$store.state.answers[29]?.answer; // Use optional chaining
               if (!answer) return null; // If answer is not defined, return null
   
               let weight = parseInt(answer.answer);
@@ -365,7 +361,7 @@ import configuration from '../config/config';
               let inches;
               let cm;
               let answers = this.$store.state.answers;
-              let userHeight = answers[26]?.answer;
+              let userHeight = answers[28]?.answer;
               
               if(this.userWeightKg >= 30 && this.userWeightKg <= 250 || this.userWeightLbs >= 66 && this.userWeightLbs <= 552){
                   if(userHeight.unit === "feet"){
@@ -591,15 +587,13 @@ import configuration from '../config/config';
           moveToNextQuestion() {
               // Check if there are more questions
               if (this.currentQuestionIndex < this.genderQuestions.length - 1) {
-                  this.currentQuestionIndex++;
-                  this.selectedChoice = []; // Reset selected choice for the next question
-                  
-                  if(this.currentQuestionIndex === 30){
-                      this.$router.push('/feedback-wellness')
-                      this.$axios.post('/predictions', this.$store.state.answers).then(res => {
-                          this.$store.dispatch('setDietType', res.data);
-                      });
+                    this.currentQuestionIndex++;
+                    this.selectedChoice = []; // Reset selected choice for the next question
+                  if(this.currentQuestionIndex === 2){
+                    this.$store.state.answers[1].answer.en === 'Male' ? this.genderQuestions = maleQuestions : this.genderQuestions = femaleQuestions;
                   }
+              } else {
+                this.handleEndOfQuestionnaire();
               }
           },
   
@@ -611,8 +605,25 @@ import configuration from '../config/config';
               });
           },
   
-          handleEndOfQuestionnaire() {
-              // Here could redirect the user or perform other actions
+          async handleEndOfQuestionnaire() {
+            const prediction = await this.$axios.post('/predictions', this.$store.state.answers).then(res => {
+                return res.data
+            });
+
+            await this.$axios.post('/diet-assessment/addDietAssessment', {
+                dietType: prediction.predicted_diet_type,
+                answers: this.$store.state.answers
+            }, configuration()).then(res => {
+                this.$toast.success(res.data.message);
+                this.$store.dispatch("clearAnswers");
+                this.$router.push('/client-dashboard/questionnaire');
+
+            }).catch(err => {
+                console.log(err)
+                this.$toast.error(err.response.data.message);
+            })
+
+
               
           },
   
@@ -645,19 +656,19 @@ import configuration from '../config/config';
               // }
           }   
       },
-      async mounted(){
+      async created(){
         this.userData = await this.$axios.get('/diet-assessment', configuration()).then(res => {
             return res.data[0]
         });
-          this.userData.answers[1].answer.en === 'Male' ? this.genderQuestions = maleQuestions : this.genderQuestions = femaleQuestions;
-          if(this.shouldAnswersBeClean()){
-              this.$store.dispatch("clearAnswers");
-          }
-          this.updateLastShownTimestamp();
-          if (this.$store.state.answers.length > 0) {
-              this.currentQuestionIndex = this.$store.state.answers.length;
-          }
-          this.questionsNumber = this.genderQuestions.length;
+        this.genderQuestions = maleQuestions;
+        if(this.shouldAnswersBeClean()){
+            this.$store.dispatch("clearAnswers");
+        }
+        this.updateLastShownTimestamp();
+        if (this.$store.state.answers.length > 0) {
+            this.currentQuestionIndex = this.$store.state.answers.length;
+        }
+        this.questionsNumber = this.genderQuestions.length;
       }
   }
   </script>

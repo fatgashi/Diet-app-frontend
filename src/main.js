@@ -12,9 +12,12 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import { getToken } from './config/localStorage.js';
 import { getTokenExpiration, logout } from './config/userLogic.js';
+import VueApexCharts from 'vue-apexcharts'
 
 
 Vue.use(VueI18n);
+Vue.use(VueApexCharts)
+Vue.component('apexchart', VueApexCharts)
 
 const messages = {
   en, //English translate
