@@ -1,108 +1,118 @@
 <template>
   <div>
-    <div v-if="userData" class="row mt-4">
-        <div class="col-sm-12 col-md-4 mt-3">
-            <div class="card shadow" id="card-userData" style="border-radius: 10px;">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex flex-column justify-content-center">
-                            <h6 class="fw-bold">Your Height:</h6>
-                            <h5 class="card-text">{{ userData.answers[28].answer.answer }}</h5>
+    <div v-if="userData && mealPlan">
+        <div class="row mt-4">
+            <div class="col-sm-12 col-md-4 mt-3">
+                <div class="card shadow" id="card-userData" style="border-radius: 10px;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex flex-column justify-content-center">
+                                <h6 class="fw-bold">Your Height:</h6>
+                                <h5 class="card-text">{{ userData.answers[28].answer.answer }}</h5>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <img src="../../assets/free_icon_3.svg" height="64" width="64" alt="">
+                            </div>
                         </div>
-                        <div class="d-flex justify-content-center">
-                            <img src="../../assets/free_icon_3.svg" height="64" width="64" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-4 mt-3">
+                <div class="card shadow" id="card-userData" style="border-radius: 10px;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex flex-column justify-content-center">
+                                <h6 class="fw-bold">Your Weight:</h6>
+                                <h5 class="card-text">{{ userData.answers[29].answer.answer }}</h5>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <img src="../../assets/free_icon_4.svg" height="64" width="64" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-4 mt-3">
+                <div class="card shadow" id="card-userData" style="border-radius: 10px;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex flex-column justify-content-center">
+                                <h6 class="fw-bold">Your Goal:</h6>
+                                <h5 class="card-text">{{ userData.answers[30].answer }}</h5>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <img src="../../assets/free_icon_5.svg" height="64" width="64" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-4 mt-3">
+                <div class="card shadow" id="card-userData" style="border-radius: 10px;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex flex-column justify-content-center">
+                                <h6 class="fw-bold">Your BMI:</h6>
+                                <h5 class="card-text">{{ calculateBMI.toFixed(2) }}</h5>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <img src="../../assets/free_icon_2.svg" width="64" height="64" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-4 mt-3">
+                <div class="card shadow" id="card-userData" style="border-radius: 10px;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex flex-column justify-content-center">
+                                <h6 class="fw-bold">Your Diet:</h6>
+                                <h5 class="card-text">{{ userData.dietType }}</h5>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <img src="../../assets/free_icon_1.svg" alt="">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-12 col-md-4 mt-3">
-            <div class="card shadow" id="card-userData" style="border-radius: 10px;">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex flex-column justify-content-center">
-                            <h6 class="fw-bold">Your Weight:</h6>
-                            <h5 class="card-text">{{ userData.answers[29].answer.answer }}</h5>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <img src="../../assets/free_icon_4.svg" height="64" width="64" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div v-if="userDataAssessment" class="mt-4" id="chart">
+            <apexchart type="line" height="300" :options="chartOptions" :series="series"></apexchart>
         </div>
-        <div class="col-sm-12 col-md-4 mt-3">
-            <div class="card shadow" id="card-userData" style="border-radius: 10px;">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex flex-column justify-content-center">
-                            <h6 class="fw-bold">Your Goal:</h6>
-                            <h5 class="card-text">{{ userData.answers[30].answer }}</h5>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <img src="../../assets/free_icon_5.svg" height="64" width="64" alt="">
-                        </div>
+        <div class="mt-5">
+            <h2 class="fw-bolder" style="color: #004080;">Meal Plan For Today</h2>
+            <h4 class="fw-bold">{{ todayDate }}</h4>
+            <div class="row gx-5">
+              <div class="row row-cols-1 row-cols-md-3 mt-3 mb-3 me-2 ms-2 d-flex justify-content-start">
+                <div v-for="(meals, index) in mealPlan" :key="meals._id" class="row m-0 mt-lg-2 mt-md-0 mb-4 d-flex justify-content-center align-items-start">
+                  <div class="card shadow" id="card-s" >
+                    <div class="card-body">
+                        <h5 class="mt-3 fw-bold">{{ index + 1}}. {{ meals.name }}</h5>
+                        <h6>Description: </h6>
+                        <p>{{ meals.description }}.</p>
+                        <h6>Preparation: </h6>
+                        <p>{{ meals.preparation }}</p>
+                        <h6>Ingredients: </h6>
+                        <ol class="list-group list-group-numbered">
+                          <li v-for="ingredients in meals.ingredients" :key="ingredients" class="list-group-item">{{ ingredients }}</li>
+                        </ol>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-4 mt-3">
-            <div class="card shadow" id="card-userData" style="border-radius: 10px;">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex flex-column justify-content-center">
-                            <h6 class="fw-bold">Your BMI:</h6>
-                            <h5 class="card-text">{{ calculateBMI.toFixed(2) }}</h5>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <img src="../../assets/free_icon_2.svg" width="64" height="64" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-4 mt-3">
-            <div class="card shadow" id="card-userData" style="border-radius: 10px;">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex flex-column justify-content-center">
-                            <h6 class="fw-bold">Your Diet:</h6>
-                            <h5 class="card-text">{{ userData.dietType }}</h5>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <img src="../../assets/free_icon_1.svg" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="mt-4" id="chart">
-        <apexchart type="line" height="450" :options="chartOptions" :series="series"></apexchart>
-    </div>
-    <div class="mt-5">
-        <h2 class="fw-bolder" style="color: #004080;">Meal Plan For Today</h2>
-        <h4 class="fw-bold">{{ todayDate }}</h4>
-        <div class="row-fluid gx-5">
-          <div class="row row-cols-1 row-cols-md-3 mt-3 mb-3 me-2 ms-2 d-flex justify-content-start">
-            <div v-for="(meals, index) in mealPlan" :key="meals._id" class="row m-0 mt-lg-2 mt-md-0 mb-4 d-flex justify-content-center align-items-start">
-              <div class="card shadow" id="card-s" >
-                <div class="card-body">
-
-                    <h5 class="mt-3 fw-bold">{{ index + 1}}. {{ meals.name }}</h5>
-                    <h6>Description: </h6>
-                    <p>{{ meals.description }}.</p>
-                    <h6>Preparation: </h6>
-                    <p>{{ meals.preparation }}</p>
-                    <h6>Ingredients: </h6>
-                    <ol class="list-group list-group-numbered">
-                      <li v-for="ingredients in meals.ingredients" :key="ingredients" class="list-group-item">{{ ingredients }}</li>
-                    </ol>
-
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+        </div>
+    </div>
+    <div v-else class="mt-4 w-100">
+        <div class="d-flex flex-column">
+            <div class="d-flex justify-content-end align-items-center">
+                <router-link to="/client-dashboard/recomplete-questionnaire" class="btn btn-success">Complete Questionnaire</router-link>
+            </div>
+            <div class="d-flex justify-content-center align-items-center mt-3">
+                <h1 class="fw-bolder">You haven't completed a questionnaire yet!</h1>
+            </div>
         </div>
     </div>
   </div>
@@ -124,10 +134,10 @@ export default {
             bmiLastMonth: 0,
             dateLastMonth: "",
             dateThisMonth: "",
+            error: "",
             chartOptions: {
                 chart: {
                     height: 350,
-                    width: 600,
                     type: 'line',
                 },
                 plotOptions: {
@@ -234,7 +244,11 @@ export default {
             const kg = parseInt(this.userDataAssessment[position].answers[29].answer.answer, 10)
             return kg / (height_in_meters * height_in_meters);
         },
-
+        navigate() {
+            if (!this.dateFormatBoolean()) {
+                this.$router.push('/client-dashboard/recomplete-questionnaire');
+            }
+        },
         dietAssessment(){
             this.weightThisMonth = parseInt(this.userDataAssessment[0].answers[29].answer.answer, 10);
             this.weightLastMonth = parseInt(this.userDataAssessment[1].answers[29].answer.answer, 10);
@@ -251,16 +265,19 @@ export default {
             return res.data[0]
         });
 
-        this.userDataAssessment = await this.$axios.get('/diet-assessment/getTwoLastAssessment', configuration()).then(res => {
-            return res.data;
-        });
-
-        this.dietAssessment();
-
-
         this.mealPlan = await this.$axios.get('/mealPlan/getMealPlanByUser', configuration()).then(res => {
             return res.data
         })
+
+        this.userDataAssessment = await this.$axios.get('/diet-assessment/getTwoLastAssessment', configuration()).then(res => {
+            return res.data;
+        }).catch(err => {
+            this.error = err.response.data;
+        });
+
+        if(this.userDataAssessment){
+            this.dietAssessment();
+        }
         
     }
 }

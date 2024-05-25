@@ -12,6 +12,7 @@ import DashboardLanding from '../Client-Dashboard/DashboardLanding';
 import DashboardLayout from '../Client-Dashboard/DashboardLayout';
 import DashboardQuestionnaire from '../Client-Dashboard/DashboardQuestionnaire';
 import RecompleteQuestionnaire from '../Client-Dashboard/RecompleteQuestionnaire';
+import DashboardDiet from '../Client-Dashboard/DashboardDiet';
 
 
 const routes = [
@@ -79,6 +80,11 @@ const routes = [
             path: "/client-dashboard/recomplete-questionnaire",
             name: "DashboardRecompleteQuestionnaire",
             component: RecompleteQuestionnaire
+            },
+            {
+            path: "/client-dashboard/diet",
+            name: "DashboardDiet",
+            component: DashboardDiet
             },
         ],
     },

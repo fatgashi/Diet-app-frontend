@@ -133,7 +133,7 @@
             <li class="nav-item dropdown dropstart">
               <a class="nav-link dropdown-toggle second-text m-2" href="#" id="navbarDropdown" role="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fas fa-user me-2"></i><span class="fw-bolder" style="color: #004080;">{{ user.name }}</span>
+                <i class="fas fa-user me-2"></i><span class="fw-bolder" style="color: #004080;">{{ user.name }} {{ user.surname }}</span>
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><router-link to="/home" class="dropdown-item">Home</router-link></li>
