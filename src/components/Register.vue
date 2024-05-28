@@ -10,15 +10,15 @@
        <form @submit.prevent="register">
 
             <div class=" form-floating mb-3">
-                <input type="text" class="form-control  " id="inputRegisterName" placeholder="Name" autocomplete="off" v-model="name"  required />
+                <input type="text" class="form-control  " id="inputRegisterName" placeholder="Name" minlength="2" autocomplete="off" v-model="name"  required />
                 <label for="inputRegisterEmail">Name</label>
             </div>
             <div class=" form-floating mb-3">
-                <input type="text" class="form-control  " id="inputRegisterSurname" placeholder="Surname" autocomplete="off" v-model="surname"  required />
+                <input type="text" class="form-control  " id="inputRegisterSurname" placeholder="Surname" minlength="3" autocomplete="off" v-model="surname"  required />
                 <label for="inputRegisterEmail">Surname</label>
             </div>
             <div class=" form-floating mb-3">
-                <input type="text" class="form-control  " id="inputRegisterUsername" placeholder="Username" autocomplete="off" v-model="username"  required />
+                <input type="text" class="form-control  " id="inputRegisterUsername" placeholder="Username" minlength="4" autocomplete="off" v-model="username"  required />
                 <label for="inputRegisterEmail">Username</label>
             </div>
             <div class=" form-floating mb-3">
@@ -26,9 +26,13 @@
                 <label for="inputRegisterEmail">Email</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="password" class="form-control  " id="inputRegisterPassword" placeholder="Password" v-model="password"  required />
+                <input type="password" class="form-control  " id="inputRegisterPassword" minlength="8" placeholder="Password" v-model="password"  required />
                 <label for="inputRegisterPassword">Password</label>
             </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="inputRegisterRePassword" minlength="8" placeholder="Confirm Password" v-model="confirmPassword" required />
+                <label for="inputRegisterPassword">Confirm Password</label>
+              </div>
             <button type="submit" style="background-color: #004080" class="btn text-white">Register</button>
         </form>
       </div>
@@ -52,12 +56,17 @@ export default {
         username: "",
         email: "",
         password: "",
+        confirmPassword: "",
         modal: null,
       }
     },
 
     methods: {
       async register(){
+        if (this.password !== this.confirmPassword) {
+          this.$toast.error('Passwords do not match.');
+          return;
+        }
         try {
           const response = await this.$axios.post(`/user/register`, {
             name: this.name,
