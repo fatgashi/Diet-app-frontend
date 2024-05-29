@@ -92,7 +92,7 @@
                     <router-link to="/client-dashboard/recomplete-questionnaire" class="btn btn-success">Complete Questionnaire</router-link>
                 </div>
                 <div class="d-flex justify-content-center align-items-center mt-3">
-                    <h1 class="fw-bolder">You haven't completed a questionnaire yet!</h1>
+                    <h1 class="fw-bolder text-center">You haven't completed a questionnaire yet!</h1>
                 </div>
             </div>
         </div>
@@ -108,6 +108,7 @@ import configuration from '../config/config';
         dietType: [],
         prediction: "",
         mealPlan: [],
+        error: '',
       }
     },
     methods: {
@@ -116,16 +117,24 @@ import configuration from '../config/config';
     async created(){
         this.prediction = await this.$axios.get('/diet-assessment', configuration()).then(res => {
             return res.data[0]
+        }).catch(err => {
+            this.error = err.response.data.message
         });
-        await this.$axios.get(`/dietType/${this.prediction.dietType}`).then(res => {
-            this.dietType =  res.data[0]
-            this.photo = require('../assets/' + res.data[0].photo);
-            this.$el.style.setProperty('--background-image', `url(${this.photo})`);
-        });
-  
-        await this.$axios.get(`/mealPlan/${this.dietType._id}`).then(res => {
-            this.mealPlan = res.data[0]
-        })
+        if(this.prediction){
+            await this.$axios.get(`/dietType/${this.prediction.dietType}`).then(res => {
+                this.dietType =  res.data[0]
+                this.photo = require('../assets/' + res.data[0].photo);
+                this.$el.style.setProperty('--background-image', `url(${this.photo})`);
+            }).catch(err => {
+                this.error = err.response.data.message
+            });
+      
+            await this.$axios.get(`/mealPlan/${this.dietType._id}`).then(res => {
+                this.mealPlan = res.data[0]
+            }).catch(err => {
+                this.error = err.response.data.message
+            });
+        }
     }
   }
 </script>

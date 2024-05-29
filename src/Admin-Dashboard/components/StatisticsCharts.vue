@@ -16,6 +16,12 @@ import configuration from '../../config/config';
 
 
 export default {
+  props: {
+    reloadCharts: {
+      type: Boolean,
+      default: false
+    }
+  },
     data(){
         return {
             countClints: 0,
@@ -55,6 +61,13 @@ export default {
           },
         }
     },
+    watch: {
+      reloadCharts(newVal) {
+      if (newVal) {
+        this.fetchData();
+      }
+    }
+    },
     computed: {
         series1(){
             return [this.countClints, this.countAdmin]
@@ -64,17 +77,21 @@ export default {
             return [this.countNonSusClient, this.countSusClient]
         }
     },
-
-    async created(){
+    methods: {
+      async fetchData() {
         await this.$axios.get('/statistics/countUsers', configuration()).then(res => {
-            this.countClints = res.data.countClients;
-            this.countAdmin = res.data.countAdmin
-        })
+          this.countClints = res.data.countClients;
+          this.countAdmin = res.data.countAdmin;
+        });
 
         await this.$axios.get('/statistics/countSuspendedUsers', configuration()).then(res => {
-            this.countNonSusClient = res.data.countNonSusUsers;
-            this.countSusClient = res.data.countSusUsers;
-        })
+          this.countNonSusClient = res.data.countNonSusUsers;
+          this.countSusClient = res.data.countSusUsers;
+        });
+      }
+    },
+    async created(){
+        await this.fetchData();
     }
 }
 </script>

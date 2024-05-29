@@ -111,7 +111,7 @@
                 <router-link to="/client-dashboard/recomplete-questionnaire" class="btn btn-success">Complete Questionnaire</router-link>
             </div>
             <div class="d-flex justify-content-center align-items-center mt-3">
-                <h1 class="fw-bolder">You haven't completed a questionnaire yet!</h1>
+                <h1 class="fw-bolder text-center">You haven't completed a questionnaire yet!</h1>
             </div>
         </div>
     </div>
@@ -263,11 +263,15 @@ export default {
     async created(){
         this.userData = await this.$axios.get('/diet-assessment', configuration()).then(res => {
             return res.data[0]
+        }).catch(err => {
+            this.error = err.response.data.message
         });
 
         this.mealPlan = await this.$axios.get('/mealPlan/getMealPlanByUser', configuration()).then(res => {
             return res.data
-        })
+        }).catch(err => {
+            this.error = err.response.data.message
+        });
 
         this.userDataAssessment = await this.$axios.get('/diet-assessment/getTwoLastAssessment', configuration()).then(res => {
             return res.data;

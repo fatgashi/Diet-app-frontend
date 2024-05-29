@@ -9,7 +9,7 @@
       <div class="progress mx-4 mt-2" id="progress-bar1">
           <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" :aria-valuenow="progressValue" aria-valuemin="0" aria-valuemax="100" :style="{width: progressStyle}"></div>
       </div>
-      <div class="container" v-if="currentQuestion">
+      <div v-if="currentQuestion">
           <div class="d-flex justify-content-center align-items-start" id="rfluid">
               <div class="d-flex flex-column justify-content-center w-100">
                   <h1 class="text-center mb-2 fw-bolder">{{ currentQuestion.text[currentLang] }}</h1>

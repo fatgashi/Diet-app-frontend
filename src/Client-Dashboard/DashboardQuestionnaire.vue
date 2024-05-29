@@ -53,7 +53,7 @@
                 <router-link to="/client-dashboard/recomplete-questionnaire" class="btn btn-success">Complete Questionnaire</router-link>
             </div>
             <div class="d-flex justify-content-center align-items-center mt-3">
-                <h1 class="fw-bolder">You haven't completed a questionnaire yet!</h1>
+                <h1 class="fw-bolder text-center">You haven't completed a questionnaire yet!</h1>
             </div>
         </div>
     </div>

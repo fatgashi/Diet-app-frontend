@@ -1,6 +1,6 @@
 <template>
 <div>
-  <statistics-charts />
+  <statistics-charts :reloadCharts="reloadCharts" />
     <h1 class="fw-bolder mt-5">Users List</h1>
     <div class="unit-toggle d-flex mt-3">
       <button class="border-0 btn" :class="{ active: desc }" @click="sortBy('createdAt', 'desc'), desc = true">Sort by Latest</button>
@@ -57,6 +57,7 @@ export default {
       sort: 'createdAt:desc',
       limit: 10,
       desc: true,
+      reloadCharts: false,
       paginationData: {
         total: 0,
         per_page: 10,
@@ -90,7 +91,12 @@ export default {
         suspended: susUser
       }, configuration());
 
-      await  this.fetchUsers();
+      await this.fetchUsers();
+      
+      this.reloadCharts = false;
+      this.$nextTick(() => {
+        this.reloadCharts = true;
+      });
     }
   },
   async created() {
