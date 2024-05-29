@@ -167,13 +167,29 @@ export default {
     methods: {  
         getBmiPhoto() {
             if (this.bmiValue < 18.5) {
-                return require('../assets/feedbackUnderWeightBodyTypeMan.png');
+                if(this.$store.state.answers[1] === 'male'){
+                    return require('../assets/feedbackUnderWeightBodyTypeMan.png');
+                } else {
+                    return require('../assets/feedbackUnderWeightBodyTypeWoman.png');
+                }
             } else if (this.bmiValue >= 18.5 && this.bmiValue <= 24.99) {
-                return require('../assets/feedbackNormalBodyTypeMan.png');
+                if(this.$store.state.answers[1] === 'male'){
+                    return require('../assets/feedbackNormalBodyTypeMan.png');
+                } else {
+                    return require('../assets/feedbackNormalBodyTypeWoman.png');
+                }
             } else if (this.bmiValue >= 25 && this.bmiValue <= 29.99) {
-                return require('../assets/feedbackOverWeightBodyTypeMan.png');
+                if(this.$store.state.answers[1] === 'male'){
+                    return require('../assets/feedbackOverWeightBodyTypeMan.png');
+                } else {
+                    return require('../assets/feedbackOverWeightBodyTypeWoman.png');
+                }
             } else if (this.bmiValue >= 30) {
-                return require('../assets/feedbackObeseBodyTypeMan.png');
+                if(this.$store.state.answers[1] === 'male'){
+                    return require('../assets/feedbackObeseBodyTypeMan.png');
+                } else {
+                    return require('../assets/feedbackObeseBodyTypeWoman.png');
+                }
             } else {
                 return ''; // Or path to a default image
             }

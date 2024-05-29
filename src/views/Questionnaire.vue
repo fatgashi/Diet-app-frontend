@@ -609,6 +609,8 @@ export default {
             // Here could redirect the user or perform other actions
             await this.$axios.post('/predictions', this.$store.state.answers).then(res => {
                 this.$store.dispatch('setDietType', res.data);
+            }).catch(err => {
+                err.message
             });
             this.$router.push('/feedback-wellness');
         },

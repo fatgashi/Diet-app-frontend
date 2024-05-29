@@ -75,7 +75,7 @@ export default {
         this.modal.hide();
       } catch(err) {
         this.error = err.message;
-        this.$toast.error("Your username or password is incorrect!");
+        this.$toast.error(err.response.data.message);
       }
     },
     
