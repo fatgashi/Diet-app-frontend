@@ -60,7 +60,7 @@ router.beforeEach(async (to, from, next) => {
             next('/home');
         }
     }
-    else if(requiresData && store.state.answers.length < 32){
+    else if(requiresData && store.state.answers.length < 31){
         next('/home');
     } 
     

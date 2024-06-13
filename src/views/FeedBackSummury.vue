@@ -133,7 +133,7 @@ export default {
             return this.$store.state.currentLang;
         },
         motivationLevel() {
-            const answerIndex = this.$store.state.answers[27]?.answer?.[this.currentLang];
+            const answerIndex = this.$store.state.answers[26]?.answer?.[this.currentLang];
             const motivationMapping = {
                 [this.$t('motivation.option1')]: {en: 'Average', de: 'Durchschnitt'},
                 [this.$t('motivation.option2')]: {en: 'Average', de: 'Durchschnitt'},
@@ -167,25 +167,25 @@ export default {
     methods: {  
         getBmiPhoto() {
             if (this.bmiValue < 18.5) {
-                if(this.$store.state.answers[1] === 'male'){
+                if(this.$store.state.answers[1].answer.en === 'Male'){
                     return require('../assets/feedbackUnderWeightBodyTypeMan.png');
                 } else {
                     return require('../assets/feedbackUnderWeightBodyTypeWoman.png');
                 }
             } else if (this.bmiValue >= 18.5 && this.bmiValue <= 24.99) {
-                if(this.$store.state.answers[1] === 'male'){
+                if(this.$store.state.answers[1].answer.en === 'Male'){
                     return require('../assets/feedbackNormalBodyTypeMan.png');
                 } else {
                     return require('../assets/feedbackNormalBodyTypeWoman.png');
                 }
             } else if (this.bmiValue >= 25 && this.bmiValue <= 29.99) {
-                if(this.$store.state.answers[1] === 'male'){
+                if(this.$store.state.answers[1].answer.en === 'Male'){
                     return require('../assets/feedbackOverWeightBodyTypeMan.png');
                 } else {
                     return require('../assets/feedbackOverWeightBodyTypeWoman.png');
                 }
             } else if (this.bmiValue >= 30) {
-                if(this.$store.state.answers[1] === 'male'){
+                if(this.$store.state.answers[1].answer.en === 'Male'){
                     return require('../assets/feedbackObeseBodyTypeMan.png');
                 } else {
                     return require('../assets/feedbackObeseBodyTypeWoman.png');

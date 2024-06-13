@@ -158,22 +158,22 @@ export default [
       },
       choices: [{answer: {en: "Not enough rest (under 5 hours)", de: "Zu wenig Ruhe (unter 5 Stunden)"}, emoji: "😴"}, {answer: {en: 'Some sleep (5-6 hours)', de: "Etwas schlafen (5-6 Stunden)"}, emoji: "💤"}, {answer: {en: 'A good rest (7-8 hours)', de: "Eine gute Erholung (7-8 Stunden)"}, emoji: "🧸"}, {answer: {en: "I'm an expert sleeper (more than 8 hours)", de: "Ich bin ein erfahrener Schläfer (mehr als 8 Stunden)"}, emoji: "🤓"}],
     },
-    { 
-      id: 22,
-      text: {
-        en: 'Do you follow any of these dietary restrictions?',
-        de: 'Folgen Sie einer dieser diätetischen Einschränkungen?'
-      },
-      choices: [
-        {answer: {en: 'No specific diet', de: 'Keine spezielle Diät'}, emoji: "🍽️"},
-        {answer: {en: 'Vegan - No animal products', de: 'Vegan - Keine tierischen Produkte'}, emoji: "🌱"},
-        {answer: {en: 'Vegetarian - No meat or fish', de: 'Vegetarisch - Kein Fleisch oder Fisch'}, emoji: "🥕"},
-        {answer: {en: 'Gluten-Free - No wheat, barley, or rye', de: 'Glutenfrei - Kein Weizen, Gerste oder Roggen'}, emoji: "🌾"},
+    // { 
+    //   id: 22,
+    //   text: {
+    //     en: 'Do you follow any of these dietary restrictions?',
+    //     de: 'Folgen Sie einer dieser diätetischen Einschränkungen?'
+    //   },
+    //   choices: [
+    //     {answer: {en: 'No specific diet', de: 'Keine spezielle Diät'}, emoji: "🍽️"},
+    //     {answer: {en: 'Vegan - No animal products', de: 'Vegan - Keine tierischen Produkte'}, emoji: "🌱"},
+    //     {answer: {en: 'Vegetarian - No meat or fish', de: 'Vegetarisch - Kein Fleisch oder Fisch'}, emoji: "🥕"},
+    //     {answer: {en: 'Gluten-Free - No wheat, barley, or rye', de: 'Glutenfrei - Kein Weizen, Gerste oder Roggen'}, emoji: "🌾"},
         
-      ]
-    },
+    //   ]
+    // },
     { 
-      id: 23, 
+      id: 22, 
       text: {
         en: 'Do you suffer from any of the following conditions?',
         de: "Leiden Sie unter einer der folgenden Erkrankungen?"
@@ -187,7 +187,7 @@ export default [
       choices: [{answer: {en: "No I don't", de: "Nein, ich nicht"}, emoji: "⚪"}, {answer: {en: 'Diabetes', de: "Diabetes"}, emoji: "⚪"}, {answer: {en: 'Heart disease', de: "Herzkrankheit"}, emoji: "⚪"}, {answer: {en: 'High blood pressure', de: "Bluthochdruck"}, emoji: "⚪"}, {answer: {en: 'High cholesterol', de: "Hoher Cholesterinspiegel"}, emoji: "⚪"}, {answer: {en: 'Mental health disorders', de: "Psychische Gesundheitsstörungen"}, emoji: "⚪"}, {answer: {en: 'Chronic kidney disease (CKD)', de: "Chronische Nierenerkrankung"}, emoji: "⚪"}, {answer: {en: 'Cancer', de: "Krebs"}, emoji: "⚪"}, {answer: {en: 'Gastrointestinal disorder', de: "Magen-Darm-Störung"}, emoji: "⚪"}, {answer: {en: 'Physical disability', de: "Körperliche Behinderung"}, emoji: "⚪"}, {answer: {en: 'Other', de: "Andere"}, emoji: "⚪"}],
     },
     { 
-      id: 24, 
+      id: 23, 
       text: {
         en: 'Are you taking any medication?',
         de: "Nimmst du irgendwelche Medikamente?"
@@ -197,7 +197,7 @@ export default [
       choices: [{answer: {en: 'None of them', de: "Keiner von denen"}, emoji: "⚪"}, {answer: {en: "Vitamins", de: "Vitamine"}, emoji: "⚪"}, {answer: {en: 'Hormones', de: "Hormone"}, emoji: "⚪"}, {answer: {en: 'Antibiotics', de: "Antibiotika"}, emoji: "⚪"}],
     },
     { 
-      id: 25, 
+      id: 24, 
       text: {
         en: 'Do you have any serious back problems?',
         de: "Haben Sie ernsthafte Rückenprobleme?"
@@ -205,7 +205,7 @@ export default [
       choices: [{answer: {en: "Yes", de: "Ja"}, emoji: "⚠️"}, {answer: {en: 'No', de: "NEIN"}, emoji: "✅"}],
     },
     { 
-      id: 26, 
+      id: 25, 
       text: {
         en: 'Bad habits',
         de: "Schlechte Angewohnheiten"
@@ -219,7 +219,7 @@ export default [
       choices: [{answer: {en: 'None of them', de: "Keiner von denen"}, emoji: "❌"}, {answer: {en: "Unable to rest enough", de: "Kann mich nicht ausreichend ausruhen"}, emoji: "🌙"}, {answer: {en: 'I love chocolate and candy', de: "Ich liebe Schokolade und Süßigkeiten"}, emoji: "🍫"}, {answer: {en: 'Soda is my best friend', de: "Soda ist mein bester Freund"}, emoji: "🥤"}, {answer: {en: 'I consume a lot of salty food', de: "Ich esse viel salziges Essen"}, emoji: "🧂"}, {answer: {en: "I'm a midnight snacker", de: "Ich bin ein Mitternachtssnacker"}, emoji: "🍟"}],
     },
     { 
-      id: 27, 
+      id: 26, 
       text: {
         en: 'What do you know about Intermittent Fasting?',
         de: "Was wissen Sie über intermittierendes Fasten?"
@@ -227,7 +227,7 @@ export default [
       choices: [{answer: {en: "Only the name", de: "Nur der Name"}, emoji: "🙅‍♀️"}, {answer: {en: 'A couple of things', de: "Ein paar Dinge"}, emoji: "👌"}, {answer: {en: "I'm experienced in fasting", de: "Ich habe Erfahrung im Fasten"}, emoji: "😎"}],
     },
     { 
-      id: 28, 
+      id: 27, 
       text: {
         en: 'How excited are you to shed some extra weight?',
         de: "Wie aufgeregt sind Sie, etwas mehr Gewicht zu verlieren?"
@@ -235,7 +235,7 @@ export default [
       choices: [{answer: {en: "I just want to see what the buzz about fasting is about", de: "Ich möchte nur sehen, worum es beim Fasten geht"}, emoji: "👀"}, {answer: {en: 'I want to try and lose some weight', de: "Ich möchte versuchen, etwas Gewicht zu verlieren"}, emoji: "💪"}, {answer: {en: "I'm serious about losing as much weight as possible", de: "Mir ist es ernst damit, so viel Gewicht wie möglich zu verlieren"}, emoji: "🔥"}],
     },
     { 
-      id: 29, 
+      id: 28, 
       text: {
         en: 'How tall are you?',
         de: "Wie groß bist du?"
@@ -243,7 +243,7 @@ export default [
       question: 'height'
     },
     { 
-      id: 30, 
+      id: 29, 
       text: {
         en: 'What is your current weight?',
         de: "Wie viel wiegst du momentan?"
@@ -252,7 +252,7 @@ export default [
       extension: true,
     },
     { 
-      id: 31, 
+      id: 30, 
       text: {
         en: 'What would you consider your perfect weight?',
         de: "Was würden Sie als Ihr Idealgewicht bezeichnen?"
@@ -260,7 +260,7 @@ export default [
       question: 'preferedWeight'
     },
     { 
-      id: 32, 
+      id: 31, 
       text: {
         en: 'What is your age?',
         de: "Wie alt bist du?"
