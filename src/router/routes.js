@@ -15,6 +15,7 @@ import RecompleteQuestionnaire from '../Client-Dashboard/RecompleteQuestionnaire
 import DashboardDiet from '../Client-Dashboard/DashboardDiet.vue';
 import AdminDashboardLayout from '../Admin-Dashboard/DashboardLayout.vue';
 import AdminDashboardLanding from '../Admin-Dashboard/DashboardLanding.vue';
+import ClientProfile from '../Client-Dashboard/Profile.vue';
 
 
 const routes = [
@@ -88,6 +89,11 @@ const routes = [
                 name: "DashboardDiet",
                 component: DashboardDiet
             },
+            {
+                path: "/client-dashboard/profile",
+                name: "Client-Profile",
+                component: ClientProfile
+            }
         ],
     },
     {

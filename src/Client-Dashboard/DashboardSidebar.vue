@@ -137,6 +137,7 @@
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><router-link to="/home" class="dropdown-item">Home</router-link></li>
+                <li><router-link to="/client-dashboard/profile" class="dropdown-item">Profile</router-link></li>
                 <!-- <li><a class="dropdown-item" href="#">Settings</a></li> -->
                 <li><button class="dropdown-item" @click="signOut">Logout</button></li>
               </ul>
