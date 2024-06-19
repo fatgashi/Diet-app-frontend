@@ -616,7 +616,7 @@ import configuration from '../config/config';
             }, configuration()).then(res => {
                 this.$toast.success(res.data.message);
                 this.$store.dispatch("clearAnswers");
-                this.$router.push('/client-dashboard/questionnaire');
+                this.$router.push('/client-dashboard/diet');
 
             }).catch(err => {
                 console.log(err)

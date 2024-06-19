@@ -8,7 +8,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex flex-column justify-content-center">
                                 <h6 class="fw-bold">Your Height:</h6>
-                                <h5 class="card-text">{{ userData.answers[28].answer.answer }}</h5>
+                                <h5 class="card-text">{{ userData.answers[27].answer.answer }}</h5>
                             </div>
                             <div class="d-flex justify-content-center">
                                 <img src="../../assets/free_icon_3.svg" height="64" width="64" alt="">
@@ -23,7 +23,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex flex-column justify-content-center">
                                 <h6 class="fw-bold">Your Weight:</h6>
-                                <h5 class="card-text">{{ userData.answers[29].answer.answer }}</h5>
+                                <h5 class="card-text">{{ userData.answers[28].answer.answer }}</h5>
                             </div>
                             <div class="d-flex justify-content-center">
                                 <img src="../../assets/free_icon_4.svg" height="64" width="64" alt="">
@@ -38,7 +38,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex flex-column justify-content-center">
                                 <h6 class="fw-bold">Your Goal:</h6>
-                                <h5 class="card-text">{{ userData.answers[30].answer }}</h5>
+                                <h5 class="card-text">{{ userData.answers[29].answer }}</h5>
                             </div>
                             <div class="d-flex justify-content-center">
                                 <img src="../../assets/free_icon_5.svg" height="64" width="64" alt="">
@@ -183,8 +183,8 @@ export default {
     },
     computed: {
         calculateBMI(){
-            const height_in_meters = this.userData.answers[28].answer.cm / 100;
-            const kg = parseInt(this.userData.answers[29].answer.answer, 10)
+            const height_in_meters = this.userData.answers[27].answer.cm / 100;
+            const kg = parseInt(this.userData.answers[28].answer.answer, 10)
             return kg / (height_in_meters * height_in_meters);
         },
 
@@ -240,8 +240,8 @@ export default {
     },
     methods: {
         calculateBMIForMonths(position){
-            const height_in_meters = this.userDataAssessment[position].answers[28].answer.cm / 100;
-            const kg = parseInt(this.userDataAssessment[position].answers[29].answer.answer, 10)
+            const height_in_meters = this.userDataAssessment[position].answers[27].answer.cm / 100;
+            const kg = parseInt(this.userDataAssessment[position].answers[28].answer.answer, 10)
             return kg / (height_in_meters * height_in_meters);
         },
         navigate() {
