@@ -79,7 +79,7 @@
             </div>
         </div>
         <div v-if="userDataAssessment" class="mt-4" id="chart">
-            <apexchart type="line" height="300" :options="chartOptions" :series="series"></apexchart>
+            <apexchart type="line" height="400" :options="chartOptions" :series="series"></apexchart>
         </div>
         <div class="mt-5">
             <h2 class="fw-bolder" style="color: #004080;">Meal Plan For Today</h2>
@@ -250,10 +250,10 @@ export default {
             }
         },
         dietAssessment(){
-            this.weightThisMonth = parseInt(this.userDataAssessment[0].answers[29].answer.answer, 10);
-            this.weightLastMonth = parseInt(this.userDataAssessment[1].answers[29].answer.answer, 10);
-            this.goalThisMonth = parseInt(this.userDataAssessment[0].answers[30].answer, 10);
-            this.goalLastMonth = parseInt(this.userDataAssessment[1].answers[30].answer, 10);
+            this.weightThisMonth = parseInt(this.userDataAssessment[0].answers[28].answer.answer, 10);
+            this.weightLastMonth = parseInt(this.userDataAssessment[1].answers[28].answer.answer, 10);
+            this.goalThisMonth = parseInt(this.userDataAssessment[0].answers[29].answer, 10);
+            this.goalLastMonth = parseInt(this.userDataAssessment[1].answers[29].answer, 10);
             this.bmiThisMonth = this.calculateBMIForMonths(0).toFixed(2);
             this.bmiLastMonth = this.calculateBMIForMonths(1).toFixed(2);
             this.dateThisMonth = new Date(this.userDataAssessment[0].date).toDateString();
